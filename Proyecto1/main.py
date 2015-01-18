@@ -1,9 +1,9 @@
 from tokens import *
 
-lexer = lex.lex()
+AF = rexpr()
 
-data = '''
-program {
+
+data = '''program {
     using
         int x,y,z;
     in
@@ -12,21 +12,25 @@ program {
     println "Hola, soy la variable x, valgo: ", x;
     y = x+2;
     # Hola, soy un comentario y no un token. Seamos amigos, :).
-}
-'''
+    }'''
 
-lexer.input(data)
+AF.lexer.input(data)
 
+output = ""
 
 while True:
     
-    tok = lexer.token()
+    tok = AF.lexer.token()
     
-    if not tok:
-        
-         print("hola","hola")
-         break
-    if tok.type == 'COMMENT':
-        lexer.lineno += len(tok.value) 
-    else:    
-        print tok
+    if not tok: break
+    if (tok.type != 'Space' and tok.type != 'NewLine'):
+        if tok.type == 'Quote' or tok.type == 'SimpleQuote':
+            output += AF.StringQuote(tok)
+        elif tok.type == 'Comment':
+            while (tok.type != 'NewLine'):
+                tok = AF.lexer.token() 
+            
+        else:    
+            output+="Token%s %s (Linea %d,Columna %d)\n" %(tok.type,tok.value,tok.lineno,tok.lexpos)
+
+print output
