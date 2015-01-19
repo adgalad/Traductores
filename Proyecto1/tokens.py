@@ -1,8 +1,10 @@
 
 import ply.lex as lex
-from ply.ctokens import t_EQUALS
+from django.template.base import Lexer
 
 class rexpr:
+    error = False
+    inicioLinea = 0
     reserved = {
         'if'      : 'IF',
         'else'    : 'ELSE',
@@ -12,7 +14,7 @@ class rexpr:
         'while'   : 'WHILE',
         'for'     : 'FOR',
         'and'     : 'AND',
-        'or'      : 'OR',
+        'or'      : 'Or',
         'program' : 'Program',
         'in'      : 'In',
         'using'   : 'Using',
@@ -68,10 +70,7 @@ class rexpr:
         t.value = int(t.value)    
         return t
     
-    def t_String(self,t):
-        r'\c+'
-        return t
-    
+
     def t_Id(self,t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
     
@@ -80,29 +79,36 @@ class rexpr:
         else:
             t.type = 'String'
         return t
-    
+
+    def t_String(self,t):
+        r'\c+'
+        return t
+        
     def t_NewLine(self,t):
         r'\n+'
+        self.inicioLinea = t.lexpos + 1 
+        t.lineno += 1
         return t
     
     t_ignore  = '\t'
-    
     
     def t_error(self,t):
         print "Illegal character '%s'" % t.value[0]
         t.lexer.skip(1)
     
+    # Funcion que atrapa todo el string dentro de comillas.
+    # No acepta que hayan salto de linea \n
     def StringQuote(self,t):
         QuoteType = t.type
         output = ""
         str = t.value
-        n = t.lexpos+1
+        n = t.lexpos - self.inicioLinea
         m = t.lineno
-        t = self.lexer.token() 
+        t = self.lexer.token()
         while not(t.type == QuoteType):
-            if t.value:
+            if t: 
                 str += t.value
-                t = self.lexer.token() 
+                t = self.lexer.token()
             else: break
         str += str[0]
         output += "TokenString: %s (Linea %d, Columna %d)\n" %(str,m,n)

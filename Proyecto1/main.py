@@ -12,14 +12,13 @@ data = '''program {
     println "Hola, soy la variable x, valgo: ", x;
     y = x+2;
     # Hola, soy un comentario y no un token. Seamos amigos, :).
-    }'''
+}'''
 
 AF.lexer.input(data)
 
 output = ""
 
-while True:
-    
+while True:    
     tok = AF.lexer.token()
     
     if not tok: break
@@ -31,6 +30,6 @@ while True:
                 tok = AF.lexer.token() 
             
         else:    
-            output+="Token%s %s (Linea %d,Columna %d)\n" %(tok.type,tok.value,tok.lineno,tok.lexpos)
+            output+="Token%s %s (Linea %d,Columna %d)\n" %(tok.type,tok.value,tok.lineno,tok.lexpos - AF.inicioLinea)
 
 print output
