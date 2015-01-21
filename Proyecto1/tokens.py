@@ -86,7 +86,7 @@ class rexpr:
         
     def t_NewLine(self,t):
         r'\n+'
-        self.inicioLinea = t.lexpos + 1 
+        self.inicioLinea = t.lexpos
         t.lineno += 1
         return t
     
