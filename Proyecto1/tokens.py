@@ -145,18 +145,11 @@ class rexpr:
         
     def t_NewLine(self,t):
         r'\n+'
-<<<<<<< HEAD
-        self.inicioLinea = t.lexpos
-        t.lineno += 1
-        return t
-    
-=======
         self.inicioLinea = t.lexpos + 1 
         #t.lineno += 1
         t.lexer.lineno += len(t.value)
         return t 
        
->>>>>>> branch 'master' of https://github.com/adgalad/Traductores.git
     t_ignore  = '\t'
     
     def t_error(self,t):
