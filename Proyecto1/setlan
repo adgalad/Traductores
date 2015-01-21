@@ -5,20 +5,8 @@ from tokens import *
 import sys
 AF = rexpr()
 
-
 data = open(sys.argv[1])
 data = data.read()
-
-#'''program {
-#    using
- #       int x,y,z;~
- #   in
-  #  
-   # scan x;
-  #  printl%n "Hola, soy la variable x, valgo: ",~ x;
-  #  y = x+2;~
-  #  # Hola, soy un comentario y no un token. Seamos amigos, :).
-#}'''
 
 AF.lexer.input(data)
 
@@ -42,7 +30,5 @@ while True:
     
     if AF.error == True:
         output = ""            
-
-               
             
 print output
