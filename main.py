@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from tokens1 import *
+from tokens import *
 
 AF = rexpr()
 
