@@ -1,3 +1,4 @@
+#! /usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
 import ply.lex as lex
@@ -31,7 +32,9 @@ class rexpr:
         'not'     : 'Not',
         'do'      : 'Do',
         'repeat'  : 'Repeat',
-        'return'  : 'Return'
+        'return'  : 'Return',
+        'min'     : 'Min',
+        'max'     : 'Max'
         }
     
     tokens = [
@@ -41,6 +44,7 @@ class rexpr:
        'Minus',
        'Times',
        'Divide',
+       'Module',
        'ID',
        'String',
        'Comment',
@@ -55,13 +59,33 @@ class rexpr:
        'Dot',
        'Colon',
        'SimpleQuote',
-       'Quote'
+       'Quote',
+       'Union',
+       'Difference',
+       'Intersection',
+       'MappingPlus',
+       'MappinMinus',
+       'MappingTimes',
+       'MappingDivide',
+       'MappingModule',
+       'SetMaxValue',
+       'SetMinValue',
+       'SetSize',
+       'LessThan', 
+       'GreaterThan',
+       'LessEqualThan',
+       'GreaterEqualThan', 
+       'Equivalence',
+       'Inequivalence',
+       'BelongsTo'
     ] + list(reserved.values())
     
+
     t_Plus          = r'\+'
     t_Minus         = r'-'
     t_Times         = r'\*'
     t_Divide        = r'/'
+    t_Module        = r'\%'       
     t_Comment       = r'\#'
     t_Comma         = r'\,'
     t_Semicolon     = r'\;'
@@ -75,7 +99,31 @@ class rexpr:
     t_Colon         = r'\:'
     t_SimpleQuote   = r'\''
     t_Quote         = r'\"'
-    
+
+    #t_ReturnVal = -> (?)
+
+    # Set operators
+    t_Union         = r'\+\+'    # (?)
+    t_Difference    = r'\\'     # (?)
+    t_Intersection  = r'\><'
+    t_MappingPlus   = r'\<+>'
+    t_MappinMinus   = r'\<->'
+    t_MappingTimes  = r'\<*>'
+    t_MappingDivide = r'\</>'
+    t_MappingModule = r'\<%>'
+    t_SetMaxValue   = r'\>\?'
+    t_SetMinValue   = r'\<\?'
+    t_SetSize       = r'\$\?'
+
+    # Bool operators
+    t_LessThan      = r'\<' 
+    t_GreaterThan   = r'\>'
+    t_LessEqualThan = r'\<='
+    t_GreaterEqualThan = '\>=' 
+    t_Equivalence   = r'\=='
+    t_Inequivalence = r'\/=' 
+    t_BelongsTo     = r'\@'
+
     def t_Number(self,t):
         r'\d+'
         t.value = int(t.value)    
