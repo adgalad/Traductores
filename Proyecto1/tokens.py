@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import ply.lex as lex
 from django.template.base import Lexer
@@ -6,21 +7,31 @@ class rexpr:
     error = False
     inicioLinea = 0
     reserved = {
-        'if'      : 'IF',
-        'else'    : 'ELSE',
-        'elif'    : 'ELIF',
-        'def'     : 'DEF',
-        'class'   : 'CLASS',
-        'while'   : 'WHILE',
-        'for'     : 'FOR',
-        'and'     : 'AND',
+        'if'      : 'If',
+        'else'    : 'Else',
+        'elif'    : 'Elif',
+        'def'     : 'Def',
+        'class'   : 'Class',
+        'while'   : 'While',
+        'for'     : 'for',
+        'and'     : 'And',
         'or'      : 'Or',
         'program' : 'Program',
         'in'      : 'In',
         'using'   : 'Using',
         'scan'    : 'Scan',
         'print'   : 'Print',
-        'int'     : 'Int'
+        'println' : 'Println',
+        'int'     : 'Int',
+        'bool'    : 'Bool',
+        'set'     : 'Set',
+        'break'   : 'Break',
+        'true'    : 'True',
+        'false'   : 'False',
+        'not'     : 'Not',
+        'do'      : 'Do',
+        'repeat'  : 'Repeat',
+        'return'  : 'Return'
         }
     
     tokens = [
@@ -30,8 +41,8 @@ class rexpr:
        'Minus',
        'Times',
        'Divide',
+       'ID',
        'String',
-       'Id',
        'Comment',
        'Comma',
        'Semicolon',
@@ -69,35 +80,37 @@ class rexpr:
         r'\d+'
         t.value = int(t.value)    
         return t
-    
 
-    def t_Id(self,t):
+    def t_ID(self,t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
     
-        if (self.reserved.get(t.value,'Id') != 'Id'):
-            t.type = self.reserved.get(t.value,'Id')
-        else:
-            t.type = 'String'
+        if (self.reserved.get(t.value,'ID') != 'ID'):       # Es una palabra reservada
+            t.type = self.reserved.get(t.value,'ID')
+        elif (self.reserved.get(t.value,'ID') == 'ID'):     # Es un ID
+            t.type = self.reserved.get(t.value,'ID')
         return t
 
     def t_String(self,t):
         r'\c+'
+        t.type = 'String'     
         return t
         
     def t_NewLine(self,t):
         r'\n+'
         self.inicioLinea = t.lexpos + 1 
-        t.lineno += 1
-        return t
-    
+        #t.lineno += 1
+        t.lexer.lineno += len(t.value)
+        return t 
+       
     t_ignore  = '\t'
     
     def t_error(self,t):
-        print "Illegal character '%s'" % t.value[0]
+        print '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d''' % (t.value[0],t.lineno,t.lexpos - self.inicioLinea)
+        self.error = True
         t.lexer.skip(1)
     
     # Funcion que atrapa todo el string dentro de comillas.
-    # No acepta que hayan salto de linea \n
+    # No acepta que haya salto de linea \n
     def StringQuote(self,t):
         QuoteType = t.type
         output = ""
@@ -111,7 +124,7 @@ class rexpr:
                 t = self.lexer.token()
             else: break
         str += str[0]
-        output += "TokenString: %s (Linea %d, Columna %d)\n" %(str,m,n)
+        output += "TokenString: %s (Línea %d, Columna %d)\n" %(str,m,n)
         return output
     
     def __init__(self):
