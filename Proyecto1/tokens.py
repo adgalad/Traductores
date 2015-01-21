@@ -4,9 +4,13 @@
 import ply.lex as lex
 from django.template.base import Lexer
 
-class rexpr:
+class LexicalAnalyzer:
     error = False
-    inicioLinea = 0
+    output = ""
+    readingString = False
+    readingComment = False
+    errorOutput = ''
+    inicioLinea = -1
     reserved = {
         'if'      : 'If',
         'else'    : 'Else',
@@ -77,14 +81,15 @@ class rexpr:
        'GreaterEqualThan', 
        'Equivalence',
        'Inequivalence',
-       'BelongsTo'
+       'BelongsTo',
+       'ReturnValue'
     ] + list(reserved.values())
     
 
     t_Plus          = r'\+'
-    t_Minus         = r'-'
+    t_Minus         = r'\-'
     t_Times         = r'\*'
-    t_Divide        = r'/'
+    t_Divide        = r'\/'
     t_Module        = r'\%'       
     t_Comment       = r'\#'
     t_Comma         = r'\,'
@@ -99,18 +104,17 @@ class rexpr:
     t_Colon         = r'\:'
     t_SimpleQuote   = r'\''
     t_Quote         = r'\"'
-
-    #t_ReturnVal = -> (?)
+    t_ReturnValue   = r"\-\>" #(?)
 
     # Set operators
     t_Union         = r'\+\+'    # (?)
     t_Difference    = r'\\'     # (?)
-    t_Intersection  = r'\><'
-    t_MappingPlus   = r'\<+>'
-    t_MappinMinus   = r'\<->'
-    t_MappingTimes  = r'\<*>'
-    t_MappingDivide = r'\</>'
-    t_MappingModule = r'\<%>'
+    t_Intersection  = r'\>\<'
+    t_MappingPlus   = r'\<\+\>'
+    t_MappinMinus   = r'\<\-\>'
+    t_MappingTimes  = r'\<\*\>'
+    t_MappingDivide = r'\<\/\>'
+    t_MappingModule = r'\<\%\>'
     t_SetMaxValue   = r'\>\?'
     t_SetMinValue   = r'\<\?'
     t_SetSize       = r'\$\?'
@@ -118,10 +122,10 @@ class rexpr:
     # Bool operators
     t_LessThan      = r'\<' 
     t_GreaterThan   = r'\>'
-    t_LessEqualThan = r'\<='
-    t_GreaterEqualThan = '\>=' 
-    t_Equivalence   = r'\=='
-    t_Inequivalence = r'\/=' 
+    t_LessEqualThan = r'\<\='
+    t_GreaterEqualThan = r'\>\=' 
+    t_Equivalence   = r'\=\='
+    t_Inequivalence = r'\/\=' 
     t_BelongsTo     = r'\@'
 
     def t_Number(self,t):
@@ -138,42 +142,49 @@ class rexpr:
             t.type = self.reserved.get(t.value,'ID')
         return t
 
-    def t_String(self,t):
-        r'\c+'
-        t.type = 'String'     
-        return t
+
         
     def t_NewLine(self,t):
         r'\n+'
-        self.inicioLinea = t.lexpos + 1 
-        #t.lineno += 1
+        self.inicioLinea = t.lexpos 
         t.lexer.lineno += len(t.value)
         return t 
        
-    t_ignore  = '\t'
+    #t_ignore  = '\t'
     
     def t_error(self,t):
-        print '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d''' % (t.value[0],t.lineno,t.lexpos - self.inicioLinea)
-        self.error = True
+        if self.readingString:
+          print t.value[0]
+          self.output += t.value[0]
+        elif not self.readingComment:
+          self.errorOutput += '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d\n''' % (t.value[0],t.lineno,t.lexpos - self.inicioLinea)
+          self.error = True
         t.lexer.skip(1)
     
     # Funcion que atrapa todo el string dentro de comillas.
-    # No acepta que haya salto de linea \n
+
     def StringQuote(self,t):
-        QuoteType = t.type
-        output = ""
-        str = t.value
+        quoteType = t.type
+        quote = t.value
+        self.output += "TokenString: %s" % t.value
         n = t.lexpos - self.inicioLinea
         m = t.lineno
         t = self.lexer.token()
-        while not(t.type == QuoteType):
+        self.readingString = True
+        while not(t.type == quoteType):
             if t: 
-                str += t.value
+                self.output += t.value
                 t = self.lexer.token()
             else: break
-        str += str[0]
-        output += "TokenString: %s (Línea %d, Columna %d)\n" %(str,m,n)
-        return output
+        self.output += quote
+        self.output += " (Línea %d, Columna %d)\n" %(m,n)
+        self.readingString = False
     
+    def ignoreComment(self,t):
+        previousErrorValue = self.error
+        while (t.type != 'NewLine'):
+            t = self.lexer.token() 
+        self.error = previousErrorValue
+
     def __init__(self):
         self.lexer = lex.lex(module=self)

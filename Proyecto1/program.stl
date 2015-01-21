@@ -1,10 +1,11 @@
 program {
     using
-        int x,y,z;
+        int _________x90__________,y,z;
     in
-    
-    scan x;
-    println "Hola, soy la variable x, valgo: ", x;
+    ==
+    scan x; <+>
+    println "Hola,				 s=/**-+<>,.oy !@#$%ˆ&*()_˜`==-~ la variable x, valgo: ", x;
     y = x+2;
-    # Hola, soy un comentario y no un token. Seamos amigos, :).
+    @
+    # Hola, soy un comentario /**-+<>,.oy !@#$%ˆ&*()_˜`==-~  y no un tokenenen. Seamos amigos, :).
 }
