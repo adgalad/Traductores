@@ -200,7 +200,7 @@ class LexicalAnalyzer:
         t = self.lexer.token()
         self.readingString = True
 
-        while not(t.value == '\"'):
+        while not(t.type == "CloseQuote"):
             if t.value == '\\':
                 self.errorOutput += '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d\n''' % (t.value[0], t.lineno, t.lexpos - self.beginningOfLine)
                 self.error = True
