@@ -1,54 +1,6 @@
 program {
-    using
-        int x,y,z;
-    in
 
-    t_Plus          =  +
-    t_Minus         =  -
-    t_Times         =  *
-    t_Divide        =  /
-    t_Module        =  %     
-    t_Comment       =  #
-    t_Comma         =  ,
-    t_Semicolon     =  ;
-    t_OpenCurly     =  {
-    t_CloseCurly    =  }
-    t_OpenBracket   =  (
-    t_CloseBracket  =  )
-    t_Space         =   
-    t_Tab           =  t
-    t_Equals        =  =
-    t_Dot           =  .
-    t_Colon         =  :
-    t_SimpleQuote   =  '
-    t_Quote         =  "
-    t_ReturnValue   = ->
-
-    # Set operators
-    t_Union         =  ++
-    t_Difference    =  \
-    t_Intersection  =  ><
-    t_MappingPlus   =  <+>
-    t_MappinMinus   =  <->
-    t_MappingTimes  =  <*>
-    t_MappingDivide =  </>
-    t_MappingModule =  <%>
-    t_SetMaxValue   =  >?
-    t_SetMinValue   =  <?
-    t_SetSize       =  $?
-
-    # Bool operators
-    t_LessThan      =  <
-    t_GreaterThan   =  >
-    t_LessEqualThan =  <=
-    t_GreaterEqualThan =  >=
-    t_Equivalence   =  ==
-    t_Inequivalence =  /=
-    t_BelongsTo     =  @
-
-
-    scan x;
-    println "Hola, soy la variable x, ˜!@#$%ˆ&*()_+`=[]{]}:;/?.>,<' valgo: ", x;
-    y = x+2;
-    # Hola, soy un comentario y no un token. Seamos amigos, :).
-}
+ a = f
+ print "asdas \n \\ \" "
+ a\n
+}  

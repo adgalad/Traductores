@@ -9,18 +9,17 @@ tokenizer = LexicalAnalyzer()
 data = open(sys.argv[1])
 data = data.read()
 
-tokenizer.lexer.input(data)
+print r'\\\\'
 
+tokenizer.lexer.input(data)
 while True:    
     tok = tokenizer.lexer.token()
 
     if not tok: break
-
     if (tok.type != 'Space' and tok.type != 'NewLine' and tok.type != 'Tab'):
-        if tok.type == 'Quote' or tok.type == 'SimpleQuote':
-            tokenizer.StringQuote(tok)
-        elif tok.type == 'Comment':
-            tokenizer.ignoreComment(tok)
+
+        if tok.type == 'String':
+            tokenizer.String(tok)
         elif tok.type == 'ID':
             tokenizer.output+='''Token%s: "%s"(Linea %d,Columna %d)\n''' %(tok.type,tok.value,tok.lineno,tok.lexpos - tokenizer.beginningOfLine)  
         else:    
