@@ -3,6 +3,7 @@
 
 from tokens import *
 import sys
+
 tokenizer = LexicalAnalyzer()
 
 data = open(sys.argv[1])
@@ -14,16 +15,16 @@ while True:
     tok = tokenizer.lexer.token()
 
     if not tok: break
-    
-    if (tok.type != 'Space' and tok.type != 'NewLine'):
+
+    if (tok.type != 'Space' and tok.type != 'NewLine' and tok.type != 'Tab'):
         if tok.type == 'Quote' or tok.type == 'SimpleQuote':
             tokenizer.StringQuote(tok)
         elif tok.type == 'Comment':
             tokenizer.ignoreComment(tok)
         elif tok.type == 'ID':
-            tokenizer.output+='''Token%s: "%s"(Linea %d,Columna %d)\n''' %(tok.type,tok.value,tok.lineno,tok.lexpos - tokenizer.inicioLinea)    
+            tokenizer.output+='''Token%s: "%s"(Linea %d,Columna %d)\n''' %(tok.type,tok.value,tok.lineno,tok.lexpos - tokenizer.beginningOfLine)  
         else:    
-            tokenizer.output+="Token%s(Linea %d,Columna %d)\n" %(tok.type,tok.lineno,tok.lexpos - tokenizer.inicioLinea)
+            tokenizer.output+="Token%s(Linea %d,Columna %d)\n" %(tok.type,tok.lineno,tok.lexpos - tokenizer.beginningOfLine)
     
 if not tokenizer.error:
     print tokenizer.output

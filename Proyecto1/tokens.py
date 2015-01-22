@@ -5,12 +5,12 @@ import ply.lex as lex
 from django.template.base import Lexer
 
 class LexicalAnalyzer:
-    error = False
-    output = ""
-    readingString = False
-    readingComment = False
-    errorOutput = ''
-    inicioLinea = -1
+    error           = False
+    readingString   = False
+    readingComment  = False
+    errorOutput     = ""
+    output          = ""
+    beginningOfLine = -1
     reserved = {
         'if'      : 'If',
         'else'    : 'Else',
@@ -61,6 +61,7 @@ class LexicalAnalyzer:
        'Space',
        'Equals',
        'Dot',
+       'Tab',
        'Colon',
        'SimpleQuote',
        'Quote',
@@ -99,7 +100,8 @@ class LexicalAnalyzer:
     t_OpenBracket   = r'\('
     t_CloseBracket  = r'\)'
     t_Space         = r'\ '
-    t_Equals        = r'\=' 
+    t_Tab           = r'\t'
+    t_Equals        = r'\='
     t_Dot           = r'\.'
     t_Colon         = r'\:'
     t_SimpleQuote   = r'\''
@@ -146,18 +148,17 @@ class LexicalAnalyzer:
         
     def t_NewLine(self,t):
         r'\n+'
-        self.inicioLinea = t.lexpos 
+        self.beginningOfLine = t.lexpos
         t.lexer.lineno += len(t.value)
         return t 
        
-    #t_ignore  = '\t'
     
     def t_error(self,t):
         if self.readingString:
           print t.value[0]
           self.output += t.value[0]
         elif not self.readingComment:
-          self.errorOutput += '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d\n''' % (t.value[0],t.lineno,t.lexpos - self.inicioLinea)
+          self.errorOutput += '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d\n''' % (t.value[0],t.lineno,t.lexpos - self.beginningOfLine )
           self.error = True
         t.lexer.skip(1)
     
@@ -167,11 +168,11 @@ class LexicalAnalyzer:
         quoteType = t.type
         quote = t.value
         self.output += "TokenString: %s" % t.value
-        n = t.lexpos - self.inicioLinea
+        n = t.lexpos - self.beginningOfLine
         m = t.lineno
         t = self.lexer.token()
         self.readingString = True
-        while not(t.type == quoteType):
+        while not(t.type == quoteType or t.type == 'NewLine'):
             if t: 
                 self.output += t.value
                 t = self.lexer.token()
