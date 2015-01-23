@@ -1,29 +1,25 @@
 #! /usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
-from tokens import *
 import sys
+from tokens import *
 
 tokenizer = LexicalAnalyzer()
 
 data = open(sys.argv[1])
 data = data.read()
 
-print r'\\\\'
-
 tokenizer.lexer.input(data)
 while True:    
     tok = tokenizer.lexer.token()
 
     if not tok: break
-    if (tok.type != 'Space' and tok.type != 'NewLine' and tok.type != 'Tab'):
+    if (tok.type != 'SPACE' and tok.type != 'NEWLINE' and tok.type != 'TAB'):
 
-        if tok.type == 'String':
-            tokenizer.String(tok)
-        elif tok.type == 'ID':
-            tokenizer.output+='''Token%s: "%s"(Linea %d,Columna %d)\n''' %(tok.type,tok.value,tok.lineno,tok.lexpos - tokenizer.beginningOfLine)  
+        if tok.type == 'STRING':
+            tokenizer.GetString(tok)
         else:    
-            tokenizer.output+="Token%s(Linea %d,Columna %d)\n" %(tok.type,tok.lineno,tok.lexpos - tokenizer.beginningOfLine)
+            tokenizer.output+="token %s\t\tvalue (%s) at line %d, column %d\n" %(tok.type,tok.value,tok.lineno,tok.lexpos - tokenizer.beginningOfLine)
     
 if not tokenizer.error:
     print tokenizer.output

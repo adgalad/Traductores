@@ -1,6 +1,3 @@
 program {
-
- a = f
- print "asdas \n \\ \" "
- a\n
-}  
+    print "hola \"	#comentario~
+    a<+>n}  
