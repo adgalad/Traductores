@@ -97,6 +97,8 @@ class LexicalAnalyzer:
         ('STRING','exclusive'),
     )
 
+    t_STRING = r'"(\\n|\\"|\\\\|\\’|\\a|\\b|\\f|\\r|\\t|\\v|[^"\\])*"'
+
     def t_ANY_NUMBER(self, t):
         r'\d+'
         t.value = int(t.value)    
@@ -116,56 +118,56 @@ class LexicalAnalyzer:
         t.lexer.lineno += len(t.value)
         return t 
 
-    def t_STRING(self,t):
-        r'\"'
-        self.readingString = True
-        t.lexer.begin('STRING')
-        return t
+    # def t_STRING(self,t):
+    #     r'\"'
+    #     self.readingString = True
+    #     t.lexer.begin('STRING')
+    #     return t
 
-    def t_STRING_RDOUBLEQUOTE(self,t):
-        r'\"'
-        self.readingString = False
-        t.lexer.begin('INITIAL')
-        return t
+    # def t_STRING_RDOUBLEQUOTE(self,t):
+    #     r'\"'
+    #     self.readingString = False
+    #     t.lexer.begin('INITIAL')
+    #     return t
 
-    def t_STRING_NEWLINEESC(self,t):
-        r'\\n'
-        return t
+    # def t_STRING_NEWLINEESC(self,t):
+    #     r'\\n'
+    #     return t
         
-    def t_STRING_QUOTEESC(self,t):
-        r'\\\"'
-        return t
+    # def t_STRING_QUOTEESC(self,t):
+    #     r'\\\"'
+    #     return t
 
-    def t_STRING_BACKSLASHESC(self,t):
-        r'\\\\'
-        return t
+    # def t_STRING_BACKSLASHESC(self,t):
+    #     r'\\\\'
+    #     return t
             
-    # Funcion que atrapa todo el string dentro de comillas.
-    def GetString(self, t):
-        quoteType = t.type
-        quote = t.value
-        self.output += "token STRING\t\tvalue (%s" % t.value
-        n = t.lexpos - self.beginningOfLine
-        m = t.lineno
-        t = self.lexer.token()
-        self.readingString = True
+    # # Funcion que atrapa todo el string dentro de comillas.
+    # def GetString(self, t):
+    #     quoteType = t.type
+    #     quote = t.value
+    #     self.output += "token STRING\t\tvalue (%s" % t.value
+    #     n = t.lexpos - self.beginningOfLine
+    #     m = t.lineno
+    #     t = self.lexer.token()
+    #     self.readingString = True
 
-        while not(t.type == 'RDOUBLEQUOTE'):
-            if t.value == '\\':
-                self.errorOutput += '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d.\n''' % (t.value[0], t.lineno, t.lexpos - self.beginningOfLine)
-                self.error = True
-            if t: 
-                self.output += t.value
-                t = self.lexer.token()
-            else: break
+    #     while not(t.type == 'RDOUBLEQUOTE'):
+    #         if t.value == '\\':
+    #             self.errorOutput += '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d.\n''' % (t.value[0], t.lineno, t.lexpos - self.beginningOfLine)
+    #             self.error = True
+    #         if t: 
+    #             self.output += t.value
+    #             t = self.lexer.token()
+    #         else: break
 
-            if t.lineno > m:    # Sigue en el ciclo si pasó de linea pero no encontró la comilla de cierre
-                self.errorOutput += '''Error: No se encontró " de cierre del string de la Línea %d, Columna %d.\n''' % (m, n)
-                self.error = True
-                break
+    #         if t.lineno > m:    # Sigue en el ciclo si pasó de linea pero no encontró la comilla de cierre
+    #             self.errorOutput += '''Error: No se encontró " de cierre del string de la Línea %d, Columna %d.\n''' % (m, n)
+    #             self.error = True
+    #             break
 
-        self.output += quote + ") at line %d, column %d\n" % (m, n)
-        self.readingString = False
+    #     self.output += quote + ") at line %d, column %d\n" % (m, n)
+    #     self.readingString = False
 
     def t_ANY_error(self, t):
         if self.readingString:
