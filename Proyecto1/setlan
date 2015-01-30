@@ -16,11 +16,11 @@ while True:
     if not tok: break
     if (tok.type != 'SPACE' and tok.type != 'NEWLINE' and tok.type != 'TAB'):
 
-        if tok.type == 'STRING':
-            tokenizer.GetString(tok)
-        else:    
+        if len(tok.type) > 9:
+            tokenizer.output+="token %s\tvalue (%s) at line %d, column %d\n" %(tok.type,tok.value,tok.lineno,tok.lexpos - tokenizer.beginningOfLine)
+        else:
             tokenizer.output+="token %s\t\tvalue (%s) at line %d, column %d\n" %(tok.type,tok.value,tok.lineno,tok.lexpos - tokenizer.beginningOfLine)
-    
+
 if not tokenizer.error:
     print tokenizer.output
 else:
