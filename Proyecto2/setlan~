@@ -3,7 +3,7 @@
 
 import sys
 from lexer import *
-from parser import *
+from AST import *
 
 data = open(sys.argv[1])
 data = data.read()
@@ -23,4 +23,4 @@ while True:
        break
    if not s: continue
    arbol = parser.parse(s)
-   print ">> " + str(arbol.getValue())
+   print "dio esto: " + str(arbol.getValue())

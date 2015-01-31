@@ -6,7 +6,7 @@ program {
     s = {1,1,2,3,5,8};
     a = 2;
     b = a*3;
-
+    
     for i min s do {
         println i*a;
         a = a+b;
