@@ -33,19 +33,14 @@ precedence = (
 )
 
 def p_program(p):
-	'''program 	: PROGRAM LCURLY USING declarationBlock IN instructionBlock RCURLY
-				| PROGRAM LCURLY USING declarationBlock RCURLY
-				| PROGRAM LCURLY IN instructionBlock RCURLY
+	'''program 	: PROGRAM block
 				| PROGRAM LCURLY RCURLY'''
-	if len(p) == 8:
-		p[0] = Program(p[4],p[6])
-	elif len(p) == 6:
-		if p[3] == 'USING':
-			p[0] = Program(p[4],None)
-		elif p[3] == 'IN':
-			p[0] = Program(None,p[4])
-	else:
-		p[0] = Program(None,None)
+	p[0] = p[1]
+	
+def p_block(p):
+	'''block: LCURLY USING declarationBlock IN instructionBlock RCURLY
+			| LCURLY USING declarationBlock RCURLY
+			| LCURLY IN instructionBlock RCURLY'''
 
 # al hacer declaraciones deberia poder asignarles un valor tambien a las variables, no?
 def p_declarationBlock(p):
@@ -71,7 +66,8 @@ def p_instructionBlock(p):
 
 def p_instruction(p):
 	'''instruction : ifInst
-  				   | printOutput'''
+  				   | printOutput
+  				   | block'''
 #  				   | whileInst 
 #  				   | repeatInst 
 #  				   | forInst 

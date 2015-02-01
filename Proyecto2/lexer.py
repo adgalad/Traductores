@@ -7,20 +7,20 @@ error = False
 output = ""
 beginningOfLine = -1
 reserved = {
+    'program' : 'PROGRAM',
+    'using'   : 'USING',
+    'in'      : 'IN',
     'if'      : 'IF',
     'else'    : 'ELSE',
-    'def'     : 'DEF',
-    'class'   : 'CLASS',
     'while'   : 'WHILE',
     'do'      : 'DO',
     'repeat'  : 'REPEAT',
     'for'     : 'FOR',
+    'min'     : 'MIN',
+    'max'     : 'MAX'
     'and'     : 'AND',
     'or'      : 'OR',
     'not'     : 'NOT',
-    'program' : 'PROGRAM',
-    'in'      : 'IN',
-    'using'   : 'USING',
     'scan'    : 'SCAN',
     'print'   : 'PRINT',
     'println' : 'PRINTLN',
@@ -29,9 +29,6 @@ reserved = {
     'set'     : 'SET',
     'true'    : 'TRUE',
     'false'   : 'FALSE',
-    'return'  : 'RETURN',
-    'min'     : 'MIN',
-    'max'     : 'MAX'
     }
 
 tokens = [
