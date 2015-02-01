@@ -3,17 +3,39 @@
 import ply.lex as lex
 import ply.yacc as yacc
 from lexer import tokens
+from AST import *
 
-# Precedencia, de menor a mayor
+# Precedencia de operadores (de menor a mayor)
 precedence = (
+	# Booleanos
+	('left','OR'),
+	('left','AND'),
+	('left','NOT'),
+
+	# Comparativos
+	('left', 'LESSTHAN', 'GREATERTHAN', 'LESSEQUALTHAN', 'GREATEREQUALTHAN'),
+	('left', 'EQUALS', 'NOTEQUALS'),
+
+	# Aritméticos
     ('left', 'PLUS', 'MINUS'),
-    ('left', 'TIMES', 'DIVIDE'),
+    ('left', 'TIMES', 'DIVIDE', 'MODULE'),
+    
+    # Conjuntos
+    ('left', 'SETUNION', 'SETDIFF'),							# ¿s = s + {i * 2}; # unión de conjuntos? No es ++??
+    ('left','SETINTERSECT'),
+    
+    # Conjuntos aritméticos
+    ('left','SETMAPPLUS','SETMAPMINUS'),						# tiene mayor precedencia sobre la union...
+    ('left', 'SETMAPTIMES', 'SETMAPDIVIDE', 'SETMAPMODULE'),
+	('left', 'BELONGSTO'),	# no se si este esta bien aqui
+
+	# Falta el menos unario
 )
 
 def p_program(p):
-	'''program 	: PROGRAM LCURLY USING declarationList IN instructionList RCURLY
-				| PROGRAM LCURLY USING declarationList RCURLY
-				| PROGRAM LCURLY IN instructionList RCURLY
+	'''program 	: PROGRAM LCURLY USING declarationBlock IN instructionBlock RCURLY
+				| PROGRAM LCURLY USING declarationBlock RCURLY
+				| PROGRAM LCURLY IN instructionBlock RCURLY
 				| PROGRAM LCURLY RCURLY'''
 	if len(p) == 8:
 		p[0] = Program(p[4],p[6])
@@ -25,17 +47,11 @@ def p_program(p):
 	else:
 		p[0] = Program(None,None)
 
-class Program:
-	def __init__(self,declarations=None,instructions=None):
-		self.declarations = declarations
-		self.instructions = instructions
-
-	def getValue(self):
-		return "reconocio un programa"
-
-def p_declarationList(p):
-	'''declarationList : types id declarationList
-					   | types id SEMICOLON'''
+# al hacer declaraciones deberia poder asignarles un valor tambien a las variables, no?
+def p_declarationBlock(p):
+	'''declarationBlock : types id declarationBlock
+					   	| types id SEMICOLON'''
+	p[0] = p[1]
 
 def p_types(p):		# cambiar nombre
 	'''types : INT 
@@ -48,60 +64,41 @@ def p_id(p):
 		  | IDENTIFIER COMMA id'''	
 	p[0] = ID(p[1]);
 
-def p_instructionList(p):
-    '''instructionList : instruction 
-    				   | instruction SEMICOLON instructionList'''
+def p_instructionBlock(p):
+    '''instructionBlock : instruction SEMICOLON
+    				   	| instruction SEMICOLON instructionBlock'''
+    p[0] = InstructionBlock(p[1],p[3])
 
 def p_instruction(p):
-	'''instruction : ifInst'''
+	'''instruction : ifInst
+  				   | printOutput'''
 #  				   | whileInst 
 #  				   | repeatInst 
 #  				   | forInst 
 #  				   | scanInst
-#  				   | printInst 
-#  				   | printlnInst'''
   	p[0] = p[1]
 
+# la instruccion (expression debe ser de tipo bool)
 def p_ifInst(p):
-	'''ifInst : IF expression SEMICOLON
-			  | IF expression ELSE expression SEMICOLON 
-			  | IF expression ELSE ifInst'''
+	'''ifInst : IF expression instructionBlock
+			  | IF expression ELSE instructionBlock 
+			  | IF expression ELSE ifInst
+  			  | IF expression LCURLY instructionBlock RCURLY
+			  | IF expression LCURLY instructionBlock RCURLY ELSE LCURLY instructionBlock RCURLY
+			  | IF expression LCURLY instructionBlock RCURLY ELSE ifInst'''
 
-class ID:
-	def __init__(self,value):
-		self.type = 'id'
-		self.value = value
+def p_printOutput(p):
+	'''printOutput : PRINT outputType
+				   | PRINTLN  outputType'''
 
-	def getValue(self):
-		return self.value
-
-class Number:
-    def __init__(self,value):
-        self.type = 'number'
-        self.value = value
-
-    def getValue(self):
-        return self.value
-
-def p_number(p):
-    '''number : NUMBER'''
-    p[0] = Number(p[1])
-
+# le faltan casos
+def p_outputType(p):
+	'''outputType : STRING
+				  | expression'''
 
 def p_expression(p):
 	'''expression : binaryOp'''
 	p[0] = p[1]
-
-class BinaryOp:
-    def __init__(self,left,op,right):
-        self.type = "binaryOp"
-        self.left = left
-        self.right = right
-        self.op = op
-
-    def getValue(self):
-        if op == '+':
-            return left + right
 
 def p_binaryOp(p):
     '''binaryOp : binaryOp PLUS binaryOp
@@ -114,18 +111,12 @@ def p_binaryOp(p):
                 | LBRACKET binaryOp RBRACKET
                 | TRUE
                 | FALSE              
-                | NUMBER'''
+                | number'''
     p[0] = self.BinaryOp(p[1],p[2],p[3])
-#     print(p[0])
-#     if len(p) == 4:
-#         if p[2] == '+':
-#             p[0] = p[1] + p[3]
-#         elif p[2] == '-':
-#             p[0] = p[1] - p[3]
-#         elif p[2] == '*':
-#             p[0] = p[1] * p[3]
-#         elif p[2] == '/':
-#             p[0] = p[1] / p[3]
+
+def p_number(p):
+    '''number : NUMBER'''
+    p[0] = Number(p[1])
 
 # Error rule for syntax errors
 def p_error(p):
