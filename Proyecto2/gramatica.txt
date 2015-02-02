@@ -1,0 +1,61 @@
+program -> 	PROGRAM LCURLY instructionBLock RCURLY
+	 	|	PROGRAM LCURLY RCURLY
+
+declarationBlock 	-> 	types id SEMICOLON 
+			   		| 	types id SEMICOLON declarationBlock
+
+types	->	INT 
+		|	BOOL 
+		|	SET
+
+id 		-> 	IDENTIFIER
+	  	| 	IDENTIFIER COMMA id	
+
+instructionType -> 	LCURLY instructionBlock RCURLY SEMICOLON			# instrucciones de tipo bloque
+				|   instruction 										# instrucciones simples
+
+instructionBlock 	-> 	instruction SEMICOLON 
+					|	instruction SEMICOLON instructionBlock
+
+instruction 	-> 	LCURLY USING declarationBlock IN instructionBlock RCURLY
+				|	IDENTIFIER ASSIGN expression
+				| 	ifInst
+			   	| 	whileInst
+  				| 	repeatInst
+  				| 	forInst
+		 	  	| 	scanInst
+			   	| 	printOutput
+
+ifInst	-> 	IF LPAREN expression RPAREN instructionType
+		| 	IF LPAREN expression RPAREN instructionType ELSE instructionType
+
+# poner {1,2,3} lo acepta como id? si es asi, desps de direction va una sola regla con IDENTIFIER.
+forInst	-> 	FOR IDENTIFIER direction IDENTIFIER DO instructionType
+		|	FOR IDENTIFIER direction LCURLY IDENTIFIER RCURLY DO instructionType
+
+direction 	->	MIN
+			|	MAX
+
+printOutput -> 	PRINT outputType
+			| 	PRINTLN  outputType
+
+
+outputType 	->	outputType progSTRING
+			| 	expression
+
+expression -> binaryOp
+
+binaryOp : binaryOp PLUS binaryOp
+            | binaryOp MINUS binaryOp
+            | binaryOp TIMES binaryOp
+            | binaryOp DIVIDE binaryOp
+            | binaryOp MODULE binaryOp
+            | binaryOp AND binaryOp
+            | binaryOp OR binaryOp
+            | LBRACKET binaryOp RBRACKET
+            | TRUE
+            | FALSE              
+            | number
+p[0] = self.BinaryOp(p[1],p[2],p[3])
+
+number -> NUMBER
