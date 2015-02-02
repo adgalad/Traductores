@@ -1,0 +1,1305 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    NOTEQUALS
+    SCAN
+    SETMINVALUE
+    LESSTHAN
+    SETMAPMODULE
+    COMMENT
+    SETUNION
+    NEWLINE
+    SETINTERSECT
+    SIMPLEQUOTE
+    SETDIFF
+    REPEAT
+    SETMAPDIVIDE
+    EQUALS
+    RDOUBLEQUOTE
+    GREATERTHAN
+    SETMAXVALUE
+    LESSEQUALTHAN
+    GREATEREQUALTHAN
+    SETMAPPLUS
+    SETMAPTIMES
+    WHILE
+    NOT
+    SETSIZE
+    SETMAPMINUS
+    BELONGSTO
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM LCURLY instructionType RCURLY
+Rule 2     program -> PROGRAM LCURLY RCURLY
+Rule 3     instructionType -> LCURLY instructionBlock RCURLY SEMICOLON
+Rule 4     instructionType -> instruction
+Rule 5     declarationBlock -> types id SEMICOLON
+Rule 6     declarationBlock -> types id SEMICOLON declarationBlock
+Rule 7     types -> INT
+Rule 8     types -> BOOL
+Rule 9     types -> SET
+Rule 10    id -> IDENTIFIER
+Rule 11    id -> IDENTIFIER COMMA id
+Rule 12    instructionBlock -> instruction SEMICOLON
+Rule 13    instructionBlock -> instruction SEMICOLON instructionBlock
+Rule 14    instruction -> USING declarationBlock IN instructionBlock
+Rule 15    instruction -> IDENTIFIER ASSIGN expression
+Rule 16    instruction -> ifInst
+Rule 17    instruction -> printOutput
+Rule 18    ifInst -> IF LPAREN expression RPAREN instructionType
+Rule 19    ifInst -> IF LPAREN expression RPAREN instructionType ELSE instructionType
+Rule 20    forInst -> FOR IDENTIFIER direction IDENTIFIER DO instructionType
+Rule 21    forInst -> FOR IDENTIFIER direction LCURLY IDENTIFIER RCURLY DO instructionType
+Rule 22    direction -> MIN
+Rule 23    direction -> MAX
+Rule 24    printOutput -> PRINT outputType
+Rule 25    printOutput -> PRINTLN outputType
+Rule 26    outputType -> STRING
+Rule 27    outputType -> expression
+Rule 28    expression -> binaryOp
+Rule 29    binaryOp -> binaryOp PLUS binaryOp
+Rule 30    binaryOp -> binaryOp MINUS binaryOp
+Rule 31    binaryOp -> binaryOp TIMES binaryOp
+Rule 32    binaryOp -> binaryOp DIVIDE binaryOp
+Rule 33    binaryOp -> binaryOp MODULE binaryOp
+Rule 34    binaryOp -> binaryOp AND binaryOp
+Rule 35    binaryOp -> binaryOp OR binaryOp
+Rule 36    binaryOp -> LPAREN binaryOp RPAREN
+Rule 37    binaryOp -> TRUE
+Rule 38    binaryOp -> FALSE
+Rule 39    binaryOp -> number
+Rule 40    number -> NUMBER
+
+Terminals, with rules where they appear
+
+AND                  : 34
+ASSIGN               : 15
+BELONGSTO            : 
+BOOL                 : 8
+COMMA                : 11
+COMMENT              : 
+DIVIDE               : 32
+DO                   : 20 21
+ELSE                 : 19
+EQUALS               : 
+FALSE                : 38
+FOR                  : 20 21
+GREATEREQUALTHAN     : 
+GREATERTHAN          : 
+IDENTIFIER           : 10 11 15 20 20 21 21
+IF                   : 18 19
+IN                   : 14
+INT                  : 7
+LCURLY               : 1 2 3 21
+LESSEQUALTHAN        : 
+LESSTHAN             : 
+LPAREN               : 18 19 36
+MAX                  : 23
+MIN                  : 22
+MINUS                : 30
+MODULE               : 33
+NEWLINE              : 
+NOT                  : 
+NOTEQUALS            : 
+NUMBER               : 40
+OR                   : 35
+PLUS                 : 29
+PRINT                : 24
+PRINTLN              : 25
+PROGRAM              : 1 2
+RCURLY               : 1 2 3 21
+RDOUBLEQUOTE         : 
+REPEAT               : 
+RPAREN               : 18 19 36
+SCAN                 : 
+SEMICOLON            : 3 5 6 12 13
+SET                  : 9
+SETDIFF              : 
+SETINTERSECT         : 
+SETMAPDIVIDE         : 
+SETMAPMINUS          : 
+SETMAPMODULE         : 
+SETMAPPLUS           : 
+SETMAPTIMES          : 
+SETMAXVALUE          : 
+SETMINVALUE          : 
+SETSIZE              : 
+SETUNION             : 
+SIMPLEQUOTE          : 
+STRING               : 26
+TIMES                : 31
+TRUE                 : 37
+USING                : 14
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+binaryOp             : 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36
+declarationBlock     : 6 14
+direction            : 20 21
+expression           : 15 18 19 27
+forInst              : 
+id                   : 5 6 11
+ifInst               : 16
+instruction          : 4 12 13
+instructionBlock     : 3 13 14
+instructionType      : 1 18 19 19 20 21
+number               : 39
+outputType           : 24 25
+printOutput          : 17
+program              : 0
+types                : 5 6
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM LCURLY instructionType RCURLY
+    (2) program -> . PROGRAM LCURLY RCURLY
+
+    PROGRAM         shift and go to state 1
+
+    program                        shift and go to state 2
+
+state 1
+
+    (1) program -> PROGRAM . LCURLY instructionType RCURLY
+    (2) program -> PROGRAM . LCURLY RCURLY
+
+    LCURLY          shift and go to state 3
+
+
+state 2
+
+    (0) S' -> program .
+
+
+
+state 3
+
+    (1) program -> PROGRAM LCURLY . instructionType RCURLY
+    (2) program -> PROGRAM LCURLY . RCURLY
+    (3) instructionType -> . LCURLY instructionBlock RCURLY SEMICOLON
+    (4) instructionType -> . instruction
+    (14) instruction -> . USING declarationBlock IN instructionBlock
+    (15) instruction -> . IDENTIFIER ASSIGN expression
+    (16) instruction -> . ifInst
+    (17) instruction -> . printOutput
+    (18) ifInst -> . IF LPAREN expression RPAREN instructionType
+    (19) ifInst -> . IF LPAREN expression RPAREN instructionType ELSE instructionType
+    (24) printOutput -> . PRINT outputType
+    (25) printOutput -> . PRINTLN outputType
+
+    RCURLY          shift and go to state 6
+    LCURLY          shift and go to state 12
+    USING           shift and go to state 14
+    IDENTIFIER      shift and go to state 8
+    IF              shift and go to state 11
+    PRINT           shift and go to state 4
+    PRINTLN         shift and go to state 5
+
+    instruction                    shift and go to state 13
+    printOutput                    shift and go to state 10
+    instructionType                shift and go to state 7
+    ifInst                         shift and go to state 9
+
+state 4
+
+    (24) printOutput -> PRINT . outputType
+    (26) outputType -> . STRING
+    (27) outputType -> . expression
+    (28) expression -> . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    STRING          shift and go to state 16
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    expression                     shift and go to state 23
+    outputType                     shift and go to state 20
+    binaryOp                       shift and go to state 22
+    number                         shift and go to state 21
+
+state 5
+
+    (25) printOutput -> PRINTLN . outputType
+    (26) outputType -> . STRING
+    (27) outputType -> . expression
+    (28) expression -> . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    STRING          shift and go to state 16
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    expression                     shift and go to state 23
+    outputType                     shift and go to state 24
+    binaryOp                       shift and go to state 22
+    number                         shift and go to state 21
+
+state 6
+
+    (2) program -> PROGRAM LCURLY RCURLY .
+
+    $end            reduce using rule 2 (program -> PROGRAM LCURLY RCURLY .)
+
+
+state 7
+
+    (1) program -> PROGRAM LCURLY instructionType . RCURLY
+
+    RCURLY          shift and go to state 25
+
+
+state 8
+
+    (15) instruction -> IDENTIFIER . ASSIGN expression
+
+    ASSIGN          shift and go to state 26
+
+
+state 9
+
+    (16) instruction -> ifInst .
+
+    RCURLY          reduce using rule 16 (instruction -> ifInst .)
+    ELSE            reduce using rule 16 (instruction -> ifInst .)
+    SEMICOLON       reduce using rule 16 (instruction -> ifInst .)
+
+
+state 10
+
+    (17) instruction -> printOutput .
+
+    RCURLY          reduce using rule 17 (instruction -> printOutput .)
+    ELSE            reduce using rule 17 (instruction -> printOutput .)
+    SEMICOLON       reduce using rule 17 (instruction -> printOutput .)
+
+
+state 11
+
+    (18) ifInst -> IF . LPAREN expression RPAREN instructionType
+    (19) ifInst -> IF . LPAREN expression RPAREN instructionType ELSE instructionType
+
+    LPAREN          shift and go to state 27
+
+
+state 12
+
+    (3) instructionType -> LCURLY . instructionBlock RCURLY SEMICOLON
+    (12) instructionBlock -> . instruction SEMICOLON
+    (13) instructionBlock -> . instruction SEMICOLON instructionBlock
+    (14) instruction -> . USING declarationBlock IN instructionBlock
+    (15) instruction -> . IDENTIFIER ASSIGN expression
+    (16) instruction -> . ifInst
+    (17) instruction -> . printOutput
+    (18) ifInst -> . IF LPAREN expression RPAREN instructionType
+    (19) ifInst -> . IF LPAREN expression RPAREN instructionType ELSE instructionType
+    (24) printOutput -> . PRINT outputType
+    (25) printOutput -> . PRINTLN outputType
+
+    USING           shift and go to state 14
+    IDENTIFIER      shift and go to state 8
+    IF              shift and go to state 11
+    PRINT           shift and go to state 4
+    PRINTLN         shift and go to state 5
+
+    instruction                    shift and go to state 28
+    printOutput                    shift and go to state 10
+    instructionBlock               shift and go to state 29
+    ifInst                         shift and go to state 9
+
+state 13
+
+    (4) instructionType -> instruction .
+
+    RCURLY          reduce using rule 4 (instructionType -> instruction .)
+    ELSE            reduce using rule 4 (instructionType -> instruction .)
+    SEMICOLON       reduce using rule 4 (instructionType -> instruction .)
+
+
+state 14
+
+    (14) instruction -> USING . declarationBlock IN instructionBlock
+    (5) declarationBlock -> . types id SEMICOLON
+    (6) declarationBlock -> . types id SEMICOLON declarationBlock
+    (7) types -> . INT
+    (8) types -> . BOOL
+    (9) types -> . SET
+
+    INT             shift and go to state 31
+    BOOL            shift and go to state 32
+    SET             shift and go to state 30
+
+    types                          shift and go to state 33
+    declarationBlock               shift and go to state 34
+
+state 15
+
+    (36) binaryOp -> LPAREN . binaryOp RPAREN
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 35
+
+state 16
+
+    (26) outputType -> STRING .
+
+    RCURLY          reduce using rule 26 (outputType -> STRING .)
+    SEMICOLON       reduce using rule 26 (outputType -> STRING .)
+    ELSE            reduce using rule 26 (outputType -> STRING .)
+
+
+state 17
+
+    (40) number -> NUMBER .
+
+    PLUS            reduce using rule 40 (number -> NUMBER .)
+    MINUS           reduce using rule 40 (number -> NUMBER .)
+    TIMES           reduce using rule 40 (number -> NUMBER .)
+    DIVIDE          reduce using rule 40 (number -> NUMBER .)
+    MODULE          reduce using rule 40 (number -> NUMBER .)
+    AND             reduce using rule 40 (number -> NUMBER .)
+    OR              reduce using rule 40 (number -> NUMBER .)
+    RCURLY          reduce using rule 40 (number -> NUMBER .)
+    SEMICOLON       reduce using rule 40 (number -> NUMBER .)
+    ELSE            reduce using rule 40 (number -> NUMBER .)
+    RPAREN          reduce using rule 40 (number -> NUMBER .)
+
+
+state 18
+
+    (37) binaryOp -> TRUE .
+
+    PLUS            reduce using rule 37 (binaryOp -> TRUE .)
+    MINUS           reduce using rule 37 (binaryOp -> TRUE .)
+    TIMES           reduce using rule 37 (binaryOp -> TRUE .)
+    DIVIDE          reduce using rule 37 (binaryOp -> TRUE .)
+    MODULE          reduce using rule 37 (binaryOp -> TRUE .)
+    AND             reduce using rule 37 (binaryOp -> TRUE .)
+    OR              reduce using rule 37 (binaryOp -> TRUE .)
+    RCURLY          reduce using rule 37 (binaryOp -> TRUE .)
+    SEMICOLON       reduce using rule 37 (binaryOp -> TRUE .)
+    ELSE            reduce using rule 37 (binaryOp -> TRUE .)
+    RPAREN          reduce using rule 37 (binaryOp -> TRUE .)
+
+
+state 19
+
+    (38) binaryOp -> FALSE .
+
+    PLUS            reduce using rule 38 (binaryOp -> FALSE .)
+    MINUS           reduce using rule 38 (binaryOp -> FALSE .)
+    TIMES           reduce using rule 38 (binaryOp -> FALSE .)
+    DIVIDE          reduce using rule 38 (binaryOp -> FALSE .)
+    MODULE          reduce using rule 38 (binaryOp -> FALSE .)
+    AND             reduce using rule 38 (binaryOp -> FALSE .)
+    OR              reduce using rule 38 (binaryOp -> FALSE .)
+    RCURLY          reduce using rule 38 (binaryOp -> FALSE .)
+    SEMICOLON       reduce using rule 38 (binaryOp -> FALSE .)
+    ELSE            reduce using rule 38 (binaryOp -> FALSE .)
+    RPAREN          reduce using rule 38 (binaryOp -> FALSE .)
+
+
+state 20
+
+    (24) printOutput -> PRINT outputType .
+
+    RCURLY          reduce using rule 24 (printOutput -> PRINT outputType .)
+    SEMICOLON       reduce using rule 24 (printOutput -> PRINT outputType .)
+    ELSE            reduce using rule 24 (printOutput -> PRINT outputType .)
+
+
+state 21
+
+    (39) binaryOp -> number .
+
+    PLUS            reduce using rule 39 (binaryOp -> number .)
+    MINUS           reduce using rule 39 (binaryOp -> number .)
+    TIMES           reduce using rule 39 (binaryOp -> number .)
+    DIVIDE          reduce using rule 39 (binaryOp -> number .)
+    MODULE          reduce using rule 39 (binaryOp -> number .)
+    AND             reduce using rule 39 (binaryOp -> number .)
+    OR              reduce using rule 39 (binaryOp -> number .)
+    RCURLY          reduce using rule 39 (binaryOp -> number .)
+    SEMICOLON       reduce using rule 39 (binaryOp -> number .)
+    ELSE            reduce using rule 39 (binaryOp -> number .)
+    RPAREN          reduce using rule 39 (binaryOp -> number .)
+
+
+state 22
+
+    (28) expression -> binaryOp .
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    RCURLY          reduce using rule 28 (expression -> binaryOp .)
+    SEMICOLON       reduce using rule 28 (expression -> binaryOp .)
+    ELSE            reduce using rule 28 (expression -> binaryOp .)
+    RPAREN          reduce using rule 28 (expression -> binaryOp .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 37
+    MODULE          shift and go to state 38
+    AND             shift and go to state 36
+    OR              shift and go to state 42
+
+
+state 23
+
+    (27) outputType -> expression .
+
+    RCURLY          reduce using rule 27 (outputType -> expression .)
+    SEMICOLON       reduce using rule 27 (outputType -> expression .)
+    ELSE            reduce using rule 27 (outputType -> expression .)
+
+
+state 24
+
+    (25) printOutput -> PRINTLN outputType .
+
+    RCURLY          reduce using rule 25 (printOutput -> PRINTLN outputType .)
+    SEMICOLON       reduce using rule 25 (printOutput -> PRINTLN outputType .)
+    ELSE            reduce using rule 25 (printOutput -> PRINTLN outputType .)
+
+
+state 25
+
+    (1) program -> PROGRAM LCURLY instructionType RCURLY .
+
+    $end            reduce using rule 1 (program -> PROGRAM LCURLY instructionType RCURLY .)
+
+
+state 26
+
+    (15) instruction -> IDENTIFIER ASSIGN . expression
+    (28) expression -> . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    expression                     shift and go to state 43
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 22
+
+state 27
+
+    (18) ifInst -> IF LPAREN . expression RPAREN instructionType
+    (19) ifInst -> IF LPAREN . expression RPAREN instructionType ELSE instructionType
+    (28) expression -> . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    expression                     shift and go to state 44
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 22
+
+state 28
+
+    (12) instructionBlock -> instruction . SEMICOLON
+    (13) instructionBlock -> instruction . SEMICOLON instructionBlock
+
+    SEMICOLON       shift and go to state 45
+
+
+state 29
+
+    (3) instructionType -> LCURLY instructionBlock . RCURLY SEMICOLON
+
+    RCURLY          shift and go to state 46
+
+
+state 30
+
+    (9) types -> SET .
+
+    IDENTIFIER      reduce using rule 9 (types -> SET .)
+
+
+state 31
+
+    (7) types -> INT .
+
+    IDENTIFIER      reduce using rule 7 (types -> INT .)
+
+
+state 32
+
+    (8) types -> BOOL .
+
+    IDENTIFIER      reduce using rule 8 (types -> BOOL .)
+
+
+state 33
+
+    (5) declarationBlock -> types . id SEMICOLON
+    (6) declarationBlock -> types . id SEMICOLON declarationBlock
+    (10) id -> . IDENTIFIER
+    (11) id -> . IDENTIFIER COMMA id
+
+    IDENTIFIER      shift and go to state 47
+
+    id                             shift and go to state 48
+
+state 34
+
+    (14) instruction -> USING declarationBlock . IN instructionBlock
+
+    IN              shift and go to state 49
+
+
+state 35
+
+    (36) binaryOp -> LPAREN binaryOp . RPAREN
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    RPAREN          shift and go to state 50
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 37
+    MODULE          shift and go to state 38
+    AND             shift and go to state 36
+    OR              shift and go to state 42
+
+
+state 36
+
+    (34) binaryOp -> binaryOp AND . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 51
+
+state 37
+
+    (32) binaryOp -> binaryOp DIVIDE . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 52
+
+state 38
+
+    (33) binaryOp -> binaryOp MODULE . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 53
+
+state 39
+
+    (31) binaryOp -> binaryOp TIMES . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 54
+
+state 40
+
+    (29) binaryOp -> binaryOp PLUS . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 55
+
+state 41
+
+    (30) binaryOp -> binaryOp MINUS . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 56
+
+state 42
+
+    (35) binaryOp -> binaryOp OR . binaryOp
+    (29) binaryOp -> . binaryOp PLUS binaryOp
+    (30) binaryOp -> . binaryOp MINUS binaryOp
+    (31) binaryOp -> . binaryOp TIMES binaryOp
+    (32) binaryOp -> . binaryOp DIVIDE binaryOp
+    (33) binaryOp -> . binaryOp MODULE binaryOp
+    (34) binaryOp -> . binaryOp AND binaryOp
+    (35) binaryOp -> . binaryOp OR binaryOp
+    (36) binaryOp -> . LPAREN binaryOp RPAREN
+    (37) binaryOp -> . TRUE
+    (38) binaryOp -> . FALSE
+    (39) binaryOp -> . number
+    (40) number -> . NUMBER
+
+    LPAREN          shift and go to state 15
+    TRUE            shift and go to state 18
+    FALSE           shift and go to state 19
+    NUMBER          shift and go to state 17
+
+    number                         shift and go to state 21
+    binaryOp                       shift and go to state 57
+
+state 43
+
+    (15) instruction -> IDENTIFIER ASSIGN expression .
+
+    RCURLY          reduce using rule 15 (instruction -> IDENTIFIER ASSIGN expression .)
+    ELSE            reduce using rule 15 (instruction -> IDENTIFIER ASSIGN expression .)
+    SEMICOLON       reduce using rule 15 (instruction -> IDENTIFIER ASSIGN expression .)
+
+
+state 44
+
+    (18) ifInst -> IF LPAREN expression . RPAREN instructionType
+    (19) ifInst -> IF LPAREN expression . RPAREN instructionType ELSE instructionType
+
+    RPAREN          shift and go to state 58
+
+
+state 45
+
+    (12) instructionBlock -> instruction SEMICOLON .
+    (13) instructionBlock -> instruction SEMICOLON . instructionBlock
+    (12) instructionBlock -> . instruction SEMICOLON
+    (13) instructionBlock -> . instruction SEMICOLON instructionBlock
+    (14) instruction -> . USING declarationBlock IN instructionBlock
+    (15) instruction -> . IDENTIFIER ASSIGN expression
+    (16) instruction -> . ifInst
+    (17) instruction -> . printOutput
+    (18) ifInst -> . IF LPAREN expression RPAREN instructionType
+    (19) ifInst -> . IF LPAREN expression RPAREN instructionType ELSE instructionType
+    (24) printOutput -> . PRINT outputType
+    (25) printOutput -> . PRINTLN outputType
+
+    RCURLY          reduce using rule 12 (instructionBlock -> instruction SEMICOLON .)
+    SEMICOLON       reduce using rule 12 (instructionBlock -> instruction SEMICOLON .)
+    ELSE            reduce using rule 12 (instructionBlock -> instruction SEMICOLON .)
+    USING           shift and go to state 14
+    IDENTIFIER      shift and go to state 8
+    IF              shift and go to state 11
+    PRINT           shift and go to state 4
+    PRINTLN         shift and go to state 5
+
+    instructionBlock               shift and go to state 59
+    printOutput                    shift and go to state 10
+    instruction                    shift and go to state 28
+    ifInst                         shift and go to state 9
+
+state 46
+
+    (3) instructionType -> LCURLY instructionBlock RCURLY . SEMICOLON
+
+    SEMICOLON       shift and go to state 60
+
+
+state 47
+
+    (10) id -> IDENTIFIER .
+    (11) id -> IDENTIFIER . COMMA id
+
+    SEMICOLON       reduce using rule 10 (id -> IDENTIFIER .)
+    COMMA           shift and go to state 61
+
+
+state 48
+
+    (5) declarationBlock -> types id . SEMICOLON
+    (6) declarationBlock -> types id . SEMICOLON declarationBlock
+
+    SEMICOLON       shift and go to state 62
+
+
+state 49
+
+    (14) instruction -> USING declarationBlock IN . instructionBlock
+    (12) instructionBlock -> . instruction SEMICOLON
+    (13) instructionBlock -> . instruction SEMICOLON instructionBlock
+    (14) instruction -> . USING declarationBlock IN instructionBlock
+    (15) instruction -> . IDENTIFIER ASSIGN expression
+    (16) instruction -> . ifInst
+    (17) instruction -> . printOutput
+    (18) ifInst -> . IF LPAREN expression RPAREN instructionType
+    (19) ifInst -> . IF LPAREN expression RPAREN instructionType ELSE instructionType
+    (24) printOutput -> . PRINT outputType
+    (25) printOutput -> . PRINTLN outputType
+
+    USING           shift and go to state 14
+    IDENTIFIER      shift and go to state 8
+    IF              shift and go to state 11
+    PRINT           shift and go to state 4
+    PRINTLN         shift and go to state 5
+
+    instruction                    shift and go to state 28
+    printOutput                    shift and go to state 10
+    instructionBlock               shift and go to state 63
+    ifInst                         shift and go to state 9
+
+state 50
+
+    (36) binaryOp -> LPAREN binaryOp RPAREN .
+
+    PLUS            reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    MINUS           reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    TIMES           reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    DIVIDE          reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    MODULE          reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    AND             reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    OR              reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    RCURLY          reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    SEMICOLON       reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    ELSE            reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+    RPAREN          reduce using rule 36 (binaryOp -> LPAREN binaryOp RPAREN .)
+
+
+state 51
+
+    (34) binaryOp -> binaryOp AND binaryOp .
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    AND             reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .)
+    OR              reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .)
+    RCURLY          reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .)
+    SEMICOLON       reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .)
+    ELSE            reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .)
+    RPAREN          reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 37
+    MODULE          shift and go to state 38
+
+  ! PLUS            [ reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .) ]
+  ! MINUS           [ reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .) ]
+  ! TIMES           [ reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .) ]
+  ! DIVIDE          [ reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .) ]
+  ! MODULE          [ reduce using rule 34 (binaryOp -> binaryOp AND binaryOp .) ]
+  ! AND             [ shift and go to state 36 ]
+  ! OR              [ shift and go to state 42 ]
+
+
+state 52
+
+    (32) binaryOp -> binaryOp DIVIDE binaryOp .
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    PLUS            reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    MINUS           reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    TIMES           reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    DIVIDE          reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    MODULE          reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    AND             reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    OR              reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    RCURLY          reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    SEMICOLON       reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    ELSE            reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+    RPAREN          reduce using rule 32 (binaryOp -> binaryOp DIVIDE binaryOp .)
+
+  ! PLUS            [ shift and go to state 40 ]
+  ! MINUS           [ shift and go to state 41 ]
+  ! TIMES           [ shift and go to state 39 ]
+  ! DIVIDE          [ shift and go to state 37 ]
+  ! MODULE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 36 ]
+  ! OR              [ shift and go to state 42 ]
+
+
+state 53
+
+    (33) binaryOp -> binaryOp MODULE binaryOp .
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    PLUS            reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    MINUS           reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    TIMES           reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    DIVIDE          reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    MODULE          reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    AND             reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    OR              reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    RCURLY          reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    SEMICOLON       reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    ELSE            reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+    RPAREN          reduce using rule 33 (binaryOp -> binaryOp MODULE binaryOp .)
+
+  ! PLUS            [ shift and go to state 40 ]
+  ! MINUS           [ shift and go to state 41 ]
+  ! TIMES           [ shift and go to state 39 ]
+  ! DIVIDE          [ shift and go to state 37 ]
+  ! MODULE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 36 ]
+  ! OR              [ shift and go to state 42 ]
+
+
+state 54
+
+    (31) binaryOp -> binaryOp TIMES binaryOp .
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    PLUS            reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    MINUS           reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    TIMES           reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    DIVIDE          reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    MODULE          reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    AND             reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    OR              reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    RCURLY          reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    SEMICOLON       reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    ELSE            reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+    RPAREN          reduce using rule 31 (binaryOp -> binaryOp TIMES binaryOp .)
+
+  ! PLUS            [ shift and go to state 40 ]
+  ! MINUS           [ shift and go to state 41 ]
+  ! TIMES           [ shift and go to state 39 ]
+  ! DIVIDE          [ shift and go to state 37 ]
+  ! MODULE          [ shift and go to state 38 ]
+  ! AND             [ shift and go to state 36 ]
+  ! OR              [ shift and go to state 42 ]
+
+
+state 55
+
+    (29) binaryOp -> binaryOp PLUS binaryOp .
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    PLUS            reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .)
+    MINUS           reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .)
+    AND             reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .)
+    OR              reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .)
+    RCURLY          reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .)
+    SEMICOLON       reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .)
+    ELSE            reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .)
+    RPAREN          reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .)
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 37
+    MODULE          shift and go to state 38
+
+  ! TIMES           [ reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .) ]
+  ! DIVIDE          [ reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .) ]
+  ! MODULE          [ reduce using rule 29 (binaryOp -> binaryOp PLUS binaryOp .) ]
+  ! PLUS            [ shift and go to state 40 ]
+  ! MINUS           [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 36 ]
+  ! OR              [ shift and go to state 42 ]
+
+
+state 56
+
+    (30) binaryOp -> binaryOp MINUS binaryOp .
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    PLUS            reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .)
+    MINUS           reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .)
+    AND             reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .)
+    OR              reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .)
+    RCURLY          reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .)
+    SEMICOLON       reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .)
+    ELSE            reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .)
+    RPAREN          reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .)
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 37
+    MODULE          shift and go to state 38
+
+  ! TIMES           [ reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .) ]
+  ! DIVIDE          [ reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .) ]
+  ! MODULE          [ reduce using rule 30 (binaryOp -> binaryOp MINUS binaryOp .) ]
+  ! PLUS            [ shift and go to state 40 ]
+  ! MINUS           [ shift and go to state 41 ]
+  ! AND             [ shift and go to state 36 ]
+  ! OR              [ shift and go to state 42 ]
+
+
+state 57
+
+    (35) binaryOp -> binaryOp OR binaryOp .
+    (29) binaryOp -> binaryOp . PLUS binaryOp
+    (30) binaryOp -> binaryOp . MINUS binaryOp
+    (31) binaryOp -> binaryOp . TIMES binaryOp
+    (32) binaryOp -> binaryOp . DIVIDE binaryOp
+    (33) binaryOp -> binaryOp . MODULE binaryOp
+    (34) binaryOp -> binaryOp . AND binaryOp
+    (35) binaryOp -> binaryOp . OR binaryOp
+
+    OR              reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .)
+    RCURLY          reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .)
+    SEMICOLON       reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .)
+    ELSE            reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .)
+    RPAREN          reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+    TIMES           shift and go to state 39
+    DIVIDE          shift and go to state 37
+    MODULE          shift and go to state 38
+    AND             shift and go to state 36
+
+  ! PLUS            [ reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .) ]
+  ! MINUS           [ reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .) ]
+  ! TIMES           [ reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .) ]
+  ! DIVIDE          [ reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .) ]
+  ! MODULE          [ reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .) ]
+  ! AND             [ reduce using rule 35 (binaryOp -> binaryOp OR binaryOp .) ]
+  ! OR              [ shift and go to state 42 ]
+
+
+state 58
+
+    (18) ifInst -> IF LPAREN expression RPAREN . instructionType
+    (19) ifInst -> IF LPAREN expression RPAREN . instructionType ELSE instructionType
+    (3) instructionType -> . LCURLY instructionBlock RCURLY SEMICOLON
+    (4) instructionType -> . instruction
+    (14) instruction -> . USING declarationBlock IN instructionBlock
+    (15) instruction -> . IDENTIFIER ASSIGN expression
+    (16) instruction -> . ifInst
+    (17) instruction -> . printOutput
+    (18) ifInst -> . IF LPAREN expression RPAREN instructionType
+    (19) ifInst -> . IF LPAREN expression RPAREN instructionType ELSE instructionType
+    (24) printOutput -> . PRINT outputType
+    (25) printOutput -> . PRINTLN outputType
+
+    LCURLY          shift and go to state 12
+    USING           shift and go to state 14
+    IDENTIFIER      shift and go to state 8
+    IF              shift and go to state 11
+    PRINT           shift and go to state 4
+    PRINTLN         shift and go to state 5
+
+    printOutput                    shift and go to state 10
+    instruction                    shift and go to state 13
+    instructionType                shift and go to state 64
+    ifInst                         shift and go to state 9
+
+state 59
+
+    (13) instructionBlock -> instruction SEMICOLON instructionBlock .
+
+    RCURLY          reduce using rule 13 (instructionBlock -> instruction SEMICOLON instructionBlock .)
+    SEMICOLON       reduce using rule 13 (instructionBlock -> instruction SEMICOLON instructionBlock .)
+    ELSE            reduce using rule 13 (instructionBlock -> instruction SEMICOLON instructionBlock .)
+
+
+state 60
+
+    (3) instructionType -> LCURLY instructionBlock RCURLY SEMICOLON .
+
+    RCURLY          reduce using rule 3 (instructionType -> LCURLY instructionBlock RCURLY SEMICOLON .)
+    ELSE            reduce using rule 3 (instructionType -> LCURLY instructionBlock RCURLY SEMICOLON .)
+    SEMICOLON       reduce using rule 3 (instructionType -> LCURLY instructionBlock RCURLY SEMICOLON .)
+
+
+state 61
+
+    (11) id -> IDENTIFIER COMMA . id
+    (10) id -> . IDENTIFIER
+    (11) id -> . IDENTIFIER COMMA id
+
+    IDENTIFIER      shift and go to state 47
+
+    id                             shift and go to state 65
+
+state 62
+
+    (5) declarationBlock -> types id SEMICOLON .
+    (6) declarationBlock -> types id SEMICOLON . declarationBlock
+    (5) declarationBlock -> . types id SEMICOLON
+    (6) declarationBlock -> . types id SEMICOLON declarationBlock
+    (7) types -> . INT
+    (8) types -> . BOOL
+    (9) types -> . SET
+
+    IN              reduce using rule 5 (declarationBlock -> types id SEMICOLON .)
+    INT             shift and go to state 31
+    BOOL            shift and go to state 32
+    SET             shift and go to state 30
+
+    types                          shift and go to state 33
+    declarationBlock               shift and go to state 66
+
+state 63
+
+    (14) instruction -> USING declarationBlock IN instructionBlock .
+
+    RCURLY          reduce using rule 14 (instruction -> USING declarationBlock IN instructionBlock .)
+    ELSE            reduce using rule 14 (instruction -> USING declarationBlock IN instructionBlock .)
+    SEMICOLON       reduce using rule 14 (instruction -> USING declarationBlock IN instructionBlock .)
+
+
+state 64
+
+    (18) ifInst -> IF LPAREN expression RPAREN instructionType .
+    (19) ifInst -> IF LPAREN expression RPAREN instructionType . ELSE instructionType
+
+  ! shift/reduce conflict for ELSE resolved as shift
+    RCURLY          reduce using rule 18 (ifInst -> IF LPAREN expression RPAREN instructionType .)
+    SEMICOLON       reduce using rule 18 (ifInst -> IF LPAREN expression RPAREN instructionType .)
+    ELSE            shift and go to state 67
+
+  ! ELSE            [ reduce using rule 18 (ifInst -> IF LPAREN expression RPAREN instructionType .) ]
+
+
+state 65
+
+    (11) id -> IDENTIFIER COMMA id .
+
+    SEMICOLON       reduce using rule 11 (id -> IDENTIFIER COMMA id .)
+
+
+state 66
+
+    (6) declarationBlock -> types id SEMICOLON declarationBlock .
+
+    IN              reduce using rule 6 (declarationBlock -> types id SEMICOLON declarationBlock .)
+
+
+state 67
+
+    (19) ifInst -> IF LPAREN expression RPAREN instructionType ELSE . instructionType
+    (3) instructionType -> . LCURLY instructionBlock RCURLY SEMICOLON
+    (4) instructionType -> . instruction
+    (14) instruction -> . USING declarationBlock IN instructionBlock
+    (15) instruction -> . IDENTIFIER ASSIGN expression
+    (16) instruction -> . ifInst
+    (17) instruction -> . printOutput
+    (18) ifInst -> . IF LPAREN expression RPAREN instructionType
+    (19) ifInst -> . IF LPAREN expression RPAREN instructionType ELSE instructionType
+    (24) printOutput -> . PRINT outputType
+    (25) printOutput -> . PRINTLN outputType
+
+    LCURLY          shift and go to state 12
+    USING           shift and go to state 14
+    IDENTIFIER      shift and go to state 8
+    IF              shift and go to state 11
+    PRINT           shift and go to state 4
+    PRINTLN         shift and go to state 5
+
+    printOutput                    shift and go to state 10
+    instruction                    shift and go to state 13
+    instructionType                shift and go to state 68
+    ifInst                         shift and go to state 9
+
+state 68
+
+    (19) ifInst -> IF LPAREN expression RPAREN instructionType ELSE instructionType .
+
+    RCURLY          reduce using rule 19 (ifInst -> IF LPAREN expression RPAREN instructionType ELSE instructionType .)
+    SEMICOLON       reduce using rule 19 (ifInst -> IF LPAREN expression RPAREN instructionType ELSE instructionType .)
+    ELSE            reduce using rule 19 (ifInst -> IF LPAREN expression RPAREN instructionType ELSE instructionType .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ELSE in state 64 resolved as shift
