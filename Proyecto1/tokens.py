@@ -117,14 +117,14 @@ class LexicalAnalyzer:
         return t
 
     def t_STRING(self,t):
-        r'\"(\\n|\\"|\\\\|\\’|\\a|\\b|\\f|\\r|\\t|\\v|[^"\\])*'
-        #self.readingString = True
+        r'\"'
+        self.readingString = True
         t.lexer.begin('STRING')
         return t
 
     def t_STRING_RDOUBLEQUOTE(self,t):
         r'\"'
-        #self.readingString = False
+        self.readingString = False
         t.lexer.begin('INITIAL')
         return t
 
