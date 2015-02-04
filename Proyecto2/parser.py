@@ -33,15 +33,10 @@ precedence = (
 )
 
 def p_program(p):
-	'''program : PROGRAM LCURLY instructionType RCURLY
-	 		   | PROGRAM LCURLY RCURLY'''
+	'''program : PROGRAM instruction'''
 	p[0] = Program(p[1])
 
-def p_instructionType(p):
-	''' instructionType : LCURLY instructionBlock RCURLY SEMICOLON
-						| instruction SEMICOLON
-						| instruction ''' 										
-	
+
 # al hacer declaraciones deberia poder asignarles un valor tambien a las variables, o no? (no hay ningun ejemplo asi)
 def p_declarationBlock(p):
 	''' declarationBlock : types id SEMICOLON 
@@ -59,51 +54,69 @@ def p_id(p):
 		  | IDENTIFIER COMMA id'''	
 	p[0] = ID(p[1]);
 
+# interna
+def p_block(p):
+    ''' block : LCURLY usingInInst RCURLY
+              | LCURLY instructionBlock RCURLY'''
+
+def p_empty(p):
+    '''empty :'''
+    pass
+
+# total de instrucciones dentro de un bloque de instrucciones (internas)    # indica que estoy dentro de un bloque de instrucciones y por ellos las inst llevan ;
 def p_instructionBlock(p):
     '''instructionBlock : instruction SEMICOLON
-    				   	| instruction SEMICOLON instructionBlock'''
+    				   	| instruction SEMICOLON instructionBlock
+                        | empty'''
     if len(p) == 3:
     	p[0] = InstructionBlock(p[1],p[2])
     if len(p) == 4:
     	p[0] = InstructionBlock(p[1],p[2],p[3])
+
 def p_instruction(p):
-	'''instruction : USING declarationBlock IN instructionBlock
-				   | IDENTIFIER ASSIGN expression
-				   | IDENTIFIER ASSIGN LCURLY set RCURLY
+	'''instruction : IDENTIFIER ASSIGN expression
+				   | IDENTIFIER ASSIGN set
 				   | ifInst
   				   | printOutput
   				   | whileInst 
   				   | repeatInst 
   				   | forInst 
-  				   | scanInst '''
+  				   | scanInst
+                   | block'''
   	p[0] = p[1]
 
-def p_set(p):
-	''' set : expression COMMA set
-			| expression '''
+def p_usingInInst(p):
+    '''usingInInst : USING declarationBlock IN instructionBlock'''
 
-# la instruccion (expression debe ser de tipo bool)
+def p_set(p):
+    '''set : LCURLY setNumbers RCURLY'''
+
+def p_setNumbers(p):
+	''' setNumbers : expression COMMA setNumbers
+			       | expression '''
+
 def p_ifInst(p):
-	'''ifInst : IF LPAREN expression RPAREN instructionType
-			  | IF LPAREN expression RPAREN instructionType ELSE instructionType '''
+	'''ifInst : IF LPAREN expression RPAREN instruction
+			  | IF LPAREN expression RPAREN instruction ELSE instruction '''
 	p[0] = IfInst()
+
 # poner {1,2,3} lo acepta como id? si es asi, desps de direction va una sola regla con IDENTIFIER.
 def p_forInst(p):
-	'''forInst : FOR IDENTIFIER direction IDENTIFIER DO instructionType
-			   | FOR IDENTIFIER direction LCURLY IDENTIFIER RCURLY DO instructionType'''
+	'''forInst : FOR IDENTIFIER direction IDENTIFIER DO instruction
+			   | FOR IDENTIFIER direction set DO instruction'''
 
 def p_whileInst(p):
-	''' whileInst : WHILE LPAREN expression RPAREN DO instructionType '''
+	'''whileInst : WHILE LPAREN expression RPAREN DO instruction'''
 
 def p_repeatInst(p):
-	''' repeatInst : REPEAT instructionType whileInst '''
+	'''repeatInst : REPEAT instruction whileInst'''
 
 def p_scanInst(p):
-	''' scanInst : SCAN expression '''
+	'''scanInst : SCAN expression'''
 
 
 def p_direction(p):
-	''' direction : MIN
+	'''direction : MIN
 				  |	MAX'''
 
 def p_printOutput(p):
@@ -113,7 +126,8 @@ def p_printOutput(p):
 # le faltan casos
 def p_outputType(p):
 	'''outputType : STRING
-				  | expression'''
+				  | expression
+                  | expression COMMA outputType'''
 
 def p_expression(p):
 	'''expression : binaryOp'''
@@ -148,7 +162,8 @@ def p_binaryOp(p):
                 | TRUE
                 | FALSE              
                 | number 
-                | IDENTIFIER '''
+                | set
+                | IDENTIFIER'''
     if len(p) == 2:
     	p[0] = BinaryOp(p[1])
     elif len(p) == 3:
@@ -164,14 +179,3 @@ def p_number(p):
 def p_error(p):
     print p
     print "Syntax error in input"
-
-
-
-
-
-
-
-
-
-
-

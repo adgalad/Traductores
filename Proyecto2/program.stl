@@ -1,5 +1,13 @@
 program {
-    
-        print "hola";
-    
+    using int x; in
+
+    scan x;
+
+    if (x < 0) {
+        print "less";
+    } ; else if (x > y) {
+        print "greater";
+    } else {
+        print "equal";
+    };
 }
