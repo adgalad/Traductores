@@ -1,49 +1,44 @@
 # -*- coding: utf-8 -*-
 
 
-output = []
+
 class Program:
 	def __init__(self,declarations=None,instructions=None):
 		self.declarations = declarations
 		self.instructions = instructions
-		global output
-		output += ["PROGRAM"]
 
-class Block:
-	def __init__(self):
-		global output
-		output += ["BLOCK"]
-
-class Instruction:
-	def __init__(self,h):
-		global output
+	def getValue(self):
+		return "PROGRAM"
 
 class InstructionBlock:
 	def __init__(self,inst,sigInst,instRec=None):
 		self.inst = inst
 		self. sigInst = sigInst
 
-
 class Direction:
 	def __init__(self,direction):
 		self.direction = direction
-		global output
-		output += ["DIRECTION\n\t%s" %direction]
+
+	def getValue(self):
+		return "direction\n\t%s" %self.direction
 
 
 class For:
-	#FOR IDENTIFIER direction IDENTIFIER DO instruction
-	def __init__(self,For,id,dir,set,do,instruction):
-		global output
-		output += ["FOR"]
+	def __init__(self):
+		print "entra"
+		pass
 
+	def getValue(self):
+		print "sale"
+		return "FOR\n\t"
 
 class ID:
 	def __init__(self,value):
 		self.type = 'id'
 		self.value = value
-		global output
-		output += ["variable\n\t%s"%value]
+
+	def getValue(self):
+		return "variable\n\t%d" % self.variable
 
 class Number:
     def __init__(self,value):

@@ -4,6 +4,7 @@
 import sys
 from lexer import *
 from parser import *
+from AST import output
 
 data = open(sys.argv[1])
 data = data.read()
@@ -17,4 +18,8 @@ while True:
 parser = yacc.yacc()
 
 arbol = parser.parse(data)
-print ">> " + str(arbol.getValue())
+tabs = 0
+for i in reversed(output):
+	print tabs*"\t"+i
+	if i == "BLOCK":
+		tabs += 1

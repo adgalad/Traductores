@@ -1,13 +1,6 @@
 program {
-    using int x; in
-
-    scan x;
-
-    if (x < 0) {
-        print "less";
-    } ; else if (x > y) {
-        print "greater";
-    } else {
-        print "equal";
+    for i min s do {
+        println i*a;
     };
 }
+
