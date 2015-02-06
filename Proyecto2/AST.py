@@ -7,7 +7,7 @@ class Program:
 		self.declarations = declarations
 		self.instructions = instructions
 		global output
-		output += ["PROGRAM"]
+		output += [["PROGRAM"]
 
 class Block:
 	def __init__(self,lcurly, instruction,rcurly):
@@ -36,6 +36,7 @@ class Direction:
 		global output
 		output += ["DIRECTION\n\t%s" %direction]
 
+	def 
 
 class For:
 	#FOR IDENTIFIER direction IDENTIFIER DO instruction
@@ -49,7 +50,7 @@ class ID:
 		self.type = 'id'
 		self.value = value
 		global output
-		output += ["variable\n\t%s"%value]
+		output += [["variable\n"],["\t%s"%value]]
 
 class Number:
     def __init__(self,value):
