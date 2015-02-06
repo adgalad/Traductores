@@ -60,6 +60,10 @@ def p_instruction(p):
                    | scanInst
                    | block'''
     #print "instruction"
+    if (len(p)==2):
+        p[0] = Instruction(p[1])
+    else:
+        p[0] = Instruction(p[1],p[2],p[3])
 
 # al hacer declaraciones deberia poder asignarles un valor tambien a las variables, o no? (no hay ningun ejemplo asi)
 def p_declarationBlock(p):
@@ -82,7 +86,7 @@ def p_block(p):
     ''' block : LCURLY usingInInst RCURLY
               | LCURLY instructionBlock RCURLY'''
     #print "block"
-    p[0] = Block()
+    p[0] = Block(p[1],p[2],p[3])
 
 def p_empty(p):
     '''empty :'''

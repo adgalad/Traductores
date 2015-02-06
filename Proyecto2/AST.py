@@ -10,13 +10,19 @@ class Program:
 		output += ["PROGRAM"]
 
 class Block:
-	def __init__(self):
+	def __init__(self,lcurly, instruction,rcurly):
+		self.rcurly = rcurly
+		self.lcurly = lcurly
+		self.instruction = instruction
 		global output
 		output += ["BLOCK"]
 
 class Instruction:
-	def __init__(self,h):
-		global output
+	def __init__(self,instruction = None,id=None,assign=None,expression=None):
+		self.instruction = instruction
+		self.id = id
+		self.assign = assign
+		self.expression = expression
 
 class InstructionBlock:
 	def __init__(self,inst,sigInst,instRec=None):
