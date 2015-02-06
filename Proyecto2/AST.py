@@ -63,9 +63,9 @@ class IfInst:
 	def __init__(self):
 		pass
 
-class BinaryOp:
+class Expression:
     def __init__(self,left,op=None,right=None):
-        self.type  = "binaryOp"
+        self.type  = "expression"
         self.left  = left
         self.right = right
         self.op    = op
