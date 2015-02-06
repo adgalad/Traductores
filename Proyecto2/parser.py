@@ -8,7 +8,7 @@ from   AST      import *
 # Precedencia de operadores (de menor a mayor)
 precedence = (
 	('right','RPAREN'),
-	('left','ELSE'),
+	('right','ELSE'),
 
 	# Booleanos
 	('left','OR'),
@@ -34,7 +34,6 @@ precedence = (
 
 	# Falta el menos unario
 	('left','SETMINVALUE','SETMAXVALUE','SETSIZE'),
-
 )
 
 def p_program(p):
