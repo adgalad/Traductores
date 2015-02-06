@@ -18,8 +18,5 @@ while True:
 parser = yacc.yacc()
 
 arbol = parser.parse(data)
-tabs = 0
-for i in reversed(output):
-	print tabs*"\t"+i
-	if i == "BLOCK":
-		tabs += 1
+
+print arbol

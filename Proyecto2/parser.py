@@ -51,12 +51,16 @@ def p_instruction(p):
                    | printInst
                    | IDENTIFIER ASSIGN expression'''
     #print "instruction"
+    if (len(p)==2):
+        p[0] = Instruction(p[1])
+    else:
+        p[0] = Instruction(p[1],p[2],p[3])
 
 def p_block(p):
     ''' block : LCURLY usingInInst RCURLY
               | LCURLY instructionBlock RCURLY'''
     #print "block"
-    p[0] = Block()
+    p[0] = Block(p[1],p[2],p[3])
 
 def p_usingInInst(p):
     '''usingInInst : USING declarationBlock IN instructionBlock'''
