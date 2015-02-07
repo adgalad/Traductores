@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 
-binaryOperator = { 	"+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
-				   	"/" : "DIVIDE", "%" : "MODULE", "and" : "AND",
-				   	"or" : "OR", "<" : "LESSTHAN",">" : "GREATERTHAN",
-				   	"<=" : "LESSEQUALSTHAN",">=" : "GREATEREQUALTHAN",
-				   	"@" : "BELONGSTO","not" : "NOT", "print": "PRINT","println": "PRINTLN"}
+operator = { "+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
+			"/" : "DIVIDE", "%" : "MODULE", "and" : "AND",
+			"or" : "OR", "<" : "LESSTHAN",">" : "GREATERTHAN",
+			"<=" : "LESSEQUALSTHAN",">=" : "GREATEREQUALTHAN",
+			"@" : "BELONGSTO", "not" : "NOT", "++":"SETUNION",
+			"==" : "EQUALS","/=" : "NOTEQUALS","\\" : "SETDIFF", 
+			"><" : "SETINTERSECT", "<+>" : "SETMAPPLUS",
+			"<->" : "SETMAPMINUS", "<*>" : "SETMAPTIMES", 
+			"</>" : "SETMAPDIVIDE", "<%>" : "SETMAPMODULE", 
+			">?" : "SETMAXVALUE", "<?" : "SETMINVALUE",
+			"$?" : "SETSIZE", "print": "PRINT","println": "PRINTLN"}
 
 def indent(tabs):
 	return "   "*tabs
@@ -78,10 +84,10 @@ class DeclarationBlock:
 
 	def printTree(self,tabs):
 		string = ""
-		string += self.varType.printTree(tabs)
-		string += self.Id.printTree(tabs)
+		string += self.Id.printTree(tabs,self.varType)
 		if isinstance(self.declaration, str):
-			string += indent(tabs)+self.declaration
+			if self.declaration != "":
+				string += indent(tabs)+self.declaration
 		else:
 			string += self.declaration.printTree(tabs)
 		return string
@@ -101,12 +107,18 @@ class ID:
 		self.value = value
 		self.IDrecursion = IDrecursion
 
-	def printTree(self,tabs):
-		string = indent(tabs)+"variable\n"
-		string += indent(tabs+1)+self.value+"\n"
+	def printTree(self,tabs,varType=None):
+		string = ""
+		if varType:
+			string += varType.printTree(tabs)
+			string += " "+self.value+"\n"
+		else:
+			string += indent(tabs)+"variable\n"
+			string += indent(tabs+1)+self.value+"\n"
 		if not isinstance(self.IDrecursion,str):
-			string += self.IDrecursion.printTree(tabs)
+			string += self.IDrecursion.printTree(tabs,varType)
 		return string 
+
 
 
 class InstructionBlock:
@@ -192,9 +204,14 @@ class RepeatInst:
 
 
 class ScanInst:
-	def __init__(self):
-		pass
+	def __init__(self,scan,expression):
+		self.scan = scan
+		self.expression = expression
 
+	def printTree(self,tabs):
+		string = indent(tabs)+"SCAN\n"
+		string += self.expression.printTree(tabs+1)
+		return string
 
 class PrintInst:
 	def __init__(self,Print,output):
@@ -202,8 +219,10 @@ class PrintInst:
 		self.output = output
 
 	def printTree(self,tabs):
-		string = indent(tabs)+binaryOperator[self.Print]+"\n"
+		string = indent(tabs)+operator[self.Print]+"\n"
 		string += self.output.printTree(tabs+1)
+		if (self.Print == "println"):
+			string += String("\\n").printTree(tabs+1)
 		return string
 
 
@@ -226,7 +245,7 @@ class String:
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"string\n"
-		string += indent(tabs+1)+self.string+"\n"
+		string += indent(tabs+1)+'"'+self.string+'"'+"\n"
 		return string
 
 
@@ -241,10 +260,10 @@ class Expression:
     	string = ""
     	if self.op != "":
     		if self.right == "":
-	    		string += indent(tabs)+binaryOperator[self.op]+" "+self.op+"\n"
+	    		string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
 	    		string += self.left.printTree(tabs+1)
 	    	else:
-	    		string += indent(tabs)+binaryOperator[self.op]+" "+self.op+"\n"
+	    		string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
 	    		string += self.left.printTree(tabs+1)
 	    		string += self.right.printTree(tabs+1)
     	else:

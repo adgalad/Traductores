@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import ply.lex  as lex
 import ply.yacc as yacc
 from   lexer    import tokens, findColumn
 from   AST      import *
@@ -34,7 +35,6 @@ precedence = (
 
 	# Falta el menos unario
 	('right','SETMINVALUE','SETMAXVALUE','SETSIZE'),
-
 )
 
 def p_program(p):
@@ -50,6 +50,7 @@ def p_instruction(p):
                    | scanInst
                    | printInst
                    | id ASSIGN expression'''
+    #print "instruction"
     if (len(p)==2):
         p[0] = Instruction(p[1])
     else:
@@ -59,13 +60,14 @@ def p_instruction(p):
 def p_block(p):
     ''' block : LCURLY usingInInst RCURLY 
               | LCURLY instructionBlock RCURLY'''
+    #print "block"
     p[0] = Block(p[1],p[2],p[3])
 
 def p_usingInInst(p):
     '''usingInInst : USING declarationBlock IN instructionBlock'''
     p[0] = UsingInInst(p[1],p[2],p[3],p[4])
 
-# al hacer declaraciones puedo asignarles un valor tambien a las variables? (creo que no.. verificar)
+# al hacer declaraciones deberia poder asignarles un valor tambien a las variables, o no? (no hay ningun ejemplo asi)
 def p_declarationBlock(p):
     '''declarationBlock : type id SEMICOLON declarationBlock
 			   			| type id SEMICOLON'''
@@ -80,6 +82,9 @@ def p_type(p):
   			 | SET'''
     p[0] = Type(p[1])
 
+def p_identifier(p):
+    ''' identifier : IDENTIFIER '''
+    p[0] = ID(p[1])
 def p_id(p):
     '''id : IDENTIFIER COMMA id
 		  | IDENTIFIER'''
@@ -88,13 +93,18 @@ def p_id(p):
     else:
         p[0] = ID(p[1])
 
-# Produccion que indica que estoy dentro de un bloque de instrucciones y por ello las inst llevan ;
+
+# total de instrucciones dentro de un bloque de instrucciones (internas)    
+# indica que estoy dentro de un bloque de instrucciones y por ellos las inst llevan ;
 def p_instructionBlock(p):
     '''instructionBlock : instruction SEMICOLON instructionBlock
                         |'''
-    if len(p) == 4:
+    #print "instructionBlock"
+    if len(p) == 3:
+        p[0] = InstructionBlock(p[1],p[2])
+    elif len(p) == 4:
         p[0] = InstructionBlock(p[1],p[2],p[3])
-    else:
+    elif len(p) == 1:
         p[0] = InstructionBlock()
 
 def p_ifInst(p):
@@ -102,6 +112,7 @@ def p_ifInst(p):
 			  | IF LPAREN expression RPAREN instruction ELSE instruction '''
 	#p[0] = IfInst()
 
+# poner {1,2,3} lo acepta como id? si es asi, desps de direction va una sola regla con IDENTIFIER.
 def p_forInst(p):
     '''forInst : FOR expression direction expression DO instruction'''
     p[0] = ForInst(p[1],p[2],p[3],p[4],p[5],p[6])
@@ -124,12 +135,15 @@ def p_repeatInst(p):
     p[0] = RepeatInst(p[1],p[2],p[3])
 
 def p_scanInst(p):
-	'''scanInst : SCAN expression'''
+    '''scanInst : SCAN expression'''
+    p[0] = ScanInst(p[1],p[2])
+
 
 def p_printInst(p):
     '''printInst : PRINT outputType
 				 | PRINTLN outputType'''
     p[0] = PrintInst(p[1],p[2])
+
 
 def p_outputType(p):
     '''outputType : expression COMMA outputType
@@ -141,12 +155,11 @@ def p_outputType(p):
     else:
         p[0] = OutputType(p[1],p[2],p[3])
 
+
 def p_string(p):
-    '''string : STRING'''
+    ''' string : STRING '''
     p[0] = String(p[1])
 
-
-# HACER VARIAS PRUEBAS PARA VERIFICAR QUE ESTA BIEN HABER CAMBIADO id por IDENTIFIER
 def p_expression(p):
     '''expression : expression PLUS expression
                 | expression MINUS expression
@@ -175,11 +188,10 @@ def p_expression(p):
 	            | SETMINVALUE expression
 	            | SETMAXVALUE expression
 	            | SETSIZE expression
-
                 | LPAREN expression RPAREN
                 | TRUE
                 | FALSE              
-                | IDENTIFIER
+                | identifier 
                 | set
                 | number'''
     if len(p) == 2:
@@ -194,17 +206,15 @@ def p_set(p):
 
 def p_setNumbers(p):
 	'''setNumbers : expression COMMA setNumbers
-			      | expression'''
+			      | '''
 
 def p_number(p):
     '''number : NUMBER'''
     p[0] = Number(p[1])
 
 def p_error(p):
-    print(p)
     if p:
-        yaccError.append('''ERROR: Se encontró un token inesperado "%s" en la Línea %d, Columna %d.''' \
-            % (p.value, p.lineno, findColumn(p.lexer.lexdata,p)))
+        yaccError.append('''ERROR: Se encontró un token inesperado "%s" en la Línea %d, Columna %d.''' % (p.value, p.lineno, findColumn(p.lexer.lexdata,p)))
     else:
         yaccError.append('''ERROR: Error de sintaxis en fin de archivo.''')
 
