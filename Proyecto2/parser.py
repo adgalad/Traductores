@@ -64,23 +64,30 @@ def p_block(p):
 
 def p_usingInInst(p):
     '''usingInInst : USING declarationBlock IN instructionBlock'''
+    p[0] = UsingInInst(p[1],p[2],p[3],p[4])
 
 # al hacer declaraciones deberia poder asignarles un valor tambien a las variables, o no? (no hay ningun ejemplo asi)
 def p_declarationBlock(p):
     '''declarationBlock : type id SEMICOLON declarationBlock
 			   			| type id SEMICOLON'''
-    p[0] = p[1]
+    if len(p) == 5:
+        p[0] = DeclarationBlokc(p[1],p[2],p[3],p[4])
+    else:
+        p[0] = DeclarationBlokc(p[1],p[2],p[3],None)
 
 def p_type(p):
     '''type : INT 
   			 | BOOL 
   			 | SET'''
-    p[0] = p[1]
+    p[0] = Type(p[1])
 
 def p_id(p):
     '''id : IDENTIFIER COMMA id
-		  | IDENTIFIER'''	
-    p[0] = ID(p[1]);
+		  | IDENTIFIER'''
+    if len(p) == 4:
+        p[0] = ID(p[1],p[2],p[3])
+    else:
+
 
 # total de instrucciones dentro de un bloque de instrucciones (internas)    
 # indica que estoy dentro de un bloque de instrucciones y por ellos las inst llevan ;
@@ -100,8 +107,8 @@ def p_ifInst(p):
 
 # poner {1,2,3} lo acepta como id? si es asi, desps de direction va una sola regla con IDENTIFIER.
 def p_forInst(p):
-    '''forInst : FOR IDENTIFIER direction expression DO instruction'''
-    p[0] = For(p[1],p[2],p[3],p[4],p[5],p[6])
+    '''forInst : FOR expression direction expression DO instruction'''
+    p[0] = ForInst(p[1],p[2],p[3],p[4],p[5],p[6])
 
 def p_direction(p):
     '''direction : MIN
@@ -111,22 +118,30 @@ def p_direction(p):
 def p_whileInst(p):
 	'''whileInst : WHILE LPAREN expression RPAREN DO instruction
 				 | WHILE LPAREN expression RPAREN'''
+    if len(p) == 7:
+        p[0] = WhileInst(p[1],p[2],p[3],p[4],p[5],p[6])
+    else:
+        p[0] = WhileInst(p[1],p[2],p[3],p[4],None,None)
 
 def p_repeatInst(p):
 	'''repeatInst : REPEAT instruction whileInst'''
+    p[0] = RepeatInst(p[1],p[2],p[3])
 
 def p_scanInst(p):
 	'''scanInst : SCAN expression'''
 
+
 def p_printInst(p):
 	'''printInst : PRINT outputType
 				 | PRINTLN outputType'''
+
 
 def p_outputType(p):
 	'''outputType : expression COMMA outputType
 				  | expression
                   | STRING COMMA outputType
                   | STRING'''
+
 
 def p_expression(p):
     '''expression : expression PLUS expression
