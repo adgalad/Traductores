@@ -64,9 +64,49 @@ class UsingInInst:
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"USING\n"
-		string += i.printTree(tabs+1)
+		string += self.declaration.printTree(tabs+1)
 		string += indent(tabs)+"IN\n"
-		string += i.printTree(tabs+1)
+		string += self.instruction.printTree(tabs+1)
+		return string
+
+class DeclarationBlock:
+	def __init__(self,varType,Id,semicolon,declaration=""):
+		self.varType = varType
+		self.Id = Id
+		self.semicolon = semicolon
+		self.declaration = declaration
+
+	def printTree(self,tabs):
+		string = ""
+		string += self.varType.printTree(tabs)
+		string += self.Id.printTree(tabs)
+		if isinstance(self.declaration, str):
+			string += indent(tabs)+self.declaration
+		else:
+			string += self.declaration.printTree(tabs)
+		return string
+
+		
+class Type:
+	def __init__(self,type):
+		self.type = type
+
+	def printTree(self,tabs):
+		string = indent(tabs)+self.type
+		return string
+
+class ID:
+	def __init__(self,value,comma="",IDrecursion=""):
+		self.type = 'id'
+		self.value = value
+		self.IDrecursion = IDrecursion
+
+	def printTree(self,tabs):
+		string = indent(tabs)+"variable\n"
+		string += indent(tabs+1)+self.value+"\n"
+		if not isinstance(self.IDrecursion,str):
+			string += self.IDrecursion.printTree(tabs)
+		return string 
 
 
 class InstructionBlock:
@@ -151,18 +191,9 @@ class RepeatInst:
 		return string
 
 
-class ID:
-	def __init__(self,value,comma="",IDrecursion=""):
-		self.type = 'id'
-		self.value = value
-		self.IDrecursion = IDrecursion
-
-	def printTree(self,tabs):
-		string = indent(tabs)+"variable\n"
-		string += indent(tabs+1)+self.value+"\n"
-		if not isinstance(self.IDrecursion,str):
-			string += self.IDrecursion.printTree(tabs)
-		return string 
+class ScanInst:
+	def __init__(self):
+		pass
 
 
 class PrintInst:
@@ -224,6 +255,16 @@ class Expression:
     	return string
 
 
+class Set:
+	def __init__(self):
+		pass
+
+
+class SetNumbers:
+	def __init__(self):
+		pass
+
+
 class Number:
 	def __init__(self,value):
 		self.value = value
@@ -232,3 +273,4 @@ class Number:
 		string  = indent(tabs)+"INT\n"
 		string += indent(tabs+1) + str(self.value) + "\n"
 		return string
+
