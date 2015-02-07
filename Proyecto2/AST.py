@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
 binaryOperator = { 	"+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
-				   	"/" : "DIVIDE", "%" : "MODULE", "and" : "AND"}
+				   	"/" : "DIVIDE", "%" : "MODULE", "and" : "AND",
+				   	"or" : "OR", "<" : "LESSTHAN",">" : "GREATERTHAN",
+				   	"<=" : "LESSEQUALSTHAN",">=" : "GREATEREQUALTHAN",
+				   	"@" : "BELONGSTO","not" : "NOT", "print": "PRINT","println": "PRINTLN"}
 
 def indent(tabs):
 	return "   "*tabs
@@ -42,9 +45,9 @@ class Instruction:
 		string =""
 		if self.assign == "":
 			if isinstance(self.instruction, str):
-				string += indent(tabs+1)+self.instruction
+				string += indent(tabs)+self.instruction
 			else:
-				string += self.instruction.printTree(tabs+1)
+				string += self.instruction.printTree(tabs)
 		else:
 			string += indent(tabs)+"ASSIGN\n"
 			string += self.id.printTree(tabs+1) 
@@ -100,6 +103,33 @@ class ForInst:
 		string += self.instruction.printTree(tabs+1)
 		return string
 
+class WhileInst:
+	def __init__(self,While,lparen,expression,rparen,Do="",instruction=""):
+		self.While = While
+		self.expression = expression
+		self.Do = Do
+		self.instruction = instruction
+
+	def printTree(self,tabs):
+		string = indent(tabs)+"WHILE\n"
+		string += indent(tabs+1)+"condition\n"
+		string += self.expression.printTree(tabs+2)
+		if not isinstance(self.instruction,str):
+			string += indent(tabs)+"DO\n"
+			string += self.instruction.printTree(tabs)
+		return string
+
+class RepeatInst:
+	def __init__(self,repeat,instruction,While):
+		self.While = While
+		self.repeat = repeat
+		self.instruction = instruction
+
+	def printTree(self,tabs):
+		string = indent(tabs)+"REPEAT\n"
+		string += self.instruction.printTree(tabs+1)
+		string += self.While.printTree(tabs)
+		return string
 
 class ID:
 	def __init__(self,value,comma="",IDrecursion=""):
@@ -127,11 +157,40 @@ class UsingInInst:
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"USING\n"
-		for i in self.declaration:
-			string += i.printTree(tabs+1)
+		string += i.printTree(tabs+1)
 		string += indent(tabs)+"IN\n"
-		for i in self.instruction:
-			string += i.printTree(tabs+1)
+		string += i.printTree(tabs+1)
+
+class PrintInst:
+	def __init__(self,Print,output):
+		self.Print = Print
+		self.output = output
+
+	def printTree(self,tabs):
+		string = indent(tabs)+binaryOperator[self.Print]+"\n"
+		string += self.output.printTree(tabs+1)
+		return string
+
+class OutputType:
+	def __init__(self,expression,comma="",outputRecursion=""):
+		self.expression = expression
+		self.comma = comma
+		self.outputRecursion = outputRecursion
+
+	def printTree(self,tabs):
+		string = self.expression.printTree(tabs)
+		if not isinstance(self.outputRecursion,str):
+			string += self.outputRecursion.printTree(tabs)
+		return string
+
+class String:
+	def __init__(self,string):
+		self.string = string
+
+	def printTree(self,tabs):
+		string = indent(tabs)+"string\n"
+		string += indent(tabs)+self.string+"\n"
+		return string
 
 class Number:
 	def __init__(self,value):
@@ -153,7 +212,7 @@ class Expression:
     	string = ""
     	if self.op != "":
     		if self.right == "":
-	    		string += indent(tabs+1)+self.op
+	    		string += indent(tabs)+binaryOperator[self.op]+" "+self.op+"\n"
 	    		string += self.left.printTree(tabs+1)
 	    	else:
 	    		string += indent(tabs)+binaryOperator[self.op]+" "+self.op+"\n"

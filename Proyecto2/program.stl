@@ -1,8 +1,24 @@
 program 
 {
+    while (a and r) do
+    {
+    	for i max g do 
+    	{
+
+    	};
+    };
+	repeat
+	    f = e and a + b + d
+	while (not f) do
+		e = a < b or f
+	;
+
 	x = 4+2;
 	for i min s do {
+		print "hola";
+		println a*i;
         a = a*b;
     };
+
 }
 

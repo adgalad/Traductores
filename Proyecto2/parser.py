@@ -121,10 +121,11 @@ def p_direction(p):
 def p_whileInst(p):
     '''whileInst : WHILE LPAREN expression RPAREN DO instruction
 				 | WHILE LPAREN expression RPAREN'''
+    print "\n\n\n\n\n\nsdasasdas\n\n\n\n\n\n\n"
     if len(p) == 7:
         p[0] = WhileInst(p[1],p[2],p[3],p[4],p[5],p[6])
     else:
-        p[0] = WhileInst(p[1],p[2],p[3],p[4],"","")
+        p[0] = WhileInst(p[1],p[2],p[3],p[4])
 
 def p_repeatInst(p):
     '''repeatInst : REPEAT instruction whileInst'''
@@ -135,16 +136,25 @@ def p_scanInst(p):
 
 
 def p_printInst(p):
-	'''printInst : PRINT outputType
+    '''printInst : PRINT outputType
 				 | PRINTLN outputType'''
+    p[0] = PrintInst(p[1],p[2])
 
 
 def p_outputType(p):
-	'''outputType : expression COMMA outputType
+    '''outputType : expression COMMA outputType
 				  | expression
-                  | STRING COMMA outputType
-                  | STRING'''
+                  | string COMMA outputType
+                  | string'''
+    if (len(p) == 2):
+        p[0] = OutputType(p[1])
+    else:
+        p[0] = OutputType(p[1],p[2],p[3])
 
+
+def p_string(p):
+    ''' string : STRING '''
+    p[0] = String(p[1])
 
 def p_expression(p):
     '''expression : expression PLUS expression
