@@ -121,7 +121,6 @@ def p_direction(p):
 def p_whileInst(p):
     '''whileInst : WHILE LPAREN expression RPAREN DO instruction
 				 | WHILE LPAREN expression RPAREN'''
-    print "\n\n\n\n\n\nsdasasdas\n\n\n\n\n\n\n"
     if len(p) == 7:
         p[0] = WhileInst(p[1],p[2],p[3],p[4],p[5],p[6])
     else:

@@ -32,7 +32,7 @@ reserved = {
     }
 
 tokens = [
-   'NUMBER', 'IDENTIFIER', 'STRING', 'COMMENT', 
+   'NUMBER', 'IDENTIFIER', 'STRING',
    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODULE',  'COMMA',
    'SEMICOLON', 'LCURLY', 'RCURLY', 'LPAREN', 'RPAREN',
    'ASSIGN', 'SETUNION',

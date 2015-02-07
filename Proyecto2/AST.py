@@ -116,7 +116,7 @@ class WhileInst:
 		string += self.expression.printTree(tabs+2)
 		if not isinstance(self.instruction,str):
 			string += indent(tabs)+"DO\n"
-			string += self.instruction.printTree(tabs)
+			string += self.instruction.printTree(tabs+1)
 		return string
 
 class RepeatInst:
@@ -189,7 +189,7 @@ class String:
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"string\n"
-		string += indent(tabs)+self.string+"\n"
+		string += indent(tabs+1)+self.string+"\n"
 		return string
 
 class Number:
