@@ -6,30 +6,29 @@ def indent(tabs):
 
 output = []
 class Program:
-	def __init__(self,declarations="",instructions=""):
+	def __init__(self,declarations="",instruction=""):
 		self.declarations = declarations
-		self.instructions = instructions
+		self.instruction = instruction
 		global output
 		output += [["PROGRAM",]]
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"PROGRAM\n"
-		for i in self.instruction:
-			string += i.printTree(tabs+1)
+		string += self.instruction.printTree(tabs+1)
 		return string
 
 
 class Block:
-	def __init__(self,lcurly, instruction,rcurly):
+	def __init__(self,lcurly, instructionBlock,rcurly):
 		self.rcurly = rcurly
 		self.lcurly = lcurly
-		self.instruction = instruction
+		self.instructionBlock = instructionBlock
 
 	def printTree(self,tabs):
-		string = indent(tabs)+"BLOCK\n"
-		for i in self.instruction:
-			string += i.printTree(tabs+1)
+		string  = indent(tabs)+"BLOCK\n"
+		string += self.instructionBlock.printTree(tabs+1)
 		string += indent(tabs)+"BLOCK_END\n"
+		return string
 
 
 class Instruction:
@@ -41,16 +40,22 @@ class Instruction:
 
 	def printTree(self,tabs):
 		string =""
-		for i in self.instruction:
-			string += i.printTree(tabs)
-		string += self.id  
-		string += self.assign 
-		for i in self.expression:
-			string += i.printTree(tabs)
+		if self.instruction != "":
+			string += self.instruction.printTree(tabs)
+		else:
+			string += self.id  
+			string += self.assign 
+			string += self.expression.printTree(tabs)
+		if string == None:
+			print "instruction none\n"
+			return ""
+
 		return string 
 
+
+
 class InstructionBlock:
-	def __init__(self,instruction,sigInst,instRec=""):
+	def __init__(self,instruction="",sigInst="",instRec=""):
 		self.instruction = instruction
 		self. sigInst = sigInst
 		self.instRec = instRec
@@ -62,7 +67,10 @@ class InstructionBlock:
 		string += self.sigInst
 		for i in self.instRec:
 			string += i.printTree(tabs)
-
+		if string == None:
+			print "insBLock None\n"
+			return ""
+		return string
 
 class Direction:
 	def __init__(self,direction):
@@ -94,11 +102,14 @@ class ForInst:
 
 
 class ID:
-	def __init__(self,value):
+	def __init__(self,value,comma="",IDrecursion=""):
 		self.type = 'id'
 		self.value = value
-		global output
-		output += [["variable\n","\t%s"%value,]]
+
+	def printTree(self,tabs):
+		string = indent(tabs)+"variable"
+		string += indent(tabs+1)+self.value
+		return string 
 
 class Number:
     def __init__(self,value):

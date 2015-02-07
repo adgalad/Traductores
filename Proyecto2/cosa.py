@@ -3,15 +3,15 @@
 
 
 class Program:
-	def __init__(self,declarations"",instructions""):
+	def __init__(self,declarations=None,instruction=None):
 		self.declarations = declarations
-		self.instructions = instructions
+		self.instruction = instruction
 
 	def getValue(self):
 		return "PROGRAM"
 
 class InstructionBlock:
-	def __init__(self,inst,sigInst,instRec""):
+	def __init__(self,inst,sigInst,instRec=None):
 		self.inst = inst
 		self. sigInst = sigInst
 
@@ -53,7 +53,7 @@ class IfInst:
 		pass
 
 class BinaryOp:
-    def __init__(self,left,op"",right""):
+    def __init__(self,left,op=None,right=None):
         self.type  = "binaryOp"
         self.left  = left
         self.right = right
