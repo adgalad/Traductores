@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import ply.lex as lex
-from django.template.base import Lexer
 
-error = False
-output = ""
-beginningOfLine = -1
 reserved = {
     'program' : 'PROGRAM',
     'using'   : 'USING',
@@ -32,16 +28,18 @@ reserved = {
     }
 
 tokens = [
-   'NUMBER', 'IDENTIFIER', 'STRING',
-   'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODULE',  'COMMA',
-   'SEMICOLON', 'LCURLY', 'RCURLY', 'LPAREN', 'RPAREN',
-   'ASSIGN', 'SETUNION',
-   'SETDIFF', 'SETINTERSECT', 'SETMAPPLUS', 'SETMAPMINUS', 
-   'SETMAPTIMES', 'SETMAPDIVIDE', 'SETMAPMODULE', 'SETMAXVALUE',
-   'SETMINVALUE', 'SETSIZE', 'LESSTHAN', 'GREATERTHAN', 'LESSEQUALTHAN',
-   'GREATEREQUALTHAN', 'EQUALS', 'NOTEQUALS', 'BELONGSTO'
+   'NUMBER', 'IDENTIFIER', 'STRING', 'LCURLY', 'RCURLY', 'LPAREN', 'RPAREN',
+   'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'MODULE', 'COMMA', 'SEMICOLON', 
+   'ASSIGN', 'SETUNION', 'SETDIFF', 'SETINTERSECT', 'SETMAPPLUS',
+   'SETMAPMINUS', 'SETMAPTIMES', 'SETMAPDIVIDE', 'SETMAPMODULE',
+   'SETMAXVALUE', 'SETMINVALUE', 'SETSIZE', 'LESSTHAN', 'GREATERTHAN',
+   'LESSEQUALTHAN', 'GREATEREQUALTHAN', 'EQUALS', 'NOTEQUALS', 'BELONGSTO'
 ] + list(reserved.values())
 
+t_LCURLY        = r'\{'
+t_RCURLY        = r'\}'
+t_LPAREN        = r'\('
+t_RPAREN        = r'\)'
 t_PLUS          = r'\+'
 t_MINUS         = r'\-'
 t_TIMES         = r'\*'
@@ -49,10 +47,6 @@ t_DIVIDE        = r'\/'
 t_MODULE        = r'\%' 
 t_COMMA         = r'\,'
 t_SEMICOLON     = r'\;'
-t_LCURLY        = r'\{'
-t_RCURLY        = r'\}'
-t_LPAREN        = r'\('
-t_RPAREN        = r'\)'
 t_ASSIGN        = r'\='
 
 # Set operators
@@ -77,8 +71,6 @@ t_EQUALS        = r'\=\='
 t_NOTEQUALS     = r'\/\=' 
 t_BELONGSTO     = r'\@'
 
-
-
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)    
@@ -97,11 +89,23 @@ def t_STRING(t):
     return t
 
 def t_error(t):
-    print '''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d''' % (t.value[0], t.lineno, t.lexpos - beginningOfLine)
-    error = True
+    lexError.append('''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d''' % (t.value[0], t.lineno, findColumn(t.lexer.lexdata,t)))
     t.lexer.skip(1)
 
 t_ignore  = ' \t\n'
 t_ignore_COMMENT = r'\#.*'
 
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
+def findColumn(input,tok):
+    beginOfLine = input.rfind('\n',0,tok.lexpos)
+    if beginOfLine < 0:
+        beginOfLine = -1
+    column = (tok.lexpos - beginOfLine)
+    return column
+
 lexer = lex.lex()
+lexError = []
+output = ""

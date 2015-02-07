@@ -1960,6 +1960,7 @@ state 53
     GREATEREQUALTHAN reduce using rule 61 (expression -> MINUS expression .)
     EQUALS          reduce using rule 61 (expression -> MINUS expression .)
     NOTEQUALS       reduce using rule 61 (expression -> MINUS expression .)
+    BELONGSTO       reduce using rule 61 (expression -> MINUS expression .)
     $end            reduce using rule 61 (expression -> MINUS expression .)
     SEMICOLON       reduce using rule 61 (expression -> MINUS expression .)
     WHILE           reduce using rule 61 (expression -> MINUS expression .)
@@ -1980,7 +1981,6 @@ state 53
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! TIMES           [ reduce using rule 61 (expression -> MINUS expression .) ]
   ! DIVIDE          [ reduce using rule 61 (expression -> MINUS expression .) ]
@@ -1993,7 +1993,6 @@ state 53
   ! SETMAPTIMES     [ reduce using rule 61 (expression -> MINUS expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 61 (expression -> MINUS expression .) ]
   ! SETMAPMODULE    [ reduce using rule 61 (expression -> MINUS expression .) ]
-  ! BELONGSTO       [ reduce using rule 61 (expression -> MINUS expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! AND             [ shift and go to state 74 ]
@@ -2004,6 +2003,7 @@ state 53
   ! GREATEREQUALTHAN [ shift and go to state 67 ]
   ! EQUALS          [ shift and go to state 71 ]
   ! NOTEQUALS       [ shift and go to state 58 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 54
@@ -4464,6 +4464,7 @@ state 103
     SETMAPTIMES     reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
     SETMAPDIVIDE    reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
     SETMAPMODULE    reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
+    BELONGSTO       reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
     $end            reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
     SEMICOLON       reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
     WHILE           reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
@@ -4473,9 +4474,7 @@ state 103
     MAX             reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
     RPAREN          reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
     DO              reduce using rule 58 (expression -> expression SETMAPMODULE expression .)
-    BELONGSTO       shift and go to state 79
 
-  ! BELONGSTO       [ reduce using rule 58 (expression -> expression SETMAPMODULE expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -4497,6 +4496,7 @@ state 103
   ! SETMAPTIMES     [ shift and go to state 63 ]
   ! SETMAPDIVIDE    [ shift and go to state 69 ]
   ! SETMAPMODULE    [ shift and go to state 60 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 104
@@ -4535,6 +4535,7 @@ state 104
     GREATEREQUALTHAN reduce using rule 39 (expression -> expression MINUS expression .)
     EQUALS          reduce using rule 39 (expression -> expression MINUS expression .)
     NOTEQUALS       reduce using rule 39 (expression -> expression MINUS expression .)
+    BELONGSTO       reduce using rule 39 (expression -> expression MINUS expression .)
     $end            reduce using rule 39 (expression -> expression MINUS expression .)
     SEMICOLON       reduce using rule 39 (expression -> expression MINUS expression .)
     WHILE           reduce using rule 39 (expression -> expression MINUS expression .)
@@ -4555,7 +4556,6 @@ state 104
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! TIMES           [ reduce using rule 39 (expression -> expression MINUS expression .) ]
   ! DIVIDE          [ reduce using rule 39 (expression -> expression MINUS expression .) ]
@@ -4568,7 +4568,6 @@ state 104
   ! SETMAPTIMES     [ reduce using rule 39 (expression -> expression MINUS expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 39 (expression -> expression MINUS expression .) ]
   ! SETMAPMODULE    [ reduce using rule 39 (expression -> expression MINUS expression .) ]
-  ! BELONGSTO       [ reduce using rule 39 (expression -> expression MINUS expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! AND             [ shift and go to state 74 ]
@@ -4579,6 +4578,7 @@ state 104
   ! GREATEREQUALTHAN [ shift and go to state 67 ]
   ! EQUALS          [ shift and go to state 71 ]
   ! NOTEQUALS       [ shift and go to state 58 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 105
@@ -4622,6 +4622,7 @@ state 105
     NOTEQUALS       reduce using rule 51 (expression -> expression SETUNION expression .)
     SETUNION        reduce using rule 51 (expression -> expression SETUNION expression .)
     SETDIFF         reduce using rule 51 (expression -> expression SETUNION expression .)
+    BELONGSTO       reduce using rule 51 (expression -> expression SETUNION expression .)
     $end            reduce using rule 51 (expression -> expression SETUNION expression .)
     SEMICOLON       reduce using rule 51 (expression -> expression SETUNION expression .)
     WHILE           reduce using rule 51 (expression -> expression SETUNION expression .)
@@ -4637,7 +4638,6 @@ state 105
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! SETINTERSECT    [ reduce using rule 51 (expression -> expression SETUNION expression .) ]
   ! SETMAPPLUS      [ reduce using rule 51 (expression -> expression SETUNION expression .) ]
@@ -4645,7 +4645,6 @@ state 105
   ! SETMAPTIMES     [ reduce using rule 51 (expression -> expression SETUNION expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 51 (expression -> expression SETUNION expression .) ]
   ! SETMAPMODULE    [ reduce using rule 51 (expression -> expression SETUNION expression .) ]
-  ! BELONGSTO       [ reduce using rule 51 (expression -> expression SETUNION expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -4661,6 +4660,7 @@ state 105
   ! NOTEQUALS       [ shift and go to state 58 ]
   ! SETUNION        [ shift and go to state 62 ]
   ! SETDIFF         [ shift and go to state 66 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 106
@@ -4710,6 +4710,7 @@ state 106
     SETMAPTIMES     reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
     SETMAPDIVIDE    reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
     SETMAPMODULE    reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
+    BELONGSTO       reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
     $end            reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
     SEMICOLON       reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
     WHILE           reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
@@ -4719,9 +4720,7 @@ state 106
     MAX             reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
     RPAREN          reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
     DO              reduce using rule 56 (expression -> expression SETMAPTIMES expression .)
-    BELONGSTO       shift and go to state 79
 
-  ! BELONGSTO       [ reduce using rule 56 (expression -> expression SETMAPTIMES expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -4743,6 +4742,7 @@ state 106
   ! SETMAPTIMES     [ shift and go to state 63 ]
   ! SETMAPDIVIDE    [ shift and go to state 69 ]
   ! SETMAPMODULE    [ shift and go to state 60 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 107
@@ -4787,6 +4787,7 @@ state 107
     SETUNION        reduce using rule 53 (expression -> expression SETINTERSECT expression .)
     SETDIFF         reduce using rule 53 (expression -> expression SETINTERSECT expression .)
     SETINTERSECT    reduce using rule 53 (expression -> expression SETINTERSECT expression .)
+    BELONGSTO       reduce using rule 53 (expression -> expression SETINTERSECT expression .)
     $end            reduce using rule 53 (expression -> expression SETINTERSECT expression .)
     SEMICOLON       reduce using rule 53 (expression -> expression SETINTERSECT expression .)
     WHILE           reduce using rule 53 (expression -> expression SETINTERSECT expression .)
@@ -4801,14 +4802,12 @@ state 107
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! SETMAPPLUS      [ reduce using rule 53 (expression -> expression SETINTERSECT expression .) ]
   ! SETMAPMINUS     [ reduce using rule 53 (expression -> expression SETINTERSECT expression .) ]
   ! SETMAPTIMES     [ reduce using rule 53 (expression -> expression SETINTERSECT expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 53 (expression -> expression SETINTERSECT expression .) ]
   ! SETMAPMODULE    [ reduce using rule 53 (expression -> expression SETINTERSECT expression .) ]
-  ! BELONGSTO       [ reduce using rule 53 (expression -> expression SETINTERSECT expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -4825,6 +4824,7 @@ state 107
   ! SETUNION        [ shift and go to state 62 ]
   ! SETDIFF         [ shift and go to state 66 ]
   ! SETINTERSECT    [ shift and go to state 64 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 108
@@ -4863,6 +4863,7 @@ state 108
     GREATEREQUALTHAN reduce using rule 38 (expression -> expression PLUS expression .)
     EQUALS          reduce using rule 38 (expression -> expression PLUS expression .)
     NOTEQUALS       reduce using rule 38 (expression -> expression PLUS expression .)
+    BELONGSTO       reduce using rule 38 (expression -> expression PLUS expression .)
     $end            reduce using rule 38 (expression -> expression PLUS expression .)
     SEMICOLON       reduce using rule 38 (expression -> expression PLUS expression .)
     WHILE           reduce using rule 38 (expression -> expression PLUS expression .)
@@ -4883,7 +4884,6 @@ state 108
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! TIMES           [ reduce using rule 38 (expression -> expression PLUS expression .) ]
   ! DIVIDE          [ reduce using rule 38 (expression -> expression PLUS expression .) ]
@@ -4896,7 +4896,6 @@ state 108
   ! SETMAPTIMES     [ reduce using rule 38 (expression -> expression PLUS expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 38 (expression -> expression PLUS expression .) ]
   ! SETMAPMODULE    [ reduce using rule 38 (expression -> expression PLUS expression .) ]
-  ! BELONGSTO       [ reduce using rule 38 (expression -> expression PLUS expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! AND             [ shift and go to state 74 ]
@@ -4907,6 +4906,7 @@ state 108
   ! GREATEREQUALTHAN [ shift and go to state 67 ]
   ! EQUALS          [ shift and go to state 71 ]
   ! NOTEQUALS       [ shift and go to state 58 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 109
@@ -4950,6 +4950,7 @@ state 109
     NOTEQUALS       reduce using rule 52 (expression -> expression SETDIFF expression .)
     SETUNION        reduce using rule 52 (expression -> expression SETDIFF expression .)
     SETDIFF         reduce using rule 52 (expression -> expression SETDIFF expression .)
+    BELONGSTO       reduce using rule 52 (expression -> expression SETDIFF expression .)
     $end            reduce using rule 52 (expression -> expression SETDIFF expression .)
     SEMICOLON       reduce using rule 52 (expression -> expression SETDIFF expression .)
     WHILE           reduce using rule 52 (expression -> expression SETDIFF expression .)
@@ -4965,7 +4966,6 @@ state 109
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! SETINTERSECT    [ reduce using rule 52 (expression -> expression SETDIFF expression .) ]
   ! SETMAPPLUS      [ reduce using rule 52 (expression -> expression SETDIFF expression .) ]
@@ -4973,7 +4973,6 @@ state 109
   ! SETMAPTIMES     [ reduce using rule 52 (expression -> expression SETDIFF expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 52 (expression -> expression SETDIFF expression .) ]
   ! SETMAPMODULE    [ reduce using rule 52 (expression -> expression SETDIFF expression .) ]
-  ! BELONGSTO       [ reduce using rule 52 (expression -> expression SETDIFF expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -4989,6 +4988,7 @@ state 109
   ! NOTEQUALS       [ shift and go to state 58 ]
   ! SETUNION        [ shift and go to state 62 ]
   ! SETDIFF         [ shift and go to state 66 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 110
@@ -5112,6 +5112,7 @@ state 111
     GREATEREQUALTHAN reduce using rule 41 (expression -> expression DIVIDE expression .)
     EQUALS          reduce using rule 41 (expression -> expression DIVIDE expression .)
     NOTEQUALS       reduce using rule 41 (expression -> expression DIVIDE expression .)
+    BELONGSTO       reduce using rule 41 (expression -> expression DIVIDE expression .)
     $end            reduce using rule 41 (expression -> expression DIVIDE expression .)
     SEMICOLON       reduce using rule 41 (expression -> expression DIVIDE expression .)
     WHILE           reduce using rule 41 (expression -> expression DIVIDE expression .)
@@ -5129,7 +5130,6 @@ state 111
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! SETUNION        [ reduce using rule 41 (expression -> expression DIVIDE expression .) ]
   ! SETDIFF         [ reduce using rule 41 (expression -> expression DIVIDE expression .) ]
@@ -5139,7 +5139,6 @@ state 111
   ! SETMAPTIMES     [ reduce using rule 41 (expression -> expression DIVIDE expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 41 (expression -> expression DIVIDE expression .) ]
   ! SETMAPMODULE    [ reduce using rule 41 (expression -> expression DIVIDE expression .) ]
-  ! BELONGSTO       [ reduce using rule 41 (expression -> expression DIVIDE expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -5153,6 +5152,7 @@ state 111
   ! GREATEREQUALTHAN [ shift and go to state 67 ]
   ! EQUALS          [ shift and go to state 71 ]
   ! NOTEQUALS       [ shift and go to state 58 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 112
@@ -5202,6 +5202,7 @@ state 112
     SETMAPTIMES     reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
     SETMAPDIVIDE    reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
     SETMAPMODULE    reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
+    BELONGSTO       reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
     $end            reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
     SEMICOLON       reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
     WHILE           reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
@@ -5211,9 +5212,7 @@ state 112
     MAX             reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
     RPAREN          reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
     DO              reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .)
-    BELONGSTO       shift and go to state 79
 
-  ! BELONGSTO       [ reduce using rule 57 (expression -> expression SETMAPDIVIDE expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -5235,6 +5234,7 @@ state 112
   ! SETMAPTIMES     [ shift and go to state 63 ]
   ! SETMAPDIVIDE    [ shift and go to state 69 ]
   ! SETMAPMODULE    [ shift and go to state 60 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 113
@@ -5276,6 +5276,7 @@ state 113
     GREATEREQUALTHAN reduce using rule 42 (expression -> expression MODULE expression .)
     EQUALS          reduce using rule 42 (expression -> expression MODULE expression .)
     NOTEQUALS       reduce using rule 42 (expression -> expression MODULE expression .)
+    BELONGSTO       reduce using rule 42 (expression -> expression MODULE expression .)
     $end            reduce using rule 42 (expression -> expression MODULE expression .)
     SEMICOLON       reduce using rule 42 (expression -> expression MODULE expression .)
     WHILE           reduce using rule 42 (expression -> expression MODULE expression .)
@@ -5293,7 +5294,6 @@ state 113
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! SETUNION        [ reduce using rule 42 (expression -> expression MODULE expression .) ]
   ! SETDIFF         [ reduce using rule 42 (expression -> expression MODULE expression .) ]
@@ -5303,7 +5303,6 @@ state 113
   ! SETMAPTIMES     [ reduce using rule 42 (expression -> expression MODULE expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 42 (expression -> expression MODULE expression .) ]
   ! SETMAPMODULE    [ reduce using rule 42 (expression -> expression MODULE expression .) ]
-  ! BELONGSTO       [ reduce using rule 42 (expression -> expression MODULE expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -5317,6 +5316,7 @@ state 113
   ! GREATEREQUALTHAN [ shift and go to state 67 ]
   ! EQUALS          [ shift and go to state 71 ]
   ! NOTEQUALS       [ shift and go to state 58 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 114
@@ -5522,6 +5522,7 @@ state 116
     GREATEREQUALTHAN reduce using rule 40 (expression -> expression TIMES expression .)
     EQUALS          reduce using rule 40 (expression -> expression TIMES expression .)
     NOTEQUALS       reduce using rule 40 (expression -> expression TIMES expression .)
+    BELONGSTO       reduce using rule 40 (expression -> expression TIMES expression .)
     $end            reduce using rule 40 (expression -> expression TIMES expression .)
     SEMICOLON       reduce using rule 40 (expression -> expression TIMES expression .)
     WHILE           reduce using rule 40 (expression -> expression TIMES expression .)
@@ -5539,7 +5540,6 @@ state 116
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! SETUNION        [ reduce using rule 40 (expression -> expression TIMES expression .) ]
   ! SETDIFF         [ reduce using rule 40 (expression -> expression TIMES expression .) ]
@@ -5549,7 +5549,6 @@ state 116
   ! SETMAPTIMES     [ reduce using rule 40 (expression -> expression TIMES expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 40 (expression -> expression TIMES expression .) ]
   ! SETMAPMODULE    [ reduce using rule 40 (expression -> expression TIMES expression .) ]
-  ! BELONGSTO       [ reduce using rule 40 (expression -> expression TIMES expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -5563,6 +5562,7 @@ state 116
   ! GREATEREQUALTHAN [ shift and go to state 67 ]
   ! EQUALS          [ shift and go to state 71 ]
   ! NOTEQUALS       [ shift and go to state 58 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 117
@@ -5773,6 +5773,7 @@ state 119
     SETINTERSECT    reduce using rule 54 (expression -> expression SETMAPPLUS expression .)
     SETMAPPLUS      reduce using rule 54 (expression -> expression SETMAPPLUS expression .)
     SETMAPMINUS     reduce using rule 54 (expression -> expression SETMAPPLUS expression .)
+    BELONGSTO       reduce using rule 54 (expression -> expression SETMAPPLUS expression .)
     $end            reduce using rule 54 (expression -> expression SETMAPPLUS expression .)
     SEMICOLON       reduce using rule 54 (expression -> expression SETMAPPLUS expression .)
     WHILE           reduce using rule 54 (expression -> expression SETMAPPLUS expression .)
@@ -5785,12 +5786,10 @@ state 119
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! SETMAPTIMES     [ reduce using rule 54 (expression -> expression SETMAPPLUS expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 54 (expression -> expression SETMAPPLUS expression .) ]
   ! SETMAPMODULE    [ reduce using rule 54 (expression -> expression SETMAPPLUS expression .) ]
-  ! BELONGSTO       [ reduce using rule 54 (expression -> expression SETMAPPLUS expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -5809,6 +5808,7 @@ state 119
   ! SETINTERSECT    [ shift and go to state 64 ]
   ! SETMAPPLUS      [ shift and go to state 76 ]
   ! SETMAPMINUS     [ shift and go to state 78 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 120
@@ -5937,6 +5937,7 @@ state 121
     SETINTERSECT    reduce using rule 55 (expression -> expression SETMAPMINUS expression .)
     SETMAPPLUS      reduce using rule 55 (expression -> expression SETMAPMINUS expression .)
     SETMAPMINUS     reduce using rule 55 (expression -> expression SETMAPMINUS expression .)
+    BELONGSTO       reduce using rule 55 (expression -> expression SETMAPMINUS expression .)
     $end            reduce using rule 55 (expression -> expression SETMAPMINUS expression .)
     SEMICOLON       reduce using rule 55 (expression -> expression SETMAPMINUS expression .)
     WHILE           reduce using rule 55 (expression -> expression SETMAPMINUS expression .)
@@ -5949,12 +5950,10 @@ state 121
     SETMAPTIMES     shift and go to state 63
     SETMAPDIVIDE    shift and go to state 69
     SETMAPMODULE    shift and go to state 60
-    BELONGSTO       shift and go to state 79
 
   ! SETMAPTIMES     [ reduce using rule 55 (expression -> expression SETMAPMINUS expression .) ]
   ! SETMAPDIVIDE    [ reduce using rule 55 (expression -> expression SETMAPMINUS expression .) ]
   ! SETMAPMODULE    [ reduce using rule 55 (expression -> expression SETMAPMINUS expression .) ]
-  ! BELONGSTO       [ reduce using rule 55 (expression -> expression SETMAPMINUS expression .) ]
   ! PLUS            [ shift and go to state 65 ]
   ! MINUS           [ shift and go to state 61 ]
   ! TIMES           [ shift and go to state 73 ]
@@ -5973,6 +5972,7 @@ state 121
   ! SETINTERSECT    [ shift and go to state 64 ]
   ! SETMAPPLUS      [ shift and go to state 76 ]
   ! SETMAPMINUS     [ shift and go to state 78 ]
+  ! BELONGSTO       [ shift and go to state 79 ]
 
 
 state 122
@@ -6001,11 +6001,6 @@ state 122
     (58) expression -> expression . SETMAPMODULE expression
     (59) expression -> expression . BELONGSTO expression
 
-    PLUS            reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    MINUS           reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    TIMES           reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    DIVIDE          reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    MODULE          reduce using rule 59 (expression -> expression BELONGSTO expression .)
     AND             reduce using rule 59 (expression -> expression BELONGSTO expression .)
     OR              reduce using rule 59 (expression -> expression BELONGSTO expression .)
     LESSTHAN        reduce using rule 59 (expression -> expression BELONGSTO expression .)
@@ -6014,14 +6009,6 @@ state 122
     GREATEREQUALTHAN reduce using rule 59 (expression -> expression BELONGSTO expression .)
     EQUALS          reduce using rule 59 (expression -> expression BELONGSTO expression .)
     NOTEQUALS       reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    SETUNION        reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    SETDIFF         reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    SETINTERSECT    reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    SETMAPPLUS      reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    SETMAPMINUS     reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    SETMAPTIMES     reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    SETMAPDIVIDE    reduce using rule 59 (expression -> expression BELONGSTO expression .)
-    SETMAPMODULE    reduce using rule 59 (expression -> expression BELONGSTO expression .)
     BELONGSTO       reduce using rule 59 (expression -> expression BELONGSTO expression .)
     $end            reduce using rule 59 (expression -> expression BELONGSTO expression .)
     SEMICOLON       reduce using rule 59 (expression -> expression BELONGSTO expression .)
@@ -6032,12 +6019,33 @@ state 122
     MAX             reduce using rule 59 (expression -> expression BELONGSTO expression .)
     RPAREN          reduce using rule 59 (expression -> expression BELONGSTO expression .)
     DO              reduce using rule 59 (expression -> expression BELONGSTO expression .)
+    PLUS            shift and go to state 65
+    MINUS           shift and go to state 61
+    TIMES           shift and go to state 73
+    DIVIDE          shift and go to state 68
+    MODULE          shift and go to state 70
+    SETUNION        shift and go to state 62
+    SETDIFF         shift and go to state 66
+    SETINTERSECT    shift and go to state 64
+    SETMAPPLUS      shift and go to state 76
+    SETMAPMINUS     shift and go to state 78
+    SETMAPTIMES     shift and go to state 63
+    SETMAPDIVIDE    shift and go to state 69
+    SETMAPMODULE    shift and go to state 60
 
-  ! PLUS            [ shift and go to state 65 ]
-  ! MINUS           [ shift and go to state 61 ]
-  ! TIMES           [ shift and go to state 73 ]
-  ! DIVIDE          [ shift and go to state 68 ]
-  ! MODULE          [ shift and go to state 70 ]
+  ! PLUS            [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! MINUS           [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! TIMES           [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! DIVIDE          [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! MODULE          [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! SETUNION        [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! SETDIFF         [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! SETINTERSECT    [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! SETMAPPLUS      [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! SETMAPMINUS     [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! SETMAPTIMES     [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! SETMAPDIVIDE    [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
+  ! SETMAPMODULE    [ reduce using rule 59 (expression -> expression BELONGSTO expression .) ]
   ! AND             [ shift and go to state 74 ]
   ! OR              [ shift and go to state 77 ]
   ! LESSTHAN        [ shift and go to state 59 ]
@@ -6046,14 +6054,6 @@ state 122
   ! GREATEREQUALTHAN [ shift and go to state 67 ]
   ! EQUALS          [ shift and go to state 71 ]
   ! NOTEQUALS       [ shift and go to state 58 ]
-  ! SETUNION        [ shift and go to state 62 ]
-  ! SETDIFF         [ shift and go to state 66 ]
-  ! SETINTERSECT    [ shift and go to state 64 ]
-  ! SETMAPPLUS      [ shift and go to state 76 ]
-  ! SETMAPMINUS     [ shift and go to state 78 ]
-  ! SETMAPTIMES     [ shift and go to state 63 ]
-  ! SETMAPDIVIDE    [ shift and go to state 69 ]
-  ! SETMAPMODULE    [ shift and go to state 60 ]
   ! BELONGSTO       [ shift and go to state 79 ]
 
 

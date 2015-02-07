@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import ply.lex  as lex
 import ply.yacc as yacc
-from   lexer    import tokens
+from   lexer    import tokens, findColumn
 from   AST      import *
 
 # Precedencia de operadores (de menor a mayor)
@@ -13,11 +14,12 @@ precedence = (
 	# Booleanos
 	('left','OR'),
 	('left','AND'),
-	('left','NOT'),
+	('right','NOT'),
 
 	# Comparativos
-	('left', 'LESSTHAN', 'GREATERTHAN', 'LESSEQUALTHAN', 'GREATEREQUALTHAN'),
-	('left', 'EQUALS', 'NOTEQUALS'),
+	('nonassoc', 'LESSTHAN', 'GREATERTHAN', 'LESSEQUALTHAN', 'GREATEREQUALTHAN'),
+	('nonassoc', 'EQUALS', 'NOTEQUALS'),
+    ('nonassoc', 'BELONGSTO'),  # no se si este esta bien aqui
 
 	# Aritméticos
     ('left', 'PLUS', 'MINUS'),
@@ -30,10 +32,9 @@ precedence = (
     # Conjuntos aritméticos
     ('left','SETMAPPLUS','SETMAPMINUS'),						# tiene mayor precedencia sobre la union...
     ('left', 'SETMAPTIMES', 'SETMAPDIVIDE', 'SETMAPMODULE'),
-	('left', 'BELONGSTO'),	# no se si este esta bien aqui
 
 	# Falta el menos unario
-	('left','SETMINVALUE','SETMAXVALUE','SETSIZE'),
+	('right','SETMINVALUE','SETMAXVALUE','SETSIZE'),
 )
 
 def p_program(p):
@@ -208,5 +209,10 @@ def p_number(p):
     p[0] = Number(p[1])
 
 def p_error(p):
-    print p
-    print "Syntax error in input"
+    if p:
+        yaccError.append('''ERROR: Se encontró un token inesperado "%s" en la Línea %d, Columna %d.''' % (p.value, p.lineno, findColumn(p.lexer.lexdata,p)))
+    else:
+        yaccError.append('''ERROR: Error de sintaxis en fin de archivo.''')
+
+parser = yacc.yacc()
+yaccError = []
