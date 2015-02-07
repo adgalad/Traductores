@@ -1,4 +1,8 @@
-program {
-
+program 
+{
+	x = 4+2;
+	for i min s do {
+        a = a*b;
+    };
 }
 
