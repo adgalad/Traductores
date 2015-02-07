@@ -206,7 +206,7 @@ def p_set(p):
 
 def p_setNumbers(p):
 	'''setNumbers : expression COMMA setNumbers
-			      | '''
+			      | expression'''
 
 def p_number(p):
     '''number : NUMBER'''
