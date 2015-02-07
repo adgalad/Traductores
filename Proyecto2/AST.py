@@ -9,8 +9,6 @@ class Program:
 	def __init__(self,declarations="",instruction=""):
 		self.declarations = declarations
 		self.instruction = instruction
-		global output
-		output += [["PROGRAM",]]
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"PROGRAM\n"
@@ -32,44 +30,43 @@ class Block:
 
 
 class Instruction:
-	def __init__(self,instruction = "",id="",assign="",expression=""):
+	def __init__(self,instruction = "",Id="",assign="",expression=""):
 		self.instruction = instruction
-		self.id = id
+		self.id = Id
 		self.assign = assign
 		self.expression = expression
 
 	def printTree(self,tabs):
 		string =""
-		if self.instruction != "":
-			string += self.instruction.printTree(tabs)
+		if self.assign == "":
+			if isinstance(self.instruction, str):
+				string += indent(tabs+1)+self.instruction
+			else:
+				string += self.instruction.printTree(tabs+1)
 		else:
-			string += self.id  
-			string += self.assign 
-			string += self.expression.printTree(tabs)
-		if string == None:
-			print "instruction none\n"
-			return ""
+			string += indent(tabs)+"ASSIGN\n"
+			string += self.id.printTree(tabs+1) 
+			string += indent(tabs+1)+"value\n"
+			string += self.expression.printTree(tabs+2)
 
 		return string 
 
 
 
 class InstructionBlock:
-	def __init__(self,instruction="",sigInst="",instRec=""):
+	def __init__(self,instruction="",semicolon="",instructionBlock=""):
 		self.instruction = instruction
-		self. sigInst = sigInst
-		self.instRec = instRec
+		self.semicolon = semicolon
+		self.instructionBlock = instructionBlock
 
 	def printTree(self,tabs):
 		string = ""
-		for i in self.instruction:
-			string += i.printTree(tabs)
-		string += self.sigInst
-		for i in self.instRec:
-			string += i.printTree(tabs)
-		if string == None:
-			print "insBLock None\n"
-			return ""
+		if self.instruction != "":
+			string += self.instruction.printTree(tabs)
+			if isinstance(self.instructionBlock, str):
+				string += indent(tabs)+self.instructionBlock
+			else:
+				string += self.instructionBlock.printTree(tabs)
 		return string
 
 class Direction:
@@ -107,8 +104,8 @@ class ID:
 		self.value = value
 
 	def printTree(self,tabs):
-		string = indent(tabs)+"variable"
-		string += indent(tabs+1)+self.value
+		string = indent(tabs)+"variable\n"
+		string += indent(tabs+1)+self.value+"\n"
 		return string 
 
 class Number:
@@ -138,6 +135,14 @@ class UsingInInst:
 		for i in self.instruction:
 			string += i.printTree(tabs+1)
 
+class Number:
+	def __init__(self,value):
+		self.value = value
+
+	def printTree(self,tabs):
+		string  = indent(tabs)+"INT\n"
+		string += indent(tabs+1) + str(self.value) + "\n"
+		return string
 
 class Expression:
     def __init__(self,left,op="",right=""):
@@ -146,15 +151,29 @@ class Expression:
         self.right = right
         self.op    = op
 
-    def getValue(self):
-        if op == '+':
-            return left + right
-#     if len(p) == 4:
-#         if p[2] == '+':
-#             p[0] = p[1] + p[3]
-#         elif p[2] == '-':
-#             p[0] = p[1] - p[3]
-#         elif p[2] == '*':
-#             p[0] = p[1] * p[3]
-#         elif p[2] == '/':
-#             p[0] = p[1] / p[3]
+    def printTree(self,tabs):
+    	string = ""
+    	if self.op != "":
+    		if self.right == "":
+	    		string += indent(tabs+1)+self.op
+	    		string += self.left.printTree(tabs+1)
+	    	else:
+	    		string += indent(tabs)+self.op+"\n"
+	    		string += self.left.printTree(tabs+1)
+	    		string += self.right.printTree(tabs+1)
+    	else:
+    		if isinstance(self.left, str):
+    			string += self.left
+    		else:
+    			string += self.left.printTree(tabs+1)
+    		
+    	return string
+
+
+
+
+
+
+
+
+

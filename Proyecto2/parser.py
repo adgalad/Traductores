@@ -48,12 +48,12 @@ def p_instruction(p):
                    | repeatInst 
                    | scanInst
                    | printInst
-                   | IDENTIFIER ASSIGN expression'''
+                   | id ASSIGN expression'''
     #print "instruction"
     if (len(p)==2):
         p[0] = Instruction(p[1])
     else:
-        p[0] = Instruction(p[1],p[2],p[3])
+        p[0] = Instruction("",p[1],p[2],p[3])
 
 
 def p_block(p):
@@ -177,7 +177,7 @@ def p_expression(p):
                 | LPAREN expression RPAREN
                 | TRUE
                 | FALSE              
-                | IDENTIFIER 
+                | id 
                 | set
                 | number'''
     if len(p) == 2:
