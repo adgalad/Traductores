@@ -26,7 +26,7 @@ Rule 20    instructionBlock -> instruction SEMICOLON instructionBlock
 Rule 21    instructionBlock -> <empty>
 Rule 22    ifInst -> IF LPAREN expression RPAREN instruction
 Rule 23    ifInst -> IF LPAREN expression RPAREN instruction ELSE instruction
-Rule 24    forInst -> FOR IDENTIFIER direction expression DO instruction
+Rule 24    forInst -> FOR expression direction expression DO instruction
 Rule 25    direction -> MIN
 Rule 26    direction -> MAX
 Rule 27    whileInst -> WHILE LPAREN expression RPAREN DO instruction
@@ -92,7 +92,7 @@ FALSE                : 66
 FOR                  : 24
 GREATEREQUALTHAN     : 47
 GREATERTHAN          : 46
-IDENTIFIER           : 9 18 19 24 67
+IDENTIFIER           : 9 18 19 67
 IF                   : 22 23
 IN                   : 12
 INT                  : 15
@@ -141,7 +141,7 @@ Nonterminals, with rules where they appear
 block                : 2
 declarationBlock     : 12 13
 direction            : 24
-expression           : 9 22 23 24 27 28 30 33 34 37 37 38 38 39 39 40 40 41 41 42 42 43 43 44 44 45 45 46 46 47 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 60 61 62 63 64 71
+expression           : 9 22 23 24 24 27 28 30 33 34 37 37 38 38 39 39 40 40 41 41 42 42 43 43 44 44 45 45 46 46 47 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 60 61 62 63 64 71
 forInst              : 4
 id                   : 13 14 18
 ifInst               : 3
@@ -185,7 +185,7 @@ state 1
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst
@@ -319,7 +319,7 @@ state 7
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst
@@ -522,7 +522,7 @@ state 14
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst
@@ -551,10 +551,58 @@ state 14
 
 state 15
 
-    (24) forInst -> FOR . IDENTIFIER direction expression DO instruction
+    (24) forInst -> FOR . expression direction expression DO instruction
+    (37) expression -> . expression PLUS expression
+    (38) expression -> . expression MINUS expression
+    (39) expression -> . expression TIMES expression
+    (40) expression -> . expression DIVIDE expression
+    (41) expression -> . expression MODULE expression
+    (42) expression -> . expression AND expression
+    (43) expression -> . expression OR expression
+    (44) expression -> . expression LESSTHAN expression
+    (45) expression -> . expression LESSEQUALTHAN expression
+    (46) expression -> . expression GREATERTHAN expression
+    (47) expression -> . expression GREATEREQUALTHAN expression
+    (48) expression -> . expression EQUALS expression
+    (49) expression -> . expression NOTEQUALS expression
+    (50) expression -> . expression SETUNION expression
+    (51) expression -> . expression SETDIFF expression
+    (52) expression -> . expression SETINTERSECT expression
+    (53) expression -> . expression SETMAPPLUS expression
+    (54) expression -> . expression SETMAPMINUS expression
+    (55) expression -> . expression SETMAPTIMES expression
+    (56) expression -> . expression SETMAPDIVIDE expression
+    (57) expression -> . expression SETMAPMODULE expression
+    (58) expression -> . expression BELONGSTO expression
+    (59) expression -> . NOT expression
+    (60) expression -> . MINUS expression
+    (61) expression -> . SETMINVALUE expression
+    (62) expression -> . SETMAXVALUE expression
+    (63) expression -> . SETSIZE expression
+    (64) expression -> . LPAREN expression RPAREN
+    (65) expression -> . TRUE
+    (66) expression -> . FALSE
+    (67) expression -> . IDENTIFIER
+    (68) expression -> . set
+    (69) expression -> . number
+    (70) set -> . LCURLY setNumbers RCURLY
+    (73) number -> . NUMBER
 
-    IDENTIFIER      shift and go to state 45
+    NOT             shift and go to state 32
+    MINUS           shift and go to state 25
+    SETMINVALUE     shift and go to state 21
+    SETMAXVALUE     shift and go to state 27
+    SETSIZE         shift and go to state 31
+    LPAREN          shift and go to state 28
+    TRUE            shift and go to state 24
+    FALSE           shift and go to state 29
+    IDENTIFIER      shift and go to state 30
+    LCURLY          shift and go to state 23
+    NUMBER          shift and go to state 26
 
+    set                            shift and go to state 20
+    number                         shift and go to state 22
+    expression                     shift and go to state 45
 
 state 16
 
@@ -625,6 +673,8 @@ state 20
     WHILE           reduce using rule 68 (expression -> set .)
     ELSE            reduce using rule 68 (expression -> set .)
     COMMA           reduce using rule 68 (expression -> set .)
+    MIN             reduce using rule 68 (expression -> set .)
+    MAX             reduce using rule 68 (expression -> set .)
     RPAREN          reduce using rule 68 (expression -> set .)
     DO              reduce using rule 68 (expression -> set .)
 
@@ -715,6 +765,8 @@ state 22
     WHILE           reduce using rule 69 (expression -> number .)
     ELSE            reduce using rule 69 (expression -> number .)
     COMMA           reduce using rule 69 (expression -> number .)
+    MIN             reduce using rule 69 (expression -> number .)
+    MAX             reduce using rule 69 (expression -> number .)
     RPAREN          reduce using rule 69 (expression -> number .)
     DO              reduce using rule 69 (expression -> number .)
 
@@ -809,6 +861,8 @@ state 24
     WHILE           reduce using rule 65 (expression -> TRUE .)
     ELSE            reduce using rule 65 (expression -> TRUE .)
     COMMA           reduce using rule 65 (expression -> TRUE .)
+    MIN             reduce using rule 65 (expression -> TRUE .)
+    MAX             reduce using rule 65 (expression -> TRUE .)
     RPAREN          reduce using rule 65 (expression -> TRUE .)
     DO              reduce using rule 65 (expression -> TRUE .)
 
@@ -899,6 +953,8 @@ state 26
     WHILE           reduce using rule 73 (number -> NUMBER .)
     ELSE            reduce using rule 73 (number -> NUMBER .)
     COMMA           reduce using rule 73 (number -> NUMBER .)
+    MIN             reduce using rule 73 (number -> NUMBER .)
+    MAX             reduce using rule 73 (number -> NUMBER .)
     RPAREN          reduce using rule 73 (number -> NUMBER .)
     DO              reduce using rule 73 (number -> NUMBER .)
 
@@ -1044,6 +1100,8 @@ state 29
     WHILE           reduce using rule 66 (expression -> FALSE .)
     ELSE            reduce using rule 66 (expression -> FALSE .)
     COMMA           reduce using rule 66 (expression -> FALSE .)
+    MIN             reduce using rule 66 (expression -> FALSE .)
+    MAX             reduce using rule 66 (expression -> FALSE .)
     RPAREN          reduce using rule 66 (expression -> FALSE .)
     DO              reduce using rule 66 (expression -> FALSE .)
 
@@ -1079,6 +1137,8 @@ state 30
     WHILE           reduce using rule 67 (expression -> IDENTIFIER .)
     ELSE            reduce using rule 67 (expression -> IDENTIFIER .)
     COMMA           reduce using rule 67 (expression -> IDENTIFIER .)
+    MIN             reduce using rule 67 (expression -> IDENTIFIER .)
+    MAX             reduce using rule 67 (expression -> IDENTIFIER .)
     RPAREN          reduce using rule 67 (expression -> IDENTIFIER .)
     DO              reduce using rule 67 (expression -> IDENTIFIER .)
 
@@ -1495,14 +1555,58 @@ state 44
 
 state 45
 
-    (24) forInst -> FOR IDENTIFIER . direction expression DO instruction
+    (24) forInst -> FOR expression . direction expression DO instruction
+    (37) expression -> expression . PLUS expression
+    (38) expression -> expression . MINUS expression
+    (39) expression -> expression . TIMES expression
+    (40) expression -> expression . DIVIDE expression
+    (41) expression -> expression . MODULE expression
+    (42) expression -> expression . AND expression
+    (43) expression -> expression . OR expression
+    (44) expression -> expression . LESSTHAN expression
+    (45) expression -> expression . LESSEQUALTHAN expression
+    (46) expression -> expression . GREATERTHAN expression
+    (47) expression -> expression . GREATEREQUALTHAN expression
+    (48) expression -> expression . EQUALS expression
+    (49) expression -> expression . NOTEQUALS expression
+    (50) expression -> expression . SETUNION expression
+    (51) expression -> expression . SETDIFF expression
+    (52) expression -> expression . SETINTERSECT expression
+    (53) expression -> expression . SETMAPPLUS expression
+    (54) expression -> expression . SETMAPMINUS expression
+    (55) expression -> expression . SETMAPTIMES expression
+    (56) expression -> expression . SETMAPDIVIDE expression
+    (57) expression -> expression . SETMAPMODULE expression
+    (58) expression -> expression . BELONGSTO expression
     (25) direction -> . MIN
     (26) direction -> . MAX
 
-    MIN             shift and go to state 91
+    PLUS            shift and go to state 62
+    MINUS           shift and go to state 58
+    TIMES           shift and go to state 70
+    DIVIDE          shift and go to state 65
+    MODULE          shift and go to state 67
+    AND             shift and go to state 71
+    OR              shift and go to state 74
+    LESSTHAN        shift and go to state 56
+    LESSEQUALTHAN   shift and go to state 72
+    GREATERTHAN     shift and go to state 69
+    GREATEREQUALTHAN shift and go to state 64
+    EQUALS          shift and go to state 68
+    NOTEQUALS       shift and go to state 55
+    SETUNION        shift and go to state 59
+    SETDIFF         shift and go to state 63
+    SETINTERSECT    shift and go to state 61
+    SETMAPPLUS      shift and go to state 73
+    SETMAPMINUS     shift and go to state 75
+    SETMAPTIMES     shift and go to state 60
+    SETMAPDIVIDE    shift and go to state 66
+    SETMAPMODULE    shift and go to state 57
+    BELONGSTO       shift and go to state 76
+    MIN             shift and go to state 90
     MAX             shift and go to state 92
 
-    direction                      shift and go to state 90
+    direction                      shift and go to state 91
 
 state 46
 
@@ -1613,6 +1717,8 @@ state 47
     WHILE           reduce using rule 61 (expression -> SETMINVALUE expression .)
     ELSE            reduce using rule 61 (expression -> SETMINVALUE expression .)
     COMMA           reduce using rule 61 (expression -> SETMINVALUE expression .)
+    MIN             reduce using rule 61 (expression -> SETMINVALUE expression .)
+    MAX             reduce using rule 61 (expression -> SETMINVALUE expression .)
     RPAREN          reduce using rule 61 (expression -> SETMINVALUE expression .)
     DO              reduce using rule 61 (expression -> SETMINVALUE expression .)
 
@@ -1739,6 +1845,8 @@ state 50
     WHILE           reduce using rule 60 (expression -> MINUS expression .)
     ELSE            reduce using rule 60 (expression -> MINUS expression .)
     COMMA           reduce using rule 60 (expression -> MINUS expression .)
+    MIN             reduce using rule 60 (expression -> MINUS expression .)
+    MAX             reduce using rule 60 (expression -> MINUS expression .)
     RPAREN          reduce using rule 60 (expression -> MINUS expression .)
     DO              reduce using rule 60 (expression -> MINUS expression .)
     TIMES           shift and go to state 70
@@ -1831,6 +1939,8 @@ state 51
     WHILE           reduce using rule 62 (expression -> SETMAXVALUE expression .)
     ELSE            reduce using rule 62 (expression -> SETMAXVALUE expression .)
     COMMA           reduce using rule 62 (expression -> SETMAXVALUE expression .)
+    MIN             reduce using rule 62 (expression -> SETMAXVALUE expression .)
+    MAX             reduce using rule 62 (expression -> SETMAXVALUE expression .)
     RPAREN          reduce using rule 62 (expression -> SETMAXVALUE expression .)
     DO              reduce using rule 62 (expression -> SETMAXVALUE expression .)
 
@@ -1962,6 +2072,8 @@ state 53
     WHILE           reduce using rule 63 (expression -> SETSIZE expression .)
     ELSE            reduce using rule 63 (expression -> SETSIZE expression .)
     COMMA           reduce using rule 63 (expression -> SETSIZE expression .)
+    MIN             reduce using rule 63 (expression -> SETSIZE expression .)
+    MAX             reduce using rule 63 (expression -> SETSIZE expression .)
     RPAREN          reduce using rule 63 (expression -> SETSIZE expression .)
     DO              reduce using rule 63 (expression -> SETSIZE expression .)
 
@@ -2022,6 +2134,8 @@ state 54
     WHILE           reduce using rule 59 (expression -> NOT expression .)
     ELSE            reduce using rule 59 (expression -> NOT expression .)
     COMMA           reduce using rule 59 (expression -> NOT expression .)
+    MIN             reduce using rule 59 (expression -> NOT expression .)
+    MAX             reduce using rule 59 (expression -> NOT expression .)
     RPAREN          reduce using rule 59 (expression -> NOT expression .)
     DO              reduce using rule 59 (expression -> NOT expression .)
     PLUS            shift and go to state 62
@@ -3306,7 +3420,7 @@ state 78
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst
@@ -3624,7 +3738,24 @@ state 89
 
 state 90
 
-    (24) forInst -> FOR IDENTIFIER direction . expression DO instruction
+    (25) direction -> MIN .
+
+    NOT             reduce using rule 25 (direction -> MIN .)
+    MINUS           reduce using rule 25 (direction -> MIN .)
+    SETMINVALUE     reduce using rule 25 (direction -> MIN .)
+    SETMAXVALUE     reduce using rule 25 (direction -> MIN .)
+    SETSIZE         reduce using rule 25 (direction -> MIN .)
+    LPAREN          reduce using rule 25 (direction -> MIN .)
+    TRUE            reduce using rule 25 (direction -> MIN .)
+    FALSE           reduce using rule 25 (direction -> MIN .)
+    IDENTIFIER      reduce using rule 25 (direction -> MIN .)
+    LCURLY          reduce using rule 25 (direction -> MIN .)
+    NUMBER          reduce using rule 25 (direction -> MIN .)
+
+
+state 91
+
+    (24) forInst -> FOR expression direction . expression DO instruction
     (37) expression -> . expression PLUS expression
     (38) expression -> . expression MINUS expression
     (39) expression -> . expression TIMES expression
@@ -3676,23 +3807,6 @@ state 90
     set                            shift and go to state 20
     number                         shift and go to state 22
     expression                     shift and go to state 126
-
-state 91
-
-    (25) direction -> MIN .
-
-    NOT             reduce using rule 25 (direction -> MIN .)
-    MINUS           reduce using rule 25 (direction -> MIN .)
-    SETMINVALUE     reduce using rule 25 (direction -> MIN .)
-    SETMAXVALUE     reduce using rule 25 (direction -> MIN .)
-    SETSIZE         reduce using rule 25 (direction -> MIN .)
-    LPAREN          reduce using rule 25 (direction -> MIN .)
-    TRUE            reduce using rule 25 (direction -> MIN .)
-    FALSE           reduce using rule 25 (direction -> MIN .)
-    IDENTIFIER      reduce using rule 25 (direction -> MIN .)
-    LCURLY          reduce using rule 25 (direction -> MIN .)
-    NUMBER          reduce using rule 25 (direction -> MIN .)
-
 
 state 92
 
@@ -3794,6 +3908,8 @@ state 94
     WHILE           reduce using rule 70 (set -> LCURLY setNumbers RCURLY .)
     ELSE            reduce using rule 70 (set -> LCURLY setNumbers RCURLY .)
     COMMA           reduce using rule 70 (set -> LCURLY setNumbers RCURLY .)
+    MIN             reduce using rule 70 (set -> LCURLY setNumbers RCURLY .)
+    MAX             reduce using rule 70 (set -> LCURLY setNumbers RCURLY .)
     RPAREN          reduce using rule 70 (set -> LCURLY setNumbers RCURLY .)
     DO              reduce using rule 70 (set -> LCURLY setNumbers RCURLY .)
 
@@ -3888,6 +4004,8 @@ state 96
     WHILE           reduce using rule 64 (expression -> LPAREN expression RPAREN .)
     ELSE            reduce using rule 64 (expression -> LPAREN expression RPAREN .)
     COMMA           reduce using rule 64 (expression -> LPAREN expression RPAREN .)
+    MIN             reduce using rule 64 (expression -> LPAREN expression RPAREN .)
+    MAX             reduce using rule 64 (expression -> LPAREN expression RPAREN .)
     RPAREN          reduce using rule 64 (expression -> LPAREN expression RPAREN .)
     DO              reduce using rule 64 (expression -> LPAREN expression RPAREN .)
 
@@ -3931,6 +4049,8 @@ state 97
     WHILE           reduce using rule 49 (expression -> expression NOTEQUALS expression .)
     ELSE            reduce using rule 49 (expression -> expression NOTEQUALS expression .)
     COMMA           reduce using rule 49 (expression -> expression NOTEQUALS expression .)
+    MIN             reduce using rule 49 (expression -> expression NOTEQUALS expression .)
+    MAX             reduce using rule 49 (expression -> expression NOTEQUALS expression .)
     RPAREN          reduce using rule 49 (expression -> expression NOTEQUALS expression .)
     DO              reduce using rule 49 (expression -> expression NOTEQUALS expression .)
     PLUS            shift and go to state 62
@@ -4009,6 +4129,8 @@ state 98
     WHILE           reduce using rule 44 (expression -> expression LESSTHAN expression .)
     ELSE            reduce using rule 44 (expression -> expression LESSTHAN expression .)
     COMMA           reduce using rule 44 (expression -> expression LESSTHAN expression .)
+    MIN             reduce using rule 44 (expression -> expression LESSTHAN expression .)
+    MAX             reduce using rule 44 (expression -> expression LESSTHAN expression .)
     RPAREN          reduce using rule 44 (expression -> expression LESSTHAN expression .)
     DO              reduce using rule 44 (expression -> expression LESSTHAN expression .)
     PLUS            shift and go to state 62
@@ -4104,6 +4226,8 @@ state 99
     WHILE           reduce using rule 57 (expression -> expression SETMAPMODULE expression .)
     ELSE            reduce using rule 57 (expression -> expression SETMAPMODULE expression .)
     COMMA           reduce using rule 57 (expression -> expression SETMAPMODULE expression .)
+    MIN             reduce using rule 57 (expression -> expression SETMAPMODULE expression .)
+    MAX             reduce using rule 57 (expression -> expression SETMAPMODULE expression .)
     RPAREN          reduce using rule 57 (expression -> expression SETMAPMODULE expression .)
     DO              reduce using rule 57 (expression -> expression SETMAPMODULE expression .)
     BELONGSTO       shift and go to state 76
@@ -4173,6 +4297,8 @@ state 100
     WHILE           reduce using rule 38 (expression -> expression MINUS expression .)
     ELSE            reduce using rule 38 (expression -> expression MINUS expression .)
     COMMA           reduce using rule 38 (expression -> expression MINUS expression .)
+    MIN             reduce using rule 38 (expression -> expression MINUS expression .)
+    MAX             reduce using rule 38 (expression -> expression MINUS expression .)
     RPAREN          reduce using rule 38 (expression -> expression MINUS expression .)
     DO              reduce using rule 38 (expression -> expression MINUS expression .)
     TIMES           shift and go to state 70
@@ -4258,6 +4384,8 @@ state 101
     WHILE           reduce using rule 50 (expression -> expression SETUNION expression .)
     ELSE            reduce using rule 50 (expression -> expression SETUNION expression .)
     COMMA           reduce using rule 50 (expression -> expression SETUNION expression .)
+    MIN             reduce using rule 50 (expression -> expression SETUNION expression .)
+    MAX             reduce using rule 50 (expression -> expression SETUNION expression .)
     RPAREN          reduce using rule 50 (expression -> expression SETUNION expression .)
     DO              reduce using rule 50 (expression -> expression SETUNION expression .)
     SETINTERSECT    shift and go to state 61
@@ -4344,6 +4472,8 @@ state 102
     WHILE           reduce using rule 55 (expression -> expression SETMAPTIMES expression .)
     ELSE            reduce using rule 55 (expression -> expression SETMAPTIMES expression .)
     COMMA           reduce using rule 55 (expression -> expression SETMAPTIMES expression .)
+    MIN             reduce using rule 55 (expression -> expression SETMAPTIMES expression .)
+    MAX             reduce using rule 55 (expression -> expression SETMAPTIMES expression .)
     RPAREN          reduce using rule 55 (expression -> expression SETMAPTIMES expression .)
     DO              reduce using rule 55 (expression -> expression SETMAPTIMES expression .)
     BELONGSTO       shift and go to state 76
@@ -4419,6 +4549,8 @@ state 103
     WHILE           reduce using rule 52 (expression -> expression SETINTERSECT expression .)
     ELSE            reduce using rule 52 (expression -> expression SETINTERSECT expression .)
     COMMA           reduce using rule 52 (expression -> expression SETINTERSECT expression .)
+    MIN             reduce using rule 52 (expression -> expression SETINTERSECT expression .)
+    MAX             reduce using rule 52 (expression -> expression SETINTERSECT expression .)
     RPAREN          reduce using rule 52 (expression -> expression SETINTERSECT expression .)
     DO              reduce using rule 52 (expression -> expression SETINTERSECT expression .)
     SETMAPPLUS      shift and go to state 73
@@ -4493,6 +4625,8 @@ state 104
     WHILE           reduce using rule 37 (expression -> expression PLUS expression .)
     ELSE            reduce using rule 37 (expression -> expression PLUS expression .)
     COMMA           reduce using rule 37 (expression -> expression PLUS expression .)
+    MIN             reduce using rule 37 (expression -> expression PLUS expression .)
+    MAX             reduce using rule 37 (expression -> expression PLUS expression .)
     RPAREN          reduce using rule 37 (expression -> expression PLUS expression .)
     DO              reduce using rule 37 (expression -> expression PLUS expression .)
     TIMES           shift and go to state 70
@@ -4578,6 +4712,8 @@ state 105
     WHILE           reduce using rule 51 (expression -> expression SETDIFF expression .)
     ELSE            reduce using rule 51 (expression -> expression SETDIFF expression .)
     COMMA           reduce using rule 51 (expression -> expression SETDIFF expression .)
+    MIN             reduce using rule 51 (expression -> expression SETDIFF expression .)
+    MAX             reduce using rule 51 (expression -> expression SETDIFF expression .)
     RPAREN          reduce using rule 51 (expression -> expression SETDIFF expression .)
     DO              reduce using rule 51 (expression -> expression SETDIFF expression .)
     SETINTERSECT    shift and go to state 61
@@ -4649,6 +4785,8 @@ state 106
     WHILE           reduce using rule 47 (expression -> expression GREATEREQUALTHAN expression .)
     ELSE            reduce using rule 47 (expression -> expression GREATEREQUALTHAN expression .)
     COMMA           reduce using rule 47 (expression -> expression GREATEREQUALTHAN expression .)
+    MIN             reduce using rule 47 (expression -> expression GREATEREQUALTHAN expression .)
+    MAX             reduce using rule 47 (expression -> expression GREATEREQUALTHAN expression .)
     RPAREN          reduce using rule 47 (expression -> expression GREATEREQUALTHAN expression .)
     DO              reduce using rule 47 (expression -> expression GREATEREQUALTHAN expression .)
     PLUS            shift and go to state 62
@@ -4736,6 +4874,8 @@ state 107
     WHILE           reduce using rule 40 (expression -> expression DIVIDE expression .)
     ELSE            reduce using rule 40 (expression -> expression DIVIDE expression .)
     COMMA           reduce using rule 40 (expression -> expression DIVIDE expression .)
+    MIN             reduce using rule 40 (expression -> expression DIVIDE expression .)
+    MAX             reduce using rule 40 (expression -> expression DIVIDE expression .)
     RPAREN          reduce using rule 40 (expression -> expression DIVIDE expression .)
     DO              reduce using rule 40 (expression -> expression DIVIDE expression .)
     SETUNION        shift and go to state 59
@@ -4824,6 +4964,8 @@ state 108
     WHILE           reduce using rule 56 (expression -> expression SETMAPDIVIDE expression .)
     ELSE            reduce using rule 56 (expression -> expression SETMAPDIVIDE expression .)
     COMMA           reduce using rule 56 (expression -> expression SETMAPDIVIDE expression .)
+    MIN             reduce using rule 56 (expression -> expression SETMAPDIVIDE expression .)
+    MAX             reduce using rule 56 (expression -> expression SETMAPDIVIDE expression .)
     RPAREN          reduce using rule 56 (expression -> expression SETMAPDIVIDE expression .)
     DO              reduce using rule 56 (expression -> expression SETMAPDIVIDE expression .)
     BELONGSTO       shift and go to state 76
@@ -4896,6 +5038,8 @@ state 109
     WHILE           reduce using rule 41 (expression -> expression MODULE expression .)
     ELSE            reduce using rule 41 (expression -> expression MODULE expression .)
     COMMA           reduce using rule 41 (expression -> expression MODULE expression .)
+    MIN             reduce using rule 41 (expression -> expression MODULE expression .)
+    MAX             reduce using rule 41 (expression -> expression MODULE expression .)
     RPAREN          reduce using rule 41 (expression -> expression MODULE expression .)
     DO              reduce using rule 41 (expression -> expression MODULE expression .)
     SETUNION        shift and go to state 59
@@ -4971,6 +5115,8 @@ state 110
     WHILE           reduce using rule 48 (expression -> expression EQUALS expression .)
     ELSE            reduce using rule 48 (expression -> expression EQUALS expression .)
     COMMA           reduce using rule 48 (expression -> expression EQUALS expression .)
+    MIN             reduce using rule 48 (expression -> expression EQUALS expression .)
+    MAX             reduce using rule 48 (expression -> expression EQUALS expression .)
     RPAREN          reduce using rule 48 (expression -> expression EQUALS expression .)
     DO              reduce using rule 48 (expression -> expression EQUALS expression .)
     PLUS            shift and go to state 62
@@ -5049,6 +5195,8 @@ state 111
     WHILE           reduce using rule 46 (expression -> expression GREATERTHAN expression .)
     ELSE            reduce using rule 46 (expression -> expression GREATERTHAN expression .)
     COMMA           reduce using rule 46 (expression -> expression GREATERTHAN expression .)
+    MIN             reduce using rule 46 (expression -> expression GREATERTHAN expression .)
+    MAX             reduce using rule 46 (expression -> expression GREATERTHAN expression .)
     RPAREN          reduce using rule 46 (expression -> expression GREATERTHAN expression .)
     DO              reduce using rule 46 (expression -> expression GREATERTHAN expression .)
     PLUS            shift and go to state 62
@@ -5136,6 +5284,8 @@ state 112
     WHILE           reduce using rule 39 (expression -> expression TIMES expression .)
     ELSE            reduce using rule 39 (expression -> expression TIMES expression .)
     COMMA           reduce using rule 39 (expression -> expression TIMES expression .)
+    MIN             reduce using rule 39 (expression -> expression TIMES expression .)
+    MAX             reduce using rule 39 (expression -> expression TIMES expression .)
     RPAREN          reduce using rule 39 (expression -> expression TIMES expression .)
     DO              reduce using rule 39 (expression -> expression TIMES expression .)
     SETUNION        shift and go to state 59
@@ -5205,6 +5355,8 @@ state 113
     WHILE           reduce using rule 42 (expression -> expression AND expression .)
     ELSE            reduce using rule 42 (expression -> expression AND expression .)
     COMMA           reduce using rule 42 (expression -> expression AND expression .)
+    MIN             reduce using rule 42 (expression -> expression AND expression .)
+    MAX             reduce using rule 42 (expression -> expression AND expression .)
     RPAREN          reduce using rule 42 (expression -> expression AND expression .)
     DO              reduce using rule 42 (expression -> expression AND expression .)
     PLUS            shift and go to state 62
@@ -5289,6 +5441,8 @@ state 114
     WHILE           reduce using rule 45 (expression -> expression LESSEQUALTHAN expression .)
     ELSE            reduce using rule 45 (expression -> expression LESSEQUALTHAN expression .)
     COMMA           reduce using rule 45 (expression -> expression LESSEQUALTHAN expression .)
+    MIN             reduce using rule 45 (expression -> expression LESSEQUALTHAN expression .)
+    MAX             reduce using rule 45 (expression -> expression LESSEQUALTHAN expression .)
     RPAREN          reduce using rule 45 (expression -> expression LESSEQUALTHAN expression .)
     DO              reduce using rule 45 (expression -> expression LESSEQUALTHAN expression .)
     PLUS            shift and go to state 62
@@ -5381,6 +5535,8 @@ state 115
     WHILE           reduce using rule 53 (expression -> expression SETMAPPLUS expression .)
     ELSE            reduce using rule 53 (expression -> expression SETMAPPLUS expression .)
     COMMA           reduce using rule 53 (expression -> expression SETMAPPLUS expression .)
+    MIN             reduce using rule 53 (expression -> expression SETMAPPLUS expression .)
+    MAX             reduce using rule 53 (expression -> expression SETMAPPLUS expression .)
     RPAREN          reduce using rule 53 (expression -> expression SETMAPPLUS expression .)
     DO              reduce using rule 53 (expression -> expression SETMAPPLUS expression .)
     SETMAPTIMES     shift and go to state 60
@@ -5444,6 +5600,8 @@ state 116
     WHILE           reduce using rule 43 (expression -> expression OR expression .)
     ELSE            reduce using rule 43 (expression -> expression OR expression .)
     COMMA           reduce using rule 43 (expression -> expression OR expression .)
+    MIN             reduce using rule 43 (expression -> expression OR expression .)
+    MAX             reduce using rule 43 (expression -> expression OR expression .)
     RPAREN          reduce using rule 43 (expression -> expression OR expression .)
     DO              reduce using rule 43 (expression -> expression OR expression .)
     PLUS            shift and go to state 62
@@ -5541,6 +5699,8 @@ state 117
     WHILE           reduce using rule 54 (expression -> expression SETMAPMINUS expression .)
     ELSE            reduce using rule 54 (expression -> expression SETMAPMINUS expression .)
     COMMA           reduce using rule 54 (expression -> expression SETMAPMINUS expression .)
+    MIN             reduce using rule 54 (expression -> expression SETMAPMINUS expression .)
+    MAX             reduce using rule 54 (expression -> expression SETMAPMINUS expression .)
     RPAREN          reduce using rule 54 (expression -> expression SETMAPMINUS expression .)
     DO              reduce using rule 54 (expression -> expression SETMAPMINUS expression .)
     SETMAPTIMES     shift and go to state 60
@@ -5625,6 +5785,8 @@ state 118
     WHILE           reduce using rule 58 (expression -> expression BELONGSTO expression .)
     ELSE            reduce using rule 58 (expression -> expression BELONGSTO expression .)
     COMMA           reduce using rule 58 (expression -> expression BELONGSTO expression .)
+    MIN             reduce using rule 58 (expression -> expression BELONGSTO expression .)
+    MAX             reduce using rule 58 (expression -> expression BELONGSTO expression .)
     RPAREN          reduce using rule 58 (expression -> expression BELONGSTO expression .)
     DO              reduce using rule 58 (expression -> expression BELONGSTO expression .)
 
@@ -5693,7 +5855,7 @@ state 122
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst
@@ -5756,7 +5918,7 @@ state 125
 
 state 126
 
-    (24) forInst -> FOR IDENTIFIER direction expression . DO instruction
+    (24) forInst -> FOR expression direction expression . DO instruction
     (37) expression -> expression . PLUS expression
     (38) expression -> expression . MINUS expression
     (39) expression -> expression . TIMES expression
@@ -5821,7 +5983,7 @@ state 127
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst
@@ -5905,7 +6067,7 @@ state 132
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst
@@ -5934,7 +6096,7 @@ state 132
 
 state 133
 
-    (24) forInst -> FOR IDENTIFIER direction expression DO . instruction
+    (24) forInst -> FOR expression direction expression DO . instruction
     (2) instruction -> . block
     (3) instruction -> . ifInst
     (4) instruction -> . forInst
@@ -5947,7 +6109,7 @@ state 133
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst
@@ -6013,12 +6175,12 @@ state 137
 
 state 138
 
-    (24) forInst -> FOR IDENTIFIER direction expression DO instruction .
+    (24) forInst -> FOR expression direction expression DO instruction .
 
-    $end            reduce using rule 24 (forInst -> FOR IDENTIFIER direction expression DO instruction .)
-    SEMICOLON       reduce using rule 24 (forInst -> FOR IDENTIFIER direction expression DO instruction .)
-    ELSE            reduce using rule 24 (forInst -> FOR IDENTIFIER direction expression DO instruction .)
-    WHILE           reduce using rule 24 (forInst -> FOR IDENTIFIER direction expression DO instruction .)
+    $end            reduce using rule 24 (forInst -> FOR expression direction expression DO instruction .)
+    SEMICOLON       reduce using rule 24 (forInst -> FOR expression direction expression DO instruction .)
+    ELSE            reduce using rule 24 (forInst -> FOR expression direction expression DO instruction .)
+    WHILE           reduce using rule 24 (forInst -> FOR expression direction expression DO instruction .)
 
 
 state 139
@@ -6036,7 +6198,7 @@ state 139
     (11) block -> . LCURLY instructionBlock RCURLY
     (22) ifInst -> . IF LPAREN expression RPAREN instruction
     (23) ifInst -> . IF LPAREN expression RPAREN instruction ELSE instruction
-    (24) forInst -> . FOR IDENTIFIER direction expression DO instruction
+    (24) forInst -> . FOR expression direction expression DO instruction
     (27) whileInst -> . WHILE LPAREN expression RPAREN DO instruction
     (28) whileInst -> . WHILE LPAREN expression RPAREN
     (29) repeatInst -> . REPEAT instruction whileInst

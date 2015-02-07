@@ -38,8 +38,7 @@ precedence = (
 
 def p_program(p):
     '''program : PROGRAM instruction'''
-    p[0] = Program(p[1])
-    #print "program"
+    p[0] = Program(p[1],p[2])
 
 def p_instruction(p):
     '''instruction : block
@@ -56,8 +55,9 @@ def p_instruction(p):
     else:
         p[0] = Instruction(p[1],p[2],p[3])
 
+
 def p_block(p):
-    ''' block : LCURLY usingInInst RCURLY
+    ''' block : LCURLY usingInInst RCURLY 
               | LCURLY instructionBlock RCURLY'''
     #print "block"
     p[0] = Block(p[1],p[2],p[3])
@@ -73,7 +73,7 @@ def p_declarationBlock(p):
     if len(p) == 5:
         p[0] = DeclarationBlokc(p[1],p[2],p[3],p[4])
     else:
-        p[0] = DeclarationBlokc(p[1],p[2],p[3],None)
+        p[0] = DeclarationBlokc(p[1],p[2],p[3],"")
 
 def p_type(p):
     '''type : INT 
@@ -87,6 +87,7 @@ def p_id(p):
     if len(p) == 4:
         p[0] = ID(p[1],p[2],p[3])
     else:
+        p[0] = ID(p[1])
 
 
 # total de instrucciones dentro de un bloque de instrucciones (internas)    
@@ -97,11 +98,13 @@ def p_instructionBlock(p):
     #print "instructionBlock"
     if len(p) == 3:
         p[0] = InstructionBlock(p[1],p[2])
-    if len(p) == 4:
+    elif len(p) == 4:
         p[0] = InstructionBlock(p[1],p[2],p[3])
+    elif len(p) == 1:
+        p[0] = InstructionBlock()
 
 def p_ifInst(p):
-	'''ifInst : IF LPAREN expression RPAREN instruction
+    '''ifInst : IF LPAREN expression RPAREN instruction
 			  | IF LPAREN expression RPAREN instruction ELSE instruction '''
 	#p[0] = IfInst()
 
@@ -116,15 +119,15 @@ def p_direction(p):
     p[0] = Direction(p[1])
 
 def p_whileInst(p):
-	'''whileInst : WHILE LPAREN expression RPAREN DO instruction
+    '''whileInst : WHILE LPAREN expression RPAREN DO instruction
 				 | WHILE LPAREN expression RPAREN'''
     if len(p) == 7:
         p[0] = WhileInst(p[1],p[2],p[3],p[4],p[5],p[6])
     else:
-        p[0] = WhileInst(p[1],p[2],p[3],p[4],None,None)
+        p[0] = WhileInst(p[1],p[2],p[3],p[4],"","")
 
 def p_repeatInst(p):
-	'''repeatInst : REPEAT instruction whileInst'''
+    '''repeatInst : REPEAT instruction whileInst'''
     p[0] = RepeatInst(p[1],p[2],p[3])
 
 def p_scanInst(p):

@@ -3,9 +3,9 @@
 
 
 class Program:
-	def __init__(self,declarations=None,instructions=None):
+	def __init__(self,declarations=None,instruction=None):
 		self.declarations = declarations
-		self.instructions = instructions
+		self.instruction = instruction
 
 	def getValue(self):
 		return "PROGRAM"
