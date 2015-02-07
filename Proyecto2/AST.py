@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+binaryOperator = { 	"+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
+				   	"/" : "DIVIDE", "%" : "MODULE", "and" : "AND"}
 
 def indent(tabs):
 	return "   "*tabs
@@ -72,12 +74,14 @@ class InstructionBlock:
 class Direction:
 	def __init__(self,direction):
 		self.direction = direction
-		global output
-		output += [["DIRECTION\n"],["\t%s" %direction]]
+
+	def printTree(self,tabs):
+		string = indent(tabs)+"DIRECTION\n"
+		string += indent(tabs+1)+self.direction+"\n"
+		return string
 
 
 class ForInst:
-	#FOR IDENTIFIER direction IDENTIFIER DO instruction
 	def __init__(self,For,Id,Dir,Set,Do,instruction):
 		self.For = For
 		self.id = Id
@@ -88,13 +92,12 @@ class ForInst:
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"FOR\n"
-		for i in self.Id:
-			string += i.printTree(tabs+1)
-		string += self.Dir.printTree(tabs+1)
-		string += self.Set.printTree(tabs+1)
-		string += indent(tabs)+"DO"
-		for i in self.instruction:
-			string += i.printTree(tabs+1)
+		string += self.id.printTree(tabs+1)
+		string += self.dir.printTree(tabs+1)
+		string += indent(tabs+1)+"IN\n"
+		string += self.set.printTree(tabs+1)
+		string += indent(tabs+1)+"DO\n"
+		string += self.instruction.printTree(tabs+1)
 		return string
 
 
@@ -102,19 +105,14 @@ class ID:
 	def __init__(self,value,comma="",IDrecursion=""):
 		self.type = 'id'
 		self.value = value
+		self.IDrecursion = IDrecursion
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"variable\n"
 		string += indent(tabs+1)+self.value+"\n"
+		if not isinstance(self.IDrecursion,str):
+			string += self.IDrecursion.printTree(tabs)
 		return string 
-
-class Number:
-    def __init__(self,value):
-        self.type = 'number'
-        self.value = value
-
-    def getValue(self):
-        return "int\n\t%d" % int(self.value)
 
 class IfInst:
 	def __init__(self):
@@ -158,14 +156,14 @@ class Expression:
 	    		string += indent(tabs+1)+self.op
 	    		string += self.left.printTree(tabs+1)
 	    	else:
-	    		string += indent(tabs)+self.op+"\n"
+	    		string += indent(tabs)+binaryOperator[self.op]+" "+self.op+"\n"
 	    		string += self.left.printTree(tabs+1)
 	    		string += self.right.printTree(tabs+1)
     	else:
     		if isinstance(self.left, str):
     			string += self.left
     		else:
-    			string += self.left.printTree(tabs+1)
+    			string += self.left.printTree(tabs)
     		
     	return string
 
