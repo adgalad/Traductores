@@ -17,10 +17,14 @@ while True:
 
 parser = yacc.yacc()
 
+kilo = None
+print kilo
+
 arbol = parser.parse(data)
 tabs = 0
 for i in reversed(output):
+	if i[0] == "BLOCK":
+		tabs += 1
 	for j in i:
 		print tabs*"\t"+j
-	if i == "BLOCK":
-		tabs += 1
+	

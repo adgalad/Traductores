@@ -38,8 +38,7 @@ precedence = (
 
 def p_program(p):
     '''program : PROGRAM instruction'''
-    p[0] = Program(p[1])
-    #print "program"
+    p[0] = Program(p[1],p[2])
 
 def p_instruction(p):
     '''instruction : block
@@ -56,8 +55,9 @@ def p_instruction(p):
     else:
         p[0] = Instruction(p[1],p[2],p[3])
 
+
 def p_block(p):
-    ''' block : LCURLY usingInInst RCURLY
+    ''' block : LCURLY usingInInst RCURLY 
               | LCURLY instructionBlock RCURLY'''
     #print "block"
     p[0] = Block(p[1],p[2],p[3])

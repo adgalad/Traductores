@@ -1,6 +1,4 @@
 program {
-    for i min s do {
-        println i*a;
-    };
+
 }
 
