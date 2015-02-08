@@ -1,44 +1,44 @@
 program {
-  using
-    int  a, b; # inicializan en 0
-    set  c, d; # inicializan en false
-    bool e, f; # inicializan en {}
-  in
+    using
+        int x;              # incializado en 0
+        set y;              # incializado en {}
+        bool z;             # inicalizado en false
+    in
 
-  a = 10;
-  scan b;
-  c = {1,2,3};
-  d = {2,3,4};
-  e = true;
-  scan f;
+    println "start";
 
-  print "first: ", b, ", ";
-  println "second: ", f;
+    {
+        using
+            set x;          # inicializado en {}
+        in
+        x = {0,1};
+        y = x + {2,3,4};
+        println 1, x;       # x es de tipo `set`
+        println 2, y;       # y es de tipo `set`
+        println 3, z;       # b es de tipo `bool`
+    };
 
-  if (b @ c)
-    for i min d ++ c do
-      c = c + i * 2
-  else if (b @ c) {
-    println "improbable";
-  };
+    {
+        using
+            bool y;         # inicializado en false;
+            int z;          # inicializado en 0
+        in
+        x = 10;
+        println 1, x;       # x es de tipo `int`
+        println 2, y;       # y es de tipo `bool`
+        println 3, z;       # z es de tipo `int`
+    };
 
-  repeat
-    f = e or a + b @ c ++ d
-  while (not f) do
-    e = a < b or f
-  ;
+    for i max y do 
+        print (i+x), " ";   # usa `i` del for y `x` del bloque principal
+    println "";             # sólo para el salto de línea
 
-  a = 0;
-  if (b < 0)
-    b = -b
-  ;
-
-  println a + b, ", ", a - b, ", ", a * b, ", ", a / b, ", ", a % b, ", ", -a;
-  println c ++ d, ", ", c >< d, ", ", c \ d, ", ", >? c, ", ", <? c, ", ", $? c;
-  println a <+> c, ", ", c <-> a, ", ", a <*> c, ", ", c </> a, ", ", c <%> a, ", ", a @ c;
-  println e or f, ", ", e and f, ", ", not e;
-  println a < b, a <= b, a > b, a >= b;
-  println a == b, a /= b;
-  println c == d, c /= d;
-  print e == f, e /= f;
+    for i min {7, 5, 8, 3, 9, 6, 4, 2, 1, 0} do {
+        using
+            bool i;         # esconde la variable `i` del for
+        in
+        print i, " ";       # siempre imprime `false`
+        i = false;
+    };
+    println "";             # sólo para el salto de línea
 }

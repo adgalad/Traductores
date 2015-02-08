@@ -280,9 +280,12 @@ class Expression:
 	    		string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
 	    		string += self.left.printTree(tabs+1)
 	    	else:
-	    		string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
-	    		string += self.left.printTree(tabs+1)
-	    		string += self.right.printTree(tabs+1)
+	    		if self.left == "(" and self.right == ")":
+	    			string += self.op.printTree(tabs)
+		    	else:
+		    		string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
+		    		string += self.left.printTree(tabs+1)
+		    		string += self.right.printTree(tabs+1)
     	else:
     		if isinstance(self.left, str):
     			string += self.left
