@@ -81,6 +81,8 @@ t_ignore_COMMENT = r'\#.*'
 
 def t_NUMBER(t):
     r'\d+'
+    if int(t.value) > 2147483648:
+        error_NUMBER(t)
     t.value = int(t.value)    
     return t
 
@@ -113,9 +115,8 @@ def t_error(t):
     t.lexer.skip(1)
 
 def error_NUMBER(t):
-    text = t.lexer.lexdata
     lexError.append('''ERROR: Entero fuera de rango "%s" en la Línea %d, Columna %d.''' \
-        % (token.value, token.lineno, find_column(text, token)))
+        % (t.value, t.lineno, findColumn(t.lexer.lexdata, t)))
 
 
 lexer = lex.lex()
