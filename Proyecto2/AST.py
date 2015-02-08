@@ -329,7 +329,7 @@ class Number:
 		self.value = value
 
 	def printTree(self,tabs):
-		string  = indent(tabs)+"INT\n"
+		string  = indent(tabs)+"int\n"
 		string += indent(tabs+1) + str(self.value) + "\n"
 		return string
 

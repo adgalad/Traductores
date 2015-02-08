@@ -1,0 +1,383 @@
+PROGRAM
+   BLOCK
+      USING
+         int a
+         int b
+         set c
+         set d
+         bool e
+         bool f
+      IN
+         ASSIGN
+            variable
+               a
+            value
+               INT
+                  10
+         SCAN
+            variable
+               b
+         ASSIGN
+            variable
+               c
+            value
+               set
+                  INT
+                     1
+                  INT
+                     2
+                  INT
+                     3
+         ASSIGN
+            variable
+               d
+            value
+               set
+                  INT
+                     2
+                  INT
+                     3
+                  INT
+                     4
+         ASSIGN
+            variable
+               e
+            value
+               bool
+                  true
+         SCAN
+            variable
+               f
+         PRINT
+            elements
+               string
+                  "first: "
+               variable
+                  b
+               string
+                  ", "
+         PRINT
+            elements
+               string
+                  "second: "
+               variable
+                  f
+               string
+                  "\n"
+         IF
+            condition
+               BELONGSTO @
+                  variable
+                     b
+                  variable
+                     c
+            THEN
+               FOR
+                  variable
+                     i
+                  DIRECTION
+                     min
+                  IN
+                  SETUNION ++
+                     variable
+                        d
+                     variable
+                        c
+                  DO
+                  ASSIGN
+                     variable
+                        c
+                     value
+                        PLUS +
+                           variable
+                              c
+                           TIMES *
+                              variable
+                                 i
+                              INT
+                                 2
+         ELSE            IF
+               condition
+                  BELONGSTO @
+                     variable
+                        b
+                     variable
+                        c
+               THEN
+                  BLOCK
+                     PRINT
+                        elements
+                           string
+                              "improbable"
+                           string
+                              "\n"
+                  BLOCK_END
+         REPEAT
+            ASSIGN
+               variable
+                  f
+               value
+                  OR or
+                     variable
+                        e
+                     BELONGSTO @
+                        PLUS +
+                           variable
+                              a
+                           variable
+                              b
+                        SETUNION ++
+                           variable
+                              c
+                           variable
+                              d
+         WHILE
+            condition
+               NOT not
+                  variable
+                     f
+         DO
+            ASSIGN
+               variable
+                  e
+               value
+                  OR or
+                     LESSTHAN <
+                        variable
+                           a
+                        variable
+                           b
+                     variable
+                        f
+         ASSIGN
+            variable
+               a
+            value
+               INT
+                  0
+         IF
+            condition
+               LESSTHAN <
+                  variable
+                     b
+                  INT
+                     0
+            THEN
+               ASSIGN
+                  variable
+                     b
+                  value
+                     MINUS -
+                        variable
+                           b
+         PRINT
+            elements
+               PLUS +
+                  variable
+                     a
+                  variable
+                     b
+               string
+                  ", "
+               MINUS -
+                  variable
+                     a
+                  variable
+                     b
+               string
+                  ", "
+               TIMES *
+                  variable
+                     a
+                  variable
+                     b
+               string
+                  ", "
+               DIVIDE /
+                  variable
+                     a
+                  variable
+                     b
+               string
+                  ", "
+               MODULE %
+                  variable
+                     a
+                  variable
+                     b
+               string
+                  ", "
+               MINUS -
+                  variable
+                     a
+               string
+                  "\n"
+         PRINT
+            elements
+               SETUNION ++
+                  variable
+                     c
+                  variable
+                     d
+               string
+                  ", "
+               SETINTERSECT ><
+                  variable
+                     c
+                  variable
+                     d
+               string
+                  ", "
+               SETDIFF \
+                  variable
+                     c
+                  variable
+                     d
+               string
+                  ", "
+               SETMAXVALUE >?
+                  variable
+                     c
+               string
+                  ", "
+               SETMINVALUE <?
+                  variable
+                     c
+               string
+                  ", "
+               SETSIZE $?
+                  variable
+                     c
+               string
+                  "\n"
+         PRINT
+            elements
+               SETMAPPLUS <+>
+                  variable
+                     a
+                  variable
+                     c
+               string
+                  ", "
+               SETMAPMINUS <->
+                  variable
+                     c
+                  variable
+                     a
+               string
+                  ", "
+               SETMAPTIMES <*>
+                  variable
+                     a
+                  variable
+                     c
+               string
+                  ", "
+               SETMAPDIVIDE </>
+                  variable
+                     c
+                  variable
+                     a
+               string
+                  ", "
+               SETMAPMODULE <%>
+                  variable
+                     c
+                  variable
+                     a
+               string
+                  ", "
+               BELONGSTO @
+                  variable
+                     a
+                  variable
+                     c
+               string
+                  "\n"
+         PRINT
+            elements
+               OR or
+                  variable
+                     e
+                  variable
+                     f
+               string
+                  ", "
+               AND and
+                  variable
+                     e
+                  variable
+                     f
+               string
+                  ", "
+               NOT not
+                  variable
+                     e
+               string
+                  "\n"
+         PRINT
+            elements
+               LESSTHAN <
+                  variable
+                     a
+                  variable
+                     b
+               LESSEQUALSTHAN <=
+                  variable
+                     a
+                  variable
+                     b
+               GREATERTHAN >
+                  variable
+                     a
+                  variable
+                     b
+               GREATEREQUALTHAN >=
+                  variable
+                     a
+                  variable
+                     b
+               string
+                  "\n"
+         PRINT
+            elements
+               EQUALS ==
+                  variable
+                     a
+                  variable
+                     b
+               NOTEQUALS /=
+                  variable
+                     a
+                  variable
+                     b
+               string
+                  "\n"
+         PRINT
+            elements
+               EQUALS ==
+                  variable
+                     c
+                  variable
+                     d
+               NOTEQUALS /=
+                  variable
+                     c
+                  variable
+                     d
+               string
+                  "\n"
+         PRINT
+            elements
+               EQUALS ==
+                  variable
+                     e
+                  variable
+                     f
+               NOTEQUALS /=
+                  variable
+                     e
+                  variable
+                     f
+   BLOCK_END
+
