@@ -76,7 +76,7 @@ t_EQUALS        = r'\=\='
 t_NOTEQUALS     = r'\/\=' 
 t_BELONGSTO     = r'\@'
 
-t_ignore  = ' \t\n'
+t_ignore  = ' \t'
 t_ignore_COMMENT = r'\#.*'
 
 def t_NUMBER(t):
@@ -98,18 +98,9 @@ def t_STRING(t):
     r'\"([^\n"\\]|\\n|\\"|\\\\|\\’|\\a|\\b|\\f|\\r|\\t|\\v)*?\"'
     return t
 
-
-def t_error(t):
-    lexError.append('''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d''' % (t.value[0], t.lineno, findColumn(t.lexer.lexdata,t)))
-    t.lexer.skip(1)
-
-t_ignore  = ' \t'
-t_ignore_COMMENT = r'\#.*'
-
 def t_newline(t):
-    r'\n'
+    r'\n+'
     t.lexer.lineno += len(t.value)
-    t.type = 'NEWLINE';
 
 def findColumn(input,t):
     beginOfLine = input.rfind('\n',0,t.lexpos)

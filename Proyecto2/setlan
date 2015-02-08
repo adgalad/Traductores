@@ -24,24 +24,18 @@ def main():
         print "ERROR: El archivo '%s' no existe." % (sys.argv[1])
         exit(1)
 
-lexer.input(data)
-lexer.lineno = 0
-while True:    
-    tok = lexer.token()
-    if not tok: break
-    elif tok.type == 'NEWLINE':
-        lexer.lineno += 1
+    arbol = parser.parse(data.read())
 
-if lexError != []:
-    for error in lexError:
-        print error
-    exit(1)
-else:
-    if yaccError != []:
-        print yaccError[0]
+    if lexError != []:
+        for error in lexError:
+            print error
         exit(1)
     else:
-        print arbol.printTree(0)
+        if yaccError != []:
+            print yaccError[0]
+            exit(1)
+        else:
+            print arbol.printTree(0)
 
 if __name__ == "__main__":
     main()
