@@ -155,7 +155,7 @@ class IfInst:
 		string += indent(tabs+1)+"THEN\n"
 		string += self.instruction.printTree(tabs+2)
 		if (self.Else != ""):
-			string += indent(tabs)+"ELSE"
+			string += indent(tabs)+"ELSE\n"
 			string += self.elseInstruction.printTree(tabs+1)
 		return string
 
