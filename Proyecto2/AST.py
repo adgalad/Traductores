@@ -10,7 +10,7 @@ operator = { "+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
 			"<->" : "SETMAPMINUS", "<*>" : "SETMAPTIMES", 
 			"</>" : "SETMAPDIVIDE", "<%>" : "SETMAPMODULE", 
 			">?" : "SETMAXVALUE", "<?" : "SETMINVALUE",
-			"$?" : "SETSIZE", "print": "PRINT","println": "PRINTLN"}
+			"$?" : "SETSIZE"}
 
 def indent(tabs):
 	return "   "*tabs
@@ -235,10 +235,11 @@ class PrintInst:
 		self.output = output
 
 	def printTree(self,tabs):
-		string = indent(tabs)+operator[self.Print]+"\n"
-		string += self.output.printTree(tabs+1)
+		string = indent(tabs)+"PRINT"+"\n"
+		string += indent(tabs+1)+"elements\n"
+		string += self.output.printTree(tabs+2)
 		if (self.Print == "println"):
-			string += String("\"\\n\"").printTree(tabs+1)
+			string += String("\"\\n\"").printTree(tabs+2)
 		return string
 
 
