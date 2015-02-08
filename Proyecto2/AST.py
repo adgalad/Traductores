@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+## Interpretador del lenguaje Setlan.
+## Árbol Sintáctico Abstracto (AST)
+## Autores:  - Mónica Figuera   11-10328
+##           - Carlos Spaggiari 11-10987
+
 operator = { "+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
 			"/" : "DIVIDE", "%" : "MODULE", "and" : "AND",
 			"or" : "OR", "<" : "LESSTHAN",">" : "GREATERTHAN",
@@ -75,6 +80,7 @@ class UsingInInst:
 		string += self.instruction.printTree(tabs+1)
 		return string
 
+
 class DeclarationBlock:
 	def __init__(self,varType,Id,semicolon,declaration=""):
 		self.varType = varType
@@ -101,6 +107,7 @@ class Type:
 		string = indent(tabs)+self.type
 		return string
 
+
 class ID:
 	def __init__(self,value,comma="",IDrecursion=""):
 		self.type = 'id'
@@ -118,7 +125,6 @@ class ID:
 		if not isinstance(self.IDrecursion,str):
 			string += self.IDrecursion.printTree(tabs,varType)
 		return string 
-
 
 
 class InstructionBlock:
@@ -158,6 +164,7 @@ class IfInst:
 			string += indent(tabs)+"ELSE\n"
 			string += self.elseInstruction.printTree(tabs+1)
 		return string
+
 
 class ForInst:
 	def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -322,6 +329,7 @@ class SetNumbers:
 			string += self.setNumbersRecursion.printTree(tabs)
 		return string
 
+
 class BooleanValue:
 	def __init__(self,value):
 		self.value = value
@@ -331,6 +339,7 @@ class BooleanValue:
 		string += indent(tabs+1)+self.value+"\n"
 		return string
 
+
 class Number:
 	def __init__(self,value):
 		self.value = value
@@ -339,4 +348,3 @@ class Number:
 		string  = indent(tabs)+"int\n"
 		string += indent(tabs+1) + str(self.value) + "\n"
 		return string
-

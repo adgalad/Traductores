@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+## Interpretador del lenguaje Setlan.
+## Analizador Lexicográfico (Lexer)
+## Autores:  - Mónica Figuera   11-10328
+##           - Carlos Spaggiari 11-10987
+
 import ply.lex as lex
 
 reserved = {
@@ -71,8 +76,13 @@ t_EQUALS        = r'\=\='
 t_NOTEQUALS     = r'\/\=' 
 t_BELONGSTO     = r'\@'
 
+t_ignore  = ' \t\n'
+t_ignore_COMMENT = r'\#.*'
+
 def t_NUMBER(t):
     r'\d+'
+    if int(t.value) > 2147483648:
+        error_NUMBER(t)
     t.value = int(t.value)    
     return t
 
@@ -88,6 +98,7 @@ def t_STRING(t):
     r'\"([^\n"\\]|\\n|\\"|\\\\|\\’|\\a|\\b|\\f|\\r|\\t|\\v)*?\"'
     return t
 
+
 def t_error(t):
     lexError.append('''Error: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d''' % (t.value[0], t.lineno, findColumn(t.lexer.lexdata,t)))
     t.lexer.skip(1)
@@ -100,13 +111,22 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
     t.type = 'NEWLINE';
 
-def findColumn(input,tok):
-    beginOfLine = input.rfind('\n',0,tok.lexpos)
+def findColumn(input,t):
+    beginOfLine = input.rfind('\n',0,t.lexpos)
     if beginOfLine < 0:
         beginOfLine = -1
-    column = (tok.lexpos - beginOfLine)
+    column = (t.lexpos - beginOfLine)
     return column
+
+def t_error(t):
+    lexError.append('''ERROR: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d.''' \
+        % (t.value[0], t.lineno, findColumn(t.lexer.lexdata,t)))
+    t.lexer.skip(1)
+
+def error_NUMBER(t):
+    lexError.append('''ERROR: Entero fuera de rango "%s" en la Línea %d, Columna %d.''' \
+        % (t.value, t.lineno, findColumn(t.lexer.lexdata, t)))
+
 
 lexer = lex.lex()
 lexError = []
-output = ""

@@ -4,5 +4,17 @@ program {
 
   print "jamon"
 
-  ~println a - b, ", ", a % b, ", ", -a;
+  println a - b, ", ", a % b, ", ", -a;
+
+    a = 2 + 1 @ b;
+    
+    ;
+
+    if (true)
+        if (true)
+            print ""
+        else
+            print ""
+    ;
+
 }

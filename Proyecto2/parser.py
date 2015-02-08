@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+## Interpretador del lenguaje Setlan.
+## Analizador Sintáctico (Parser)
+## Autores:  - Mónica Figuera   11-10328
+##           - Carlos Spaggiari 11-10987
+
 import sys
 import ply.lex  as lex
 import ply.yacc as yacc
@@ -8,7 +13,6 @@ from   AST      import *
 
 # Precedencia de operadores (de menor a mayor)
 precedence = (
-    ('right','RPAREN'),
     ('right','ELSE'),
 
     # Booleanos
@@ -19,18 +23,18 @@ precedence = (
     # Comparativos
     ('nonassoc', 'LESSTHAN', 'GREATERTHAN', 'LESSEQUALTHAN', 'GREATEREQUALTHAN'),
     ('nonassoc', 'EQUALS', 'NOTEQUALS'),
-    ('nonassoc', 'BELONGSTO'),  # no se si este esta bien aqui
+    ('nonassoc', 'BELONGSTO'),
 
     # Aritméticos
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE', 'MODULE'),
     
     # Conjuntos
-    ('left', 'SETUNION', 'SETDIFF'),							# ¿s = s + {i * 2}; # unión de conjuntos? No es ++??
+    ('left', 'SETUNION', 'SETDIFF'),	
     ('left','SETINTERSECT'),
-    
+
     # Conjuntos aritméticos
-    ('left','SETMAPPLUS','SETMAPMINUS'),						# tiene mayor precedencia sobre la union...
+    ('left','SETMAPPLUS','SETMAPMINUS'),	
     ('left', 'SETMAPTIMES', 'SETMAPDIVIDE', 'SETMAPMODULE'),
 
     # Unarios
@@ -54,7 +58,6 @@ def p_instruction(p):
         p[0] = Instruction(p[1])
     else:
         p[0] = Instruction("",p[1],p[2],p[3])
-
 
 def p_block(p):
     '''block : LCURLY usingInInst RCURLY 
@@ -91,7 +94,6 @@ def p_id(p):
     else:
         p[0] = ID(p[1])
 
-# indica que estoy dentro de un bloque de instrucciones y por ello las inst llevan ;
 def p_instructionBlock(p):
     '''instructionBlock : instruction SEMICOLON instructionBlock
                         |'''
