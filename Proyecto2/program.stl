@@ -3,7 +3,7 @@ program {
     b = -b
   ;
 
-  println -1,a - b, ", ", a % b, ", ", -a;
+  print "jamon"
+
+  println a - b, ", ", a % b, ", ", -a;
 }
-
-
