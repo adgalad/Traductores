@@ -275,14 +275,28 @@ class Expression:
 
 
 class Set:
-	def __init__(self):
-		pass
+	def __init__(self,lcurly,setNumbers,rcurly):
+		self.lcurly = lcurly
+		self.setNumbers = setNumbers
+		self.rcurly = rcurly
 
+	def printTree(self, tabs):
+		string = indent(tabs)+"set\n"
+		string += self.setNumbers.printTree(tabs+1)
+		return string
+		
 
 class SetNumbers:
-	def __init__(self):
-		pass
-
+	def __init__(self, expression, comma="", setNumbersRecursion=""):
+		self.expression = expression
+		self.comma = comma
+		self.setNumbersRecursion = setNumbersRecursion
+		
+	def printTree(self, tabs):
+		string = self.expression.printTree(tabs)
+		if not isinstance(self.setNumbersRecursion, str):
+			string += self.setNumbersRecursion.printTree(tabs)
+		return string
 
 class Number:
 	def __init__(self,value):

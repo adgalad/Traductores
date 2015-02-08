@@ -194,10 +194,15 @@ def p_expression(p):
 
 def p_set(p):
     '''set : LCURLY setNumbers RCURLY'''
+    p[0] = Set(p[1],p[2],p[3])
 
 def p_setNumbers(p):
-	'''setNumbers : expression COMMA setNumbers
+    '''setNumbers : expression COMMA setNumbers
 			      | expression'''
+    if len(p) == 2:
+        p[0] = SetNumbers(p[1])
+    else:
+        p[0] = SetNumbers(p[1],p[2],p[3])
 
 def p_number(p):
     '''number : NUMBER'''
