@@ -175,7 +175,7 @@ class ForInst:
 		string += indent(tabs+1)+"IN\n"
 		string += self.set.printTree(tabs+1)
 		string += indent(tabs+1)+"DO\n"
-		string += self.instruction.printTree(tabs+1)
+		string += self.instruction.printTree(tabs+2)
 		return string
 
 
