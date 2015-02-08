@@ -278,7 +278,10 @@ class Expression:
     	string = ""
     	if self.op != "":
     		if self.right == "":
-	    		string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
+    			if self.op == '-':
+    				string += indent(tabs)+"NEGATE"+" "+self.op+"\n"
+    			else:
+	    			string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
 	    		string += self.left.printTree(tabs+1)
 	    	else:
 	    		if self.left == "(" and self.right == ")":

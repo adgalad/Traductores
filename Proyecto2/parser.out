@@ -64,10 +64,10 @@ Rule 58    expression -> expression SETMAPDIVIDE expression
 Rule 59    expression -> expression SETMAPMODULE expression
 Rule 60    expression -> expression BELONGSTO expression
 Rule 61    expression -> NOT expression
-Rule 62    expression -> MINUS expression
-Rule 63    expression -> SETMINVALUE expression
-Rule 64    expression -> SETMAXVALUE expression
-Rule 65    expression -> SETSIZE expression
+Rule 62    expression -> SETMINVALUE expression
+Rule 63    expression -> SETMAXVALUE expression
+Rule 64    expression -> SETSIZE expression
+Rule 65    expression -> MINUS expression
 Rule 66    expression -> LPAREN expression RPAREN
 Rule 67    expression -> booleanValue
 Rule 68    expression -> identifier
@@ -105,7 +105,7 @@ LESSTHAN             : 46
 LPAREN               : 23 24 28 29 66
 MAX                  : 27
 MIN                  : 26
-MINUS                : 40 62
+MINUS                : 40 65
 MODULE               : 43
 NOT                  : 61
 NOTEQUALS            : 51
@@ -128,9 +128,9 @@ SETMAPMINUS          : 56
 SETMAPMODULE         : 59
 SETMAPPLUS           : 55
 SETMAPTIMES          : 57
-SETMAXVALUE          : 64
-SETMINVALUE          : 63
-SETSIZE              : 65
+SETMAXVALUE          : 63
+SETMINVALUE          : 62
+SETSIZE              : 64
 SETUNION             : 52
 STRING               : 38
 TIMES                : 41
@@ -270,10 +270,10 @@ state 5
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -286,10 +286,10 @@ state 5
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -414,10 +414,10 @@ state 10
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -431,10 +431,10 @@ state 10
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     STRING          shift and go to state 43
     TRUE            shift and go to state 26
@@ -498,10 +498,10 @@ state 13
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -515,10 +515,10 @@ state 13
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     STRING          shift and go to state 43
     TRUE            shift and go to state 26
@@ -616,10 +616,10 @@ state 16
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -632,10 +632,10 @@ state 16
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -727,7 +727,7 @@ state 21
 
 state 22
 
-    (63) expression -> SETMINVALUE . expression
+    (62) expression -> SETMINVALUE . expression
     (39) expression -> . expression PLUS expression
     (40) expression -> . expression MINUS expression
     (41) expression -> . expression TIMES expression
@@ -751,10 +751,10 @@ state 22
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -767,10 +767,10 @@ state 22
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -850,10 +850,10 @@ state 24
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -866,10 +866,10 @@ state 24
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -962,7 +962,7 @@ state 26
 
 state 27
 
-    (62) expression -> MINUS . expression
+    (65) expression -> MINUS . expression
     (39) expression -> . expression PLUS expression
     (40) expression -> . expression MINUS expression
     (41) expression -> . expression TIMES expression
@@ -986,10 +986,10 @@ state 27
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -1002,10 +1002,10 @@ state 27
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -1059,7 +1059,7 @@ state 28
 
 state 29
 
-    (64) expression -> SETMAXVALUE . expression
+    (63) expression -> SETMAXVALUE . expression
     (39) expression -> . expression PLUS expression
     (40) expression -> . expression MINUS expression
     (41) expression -> . expression TIMES expression
@@ -1083,10 +1083,10 @@ state 29
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -1099,10 +1099,10 @@ state 29
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -1142,10 +1142,10 @@ state 30
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -1158,10 +1158,10 @@ state 30
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -1253,7 +1253,7 @@ state 32
 
 state 33
 
-    (65) expression -> SETSIZE . expression
+    (64) expression -> SETSIZE . expression
     (39) expression -> . expression PLUS expression
     (40) expression -> . expression MINUS expression
     (41) expression -> . expression TIMES expression
@@ -1277,10 +1277,10 @@ state 33
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -1293,10 +1293,10 @@ state 33
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -1336,10 +1336,10 @@ state 34
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -1352,10 +1352,10 @@ state 34
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -1525,10 +1525,10 @@ state 41
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -1541,10 +1541,10 @@ state 41
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -1673,10 +1673,10 @@ state 46
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -1689,10 +1689,10 @@ state 46
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -1818,10 +1818,10 @@ state 51
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -1834,10 +1834,10 @@ state 51
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -1853,7 +1853,7 @@ state 51
 
 state 52
 
-    (63) expression -> SETMINVALUE expression .
+    (62) expression -> SETMINVALUE expression .
     (39) expression -> expression . PLUS expression
     (40) expression -> expression . MINUS expression
     (41) expression -> expression . TIMES expression
@@ -1877,38 +1877,38 @@ state 52
     (59) expression -> expression . SETMAPMODULE expression
     (60) expression -> expression . BELONGSTO expression
 
-    PLUS            reduce using rule 63 (expression -> SETMINVALUE expression .)
-    MINUS           reduce using rule 63 (expression -> SETMINVALUE expression .)
-    TIMES           reduce using rule 63 (expression -> SETMINVALUE expression .)
-    DIVIDE          reduce using rule 63 (expression -> SETMINVALUE expression .)
-    MODULE          reduce using rule 63 (expression -> SETMINVALUE expression .)
-    AND             reduce using rule 63 (expression -> SETMINVALUE expression .)
-    OR              reduce using rule 63 (expression -> SETMINVALUE expression .)
-    LESSTHAN        reduce using rule 63 (expression -> SETMINVALUE expression .)
-    LESSEQUALTHAN   reduce using rule 63 (expression -> SETMINVALUE expression .)
-    GREATERTHAN     reduce using rule 63 (expression -> SETMINVALUE expression .)
-    GREATEREQUALTHAN reduce using rule 63 (expression -> SETMINVALUE expression .)
-    EQUALS          reduce using rule 63 (expression -> SETMINVALUE expression .)
-    NOTEQUALS       reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SETUNION        reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SETDIFF         reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SETINTERSECT    reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SETMAPPLUS      reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SETMAPMINUS     reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SETMAPTIMES     reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SETMAPDIVIDE    reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SETMAPMODULE    reduce using rule 63 (expression -> SETMINVALUE expression .)
-    BELONGSTO       reduce using rule 63 (expression -> SETMINVALUE expression .)
-    $end            reduce using rule 63 (expression -> SETMINVALUE expression .)
-    SEMICOLON       reduce using rule 63 (expression -> SETMINVALUE expression .)
-    WHILE           reduce using rule 63 (expression -> SETMINVALUE expression .)
-    ELSE            reduce using rule 63 (expression -> SETMINVALUE expression .)
-    COMMA           reduce using rule 63 (expression -> SETMINVALUE expression .)
-    MIN             reduce using rule 63 (expression -> SETMINVALUE expression .)
-    MAX             reduce using rule 63 (expression -> SETMINVALUE expression .)
-    RCURLY          reduce using rule 63 (expression -> SETMINVALUE expression .)
-    RPAREN          reduce using rule 63 (expression -> SETMINVALUE expression .)
-    DO              reduce using rule 63 (expression -> SETMINVALUE expression .)
+    PLUS            reduce using rule 62 (expression -> SETMINVALUE expression .)
+    MINUS           reduce using rule 62 (expression -> SETMINVALUE expression .)
+    TIMES           reduce using rule 62 (expression -> SETMINVALUE expression .)
+    DIVIDE          reduce using rule 62 (expression -> SETMINVALUE expression .)
+    MODULE          reduce using rule 62 (expression -> SETMINVALUE expression .)
+    AND             reduce using rule 62 (expression -> SETMINVALUE expression .)
+    OR              reduce using rule 62 (expression -> SETMINVALUE expression .)
+    LESSTHAN        reduce using rule 62 (expression -> SETMINVALUE expression .)
+    LESSEQUALTHAN   reduce using rule 62 (expression -> SETMINVALUE expression .)
+    GREATERTHAN     reduce using rule 62 (expression -> SETMINVALUE expression .)
+    GREATEREQUALTHAN reduce using rule 62 (expression -> SETMINVALUE expression .)
+    EQUALS          reduce using rule 62 (expression -> SETMINVALUE expression .)
+    NOTEQUALS       reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SETUNION        reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SETDIFF         reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SETINTERSECT    reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SETMAPPLUS      reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SETMAPMINUS     reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SETMAPTIMES     reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SETMAPDIVIDE    reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SETMAPMODULE    reduce using rule 62 (expression -> SETMINVALUE expression .)
+    BELONGSTO       reduce using rule 62 (expression -> SETMINVALUE expression .)
+    $end            reduce using rule 62 (expression -> SETMINVALUE expression .)
+    SEMICOLON       reduce using rule 62 (expression -> SETMINVALUE expression .)
+    WHILE           reduce using rule 62 (expression -> SETMINVALUE expression .)
+    ELSE            reduce using rule 62 (expression -> SETMINVALUE expression .)
+    COMMA           reduce using rule 62 (expression -> SETMINVALUE expression .)
+    MIN             reduce using rule 62 (expression -> SETMINVALUE expression .)
+    MAX             reduce using rule 62 (expression -> SETMINVALUE expression .)
+    RCURLY          reduce using rule 62 (expression -> SETMINVALUE expression .)
+    RPAREN          reduce using rule 62 (expression -> SETMINVALUE expression .)
+    DO              reduce using rule 62 (expression -> SETMINVALUE expression .)
 
   ! PLUS            [ shift and go to state 67 ]
   ! MINUS           [ shift and go to state 63 ]
@@ -1996,7 +1996,7 @@ state 54
 
 state 55
 
-    (62) expression -> MINUS expression .
+    (65) expression -> MINUS expression .
     (39) expression -> expression . PLUS expression
     (40) expression -> expression . MINUS expression
     (41) expression -> expression . TIMES expression
@@ -2020,52 +2020,44 @@ state 55
     (59) expression -> expression . SETMAPMODULE expression
     (60) expression -> expression . BELONGSTO expression
 
-    PLUS            reduce using rule 62 (expression -> MINUS expression .)
-    MINUS           reduce using rule 62 (expression -> MINUS expression .)
-    AND             reduce using rule 62 (expression -> MINUS expression .)
-    OR              reduce using rule 62 (expression -> MINUS expression .)
-    LESSTHAN        reduce using rule 62 (expression -> MINUS expression .)
-    LESSEQUALTHAN   reduce using rule 62 (expression -> MINUS expression .)
-    GREATERTHAN     reduce using rule 62 (expression -> MINUS expression .)
-    GREATEREQUALTHAN reduce using rule 62 (expression -> MINUS expression .)
-    EQUALS          reduce using rule 62 (expression -> MINUS expression .)
-    NOTEQUALS       reduce using rule 62 (expression -> MINUS expression .)
-    BELONGSTO       reduce using rule 62 (expression -> MINUS expression .)
-    $end            reduce using rule 62 (expression -> MINUS expression .)
-    SEMICOLON       reduce using rule 62 (expression -> MINUS expression .)
-    WHILE           reduce using rule 62 (expression -> MINUS expression .)
-    ELSE            reduce using rule 62 (expression -> MINUS expression .)
-    COMMA           reduce using rule 62 (expression -> MINUS expression .)
-    MIN             reduce using rule 62 (expression -> MINUS expression .)
-    MAX             reduce using rule 62 (expression -> MINUS expression .)
-    RCURLY          reduce using rule 62 (expression -> MINUS expression .)
-    RPAREN          reduce using rule 62 (expression -> MINUS expression .)
-    DO              reduce using rule 62 (expression -> MINUS expression .)
-    TIMES           shift and go to state 75
-    DIVIDE          shift and go to state 70
-    MODULE          shift and go to state 72
-    SETUNION        shift and go to state 64
-    SETDIFF         shift and go to state 68
-    SETINTERSECT    shift and go to state 66
-    SETMAPPLUS      shift and go to state 78
-    SETMAPMINUS     shift and go to state 80
-    SETMAPTIMES     shift and go to state 65
-    SETMAPDIVIDE    shift and go to state 71
-    SETMAPMODULE    shift and go to state 62
+    PLUS            reduce using rule 65 (expression -> MINUS expression .)
+    MINUS           reduce using rule 65 (expression -> MINUS expression .)
+    TIMES           reduce using rule 65 (expression -> MINUS expression .)
+    DIVIDE          reduce using rule 65 (expression -> MINUS expression .)
+    MODULE          reduce using rule 65 (expression -> MINUS expression .)
+    AND             reduce using rule 65 (expression -> MINUS expression .)
+    OR              reduce using rule 65 (expression -> MINUS expression .)
+    LESSTHAN        reduce using rule 65 (expression -> MINUS expression .)
+    LESSEQUALTHAN   reduce using rule 65 (expression -> MINUS expression .)
+    GREATERTHAN     reduce using rule 65 (expression -> MINUS expression .)
+    GREATEREQUALTHAN reduce using rule 65 (expression -> MINUS expression .)
+    EQUALS          reduce using rule 65 (expression -> MINUS expression .)
+    NOTEQUALS       reduce using rule 65 (expression -> MINUS expression .)
+    SETUNION        reduce using rule 65 (expression -> MINUS expression .)
+    SETDIFF         reduce using rule 65 (expression -> MINUS expression .)
+    SETINTERSECT    reduce using rule 65 (expression -> MINUS expression .)
+    SETMAPPLUS      reduce using rule 65 (expression -> MINUS expression .)
+    SETMAPMINUS     reduce using rule 65 (expression -> MINUS expression .)
+    SETMAPTIMES     reduce using rule 65 (expression -> MINUS expression .)
+    SETMAPDIVIDE    reduce using rule 65 (expression -> MINUS expression .)
+    SETMAPMODULE    reduce using rule 65 (expression -> MINUS expression .)
+    BELONGSTO       reduce using rule 65 (expression -> MINUS expression .)
+    $end            reduce using rule 65 (expression -> MINUS expression .)
+    SEMICOLON       reduce using rule 65 (expression -> MINUS expression .)
+    WHILE           reduce using rule 65 (expression -> MINUS expression .)
+    ELSE            reduce using rule 65 (expression -> MINUS expression .)
+    COMMA           reduce using rule 65 (expression -> MINUS expression .)
+    MIN             reduce using rule 65 (expression -> MINUS expression .)
+    MAX             reduce using rule 65 (expression -> MINUS expression .)
+    RCURLY          reduce using rule 65 (expression -> MINUS expression .)
+    RPAREN          reduce using rule 65 (expression -> MINUS expression .)
+    DO              reduce using rule 65 (expression -> MINUS expression .)
 
-  ! TIMES           [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! DIVIDE          [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! MODULE          [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! SETUNION        [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! SETDIFF         [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! SETINTERSECT    [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! SETMAPPLUS      [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! SETMAPMINUS     [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! SETMAPTIMES     [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! SETMAPDIVIDE    [ reduce using rule 62 (expression -> MINUS expression .) ]
-  ! SETMAPMODULE    [ reduce using rule 62 (expression -> MINUS expression .) ]
   ! PLUS            [ shift and go to state 67 ]
   ! MINUS           [ shift and go to state 63 ]
+  ! TIMES           [ shift and go to state 75 ]
+  ! DIVIDE          [ shift and go to state 70 ]
+  ! MODULE          [ shift and go to state 72 ]
   ! AND             [ shift and go to state 76 ]
   ! OR              [ shift and go to state 79 ]
   ! LESSTHAN        [ shift and go to state 61 ]
@@ -2074,12 +2066,20 @@ state 55
   ! GREATEREQUALTHAN [ shift and go to state 69 ]
   ! EQUALS          [ shift and go to state 73 ]
   ! NOTEQUALS       [ shift and go to state 60 ]
+  ! SETUNION        [ shift and go to state 64 ]
+  ! SETDIFF         [ shift and go to state 68 ]
+  ! SETINTERSECT    [ shift and go to state 66 ]
+  ! SETMAPPLUS      [ shift and go to state 78 ]
+  ! SETMAPMINUS     [ shift and go to state 80 ]
+  ! SETMAPTIMES     [ shift and go to state 65 ]
+  ! SETMAPDIVIDE    [ shift and go to state 71 ]
+  ! SETMAPMODULE    [ shift and go to state 62 ]
   ! BELONGSTO       [ shift and go to state 81 ]
 
 
 state 56
 
-    (64) expression -> SETMAXVALUE expression .
+    (63) expression -> SETMAXVALUE expression .
     (39) expression -> expression . PLUS expression
     (40) expression -> expression . MINUS expression
     (41) expression -> expression . TIMES expression
@@ -2103,38 +2103,38 @@ state 56
     (59) expression -> expression . SETMAPMODULE expression
     (60) expression -> expression . BELONGSTO expression
 
-    PLUS            reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    MINUS           reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    TIMES           reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    DIVIDE          reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    MODULE          reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    AND             reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    OR              reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    LESSTHAN        reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    LESSEQUALTHAN   reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    GREATERTHAN     reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    GREATEREQUALTHAN reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    EQUALS          reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    NOTEQUALS       reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SETUNION        reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SETDIFF         reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SETINTERSECT    reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SETMAPPLUS      reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SETMAPMINUS     reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SETMAPTIMES     reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SETMAPDIVIDE    reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SETMAPMODULE    reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    BELONGSTO       reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    $end            reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    SEMICOLON       reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    WHILE           reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    ELSE            reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    COMMA           reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    MIN             reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    MAX             reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    RCURLY          reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    RPAREN          reduce using rule 64 (expression -> SETMAXVALUE expression .)
-    DO              reduce using rule 64 (expression -> SETMAXVALUE expression .)
+    PLUS            reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    MINUS           reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    TIMES           reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    DIVIDE          reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    MODULE          reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    AND             reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    OR              reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    LESSTHAN        reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    LESSEQUALTHAN   reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    GREATERTHAN     reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    GREATEREQUALTHAN reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    EQUALS          reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    NOTEQUALS       reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SETUNION        reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SETDIFF         reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SETINTERSECT    reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SETMAPPLUS      reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SETMAPMINUS     reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SETMAPTIMES     reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SETMAPDIVIDE    reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SETMAPMODULE    reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    BELONGSTO       reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    $end            reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    SEMICOLON       reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    WHILE           reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    ELSE            reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    COMMA           reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    MIN             reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    MAX             reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    RCURLY          reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    RPAREN          reduce using rule 63 (expression -> SETMAXVALUE expression .)
+    DO              reduce using rule 63 (expression -> SETMAXVALUE expression .)
 
   ! PLUS            [ shift and go to state 67 ]
   ! MINUS           [ shift and go to state 63 ]
@@ -2213,7 +2213,7 @@ state 57
 
 state 58
 
-    (65) expression -> SETSIZE expression .
+    (64) expression -> SETSIZE expression .
     (39) expression -> expression . PLUS expression
     (40) expression -> expression . MINUS expression
     (41) expression -> expression . TIMES expression
@@ -2237,38 +2237,38 @@ state 58
     (59) expression -> expression . SETMAPMODULE expression
     (60) expression -> expression . BELONGSTO expression
 
-    PLUS            reduce using rule 65 (expression -> SETSIZE expression .)
-    MINUS           reduce using rule 65 (expression -> SETSIZE expression .)
-    TIMES           reduce using rule 65 (expression -> SETSIZE expression .)
-    DIVIDE          reduce using rule 65 (expression -> SETSIZE expression .)
-    MODULE          reduce using rule 65 (expression -> SETSIZE expression .)
-    AND             reduce using rule 65 (expression -> SETSIZE expression .)
-    OR              reduce using rule 65 (expression -> SETSIZE expression .)
-    LESSTHAN        reduce using rule 65 (expression -> SETSIZE expression .)
-    LESSEQUALTHAN   reduce using rule 65 (expression -> SETSIZE expression .)
-    GREATERTHAN     reduce using rule 65 (expression -> SETSIZE expression .)
-    GREATEREQUALTHAN reduce using rule 65 (expression -> SETSIZE expression .)
-    EQUALS          reduce using rule 65 (expression -> SETSIZE expression .)
-    NOTEQUALS       reduce using rule 65 (expression -> SETSIZE expression .)
-    SETUNION        reduce using rule 65 (expression -> SETSIZE expression .)
-    SETDIFF         reduce using rule 65 (expression -> SETSIZE expression .)
-    SETINTERSECT    reduce using rule 65 (expression -> SETSIZE expression .)
-    SETMAPPLUS      reduce using rule 65 (expression -> SETSIZE expression .)
-    SETMAPMINUS     reduce using rule 65 (expression -> SETSIZE expression .)
-    SETMAPTIMES     reduce using rule 65 (expression -> SETSIZE expression .)
-    SETMAPDIVIDE    reduce using rule 65 (expression -> SETSIZE expression .)
-    SETMAPMODULE    reduce using rule 65 (expression -> SETSIZE expression .)
-    BELONGSTO       reduce using rule 65 (expression -> SETSIZE expression .)
-    $end            reduce using rule 65 (expression -> SETSIZE expression .)
-    SEMICOLON       reduce using rule 65 (expression -> SETSIZE expression .)
-    WHILE           reduce using rule 65 (expression -> SETSIZE expression .)
-    ELSE            reduce using rule 65 (expression -> SETSIZE expression .)
-    COMMA           reduce using rule 65 (expression -> SETSIZE expression .)
-    MIN             reduce using rule 65 (expression -> SETSIZE expression .)
-    MAX             reduce using rule 65 (expression -> SETSIZE expression .)
-    RCURLY          reduce using rule 65 (expression -> SETSIZE expression .)
-    RPAREN          reduce using rule 65 (expression -> SETSIZE expression .)
-    DO              reduce using rule 65 (expression -> SETSIZE expression .)
+    PLUS            reduce using rule 64 (expression -> SETSIZE expression .)
+    MINUS           reduce using rule 64 (expression -> SETSIZE expression .)
+    TIMES           reduce using rule 64 (expression -> SETSIZE expression .)
+    DIVIDE          reduce using rule 64 (expression -> SETSIZE expression .)
+    MODULE          reduce using rule 64 (expression -> SETSIZE expression .)
+    AND             reduce using rule 64 (expression -> SETSIZE expression .)
+    OR              reduce using rule 64 (expression -> SETSIZE expression .)
+    LESSTHAN        reduce using rule 64 (expression -> SETSIZE expression .)
+    LESSEQUALTHAN   reduce using rule 64 (expression -> SETSIZE expression .)
+    GREATERTHAN     reduce using rule 64 (expression -> SETSIZE expression .)
+    GREATEREQUALTHAN reduce using rule 64 (expression -> SETSIZE expression .)
+    EQUALS          reduce using rule 64 (expression -> SETSIZE expression .)
+    NOTEQUALS       reduce using rule 64 (expression -> SETSIZE expression .)
+    SETUNION        reduce using rule 64 (expression -> SETSIZE expression .)
+    SETDIFF         reduce using rule 64 (expression -> SETSIZE expression .)
+    SETINTERSECT    reduce using rule 64 (expression -> SETSIZE expression .)
+    SETMAPPLUS      reduce using rule 64 (expression -> SETSIZE expression .)
+    SETMAPMINUS     reduce using rule 64 (expression -> SETSIZE expression .)
+    SETMAPTIMES     reduce using rule 64 (expression -> SETSIZE expression .)
+    SETMAPDIVIDE    reduce using rule 64 (expression -> SETSIZE expression .)
+    SETMAPMODULE    reduce using rule 64 (expression -> SETSIZE expression .)
+    BELONGSTO       reduce using rule 64 (expression -> SETSIZE expression .)
+    $end            reduce using rule 64 (expression -> SETSIZE expression .)
+    SEMICOLON       reduce using rule 64 (expression -> SETSIZE expression .)
+    WHILE           reduce using rule 64 (expression -> SETSIZE expression .)
+    ELSE            reduce using rule 64 (expression -> SETSIZE expression .)
+    COMMA           reduce using rule 64 (expression -> SETSIZE expression .)
+    MIN             reduce using rule 64 (expression -> SETSIZE expression .)
+    MAX             reduce using rule 64 (expression -> SETSIZE expression .)
+    RCURLY          reduce using rule 64 (expression -> SETSIZE expression .)
+    RPAREN          reduce using rule 64 (expression -> SETSIZE expression .)
+    DO              reduce using rule 64 (expression -> SETSIZE expression .)
 
   ! PLUS            [ shift and go to state 67 ]
   ! MINUS           [ shift and go to state 63 ]
@@ -2403,10 +2403,10 @@ state 60
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2419,10 +2419,10 @@ state 60
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2462,10 +2462,10 @@ state 61
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2478,10 +2478,10 @@ state 61
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2521,10 +2521,10 @@ state 62
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2537,10 +2537,10 @@ state 62
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2580,10 +2580,10 @@ state 63
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2596,10 +2596,10 @@ state 63
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2639,10 +2639,10 @@ state 64
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2655,10 +2655,10 @@ state 64
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2698,10 +2698,10 @@ state 65
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2714,10 +2714,10 @@ state 65
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2757,10 +2757,10 @@ state 66
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2773,10 +2773,10 @@ state 66
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2816,10 +2816,10 @@ state 67
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2832,10 +2832,10 @@ state 67
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2875,10 +2875,10 @@ state 68
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2891,10 +2891,10 @@ state 68
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2934,10 +2934,10 @@ state 69
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -2950,10 +2950,10 @@ state 69
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -2993,10 +2993,10 @@ state 70
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3009,10 +3009,10 @@ state 70
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3052,10 +3052,10 @@ state 71
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3068,10 +3068,10 @@ state 71
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3111,10 +3111,10 @@ state 72
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3127,10 +3127,10 @@ state 72
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3170,10 +3170,10 @@ state 73
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3186,10 +3186,10 @@ state 73
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3229,10 +3229,10 @@ state 74
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3245,10 +3245,10 @@ state 74
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3288,10 +3288,10 @@ state 75
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3304,10 +3304,10 @@ state 75
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3347,10 +3347,10 @@ state 76
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3363,10 +3363,10 @@ state 76
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3406,10 +3406,10 @@ state 77
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3422,10 +3422,10 @@ state 77
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3465,10 +3465,10 @@ state 78
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3481,10 +3481,10 @@ state 78
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3524,10 +3524,10 @@ state 79
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3540,10 +3540,10 @@ state 79
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3583,10 +3583,10 @@ state 80
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3599,10 +3599,10 @@ state 80
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3642,10 +3642,10 @@ state 81
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3658,10 +3658,10 @@ state 81
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -3865,10 +3865,10 @@ state 91
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3882,10 +3882,10 @@ state 91
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     STRING          shift and go to state 43
     TRUE            shift and go to state 26
@@ -3932,10 +3932,10 @@ state 92
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -3949,10 +3949,10 @@ state 92
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     STRING          shift and go to state 43
     TRUE            shift and go to state 26
@@ -4046,10 +4046,10 @@ state 96
     (26) direction -> MIN .
 
     NOT             reduce using rule 26 (direction -> MIN .)
-    MINUS           reduce using rule 26 (direction -> MIN .)
     SETMINVALUE     reduce using rule 26 (direction -> MIN .)
     SETMAXVALUE     reduce using rule 26 (direction -> MIN .)
     SETSIZE         reduce using rule 26 (direction -> MIN .)
+    MINUS           reduce using rule 26 (direction -> MIN .)
     LPAREN          reduce using rule 26 (direction -> MIN .)
     TRUE            reduce using rule 26 (direction -> MIN .)
     FALSE           reduce using rule 26 (direction -> MIN .)
@@ -4084,10 +4084,10 @@ state 97
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -4100,10 +4100,10 @@ state 97
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31
@@ -4122,10 +4122,10 @@ state 98
     (27) direction -> MAX .
 
     NOT             reduce using rule 27 (direction -> MAX .)
-    MINUS           reduce using rule 27 (direction -> MAX .)
     SETMINVALUE     reduce using rule 27 (direction -> MAX .)
     SETMAXVALUE     reduce using rule 27 (direction -> MAX .)
     SETSIZE         reduce using rule 27 (direction -> MAX .)
+    MINUS           reduce using rule 27 (direction -> MAX .)
     LPAREN          reduce using rule 27 (direction -> MAX .)
     TRUE            reduce using rule 27 (direction -> MAX .)
     FALSE           reduce using rule 27 (direction -> MAX .)
@@ -4252,10 +4252,10 @@ state 101
     (59) expression -> . expression SETMAPMODULE expression
     (60) expression -> . expression BELONGSTO expression
     (61) expression -> . NOT expression
-    (62) expression -> . MINUS expression
-    (63) expression -> . SETMINVALUE expression
-    (64) expression -> . SETMAXVALUE expression
-    (65) expression -> . SETSIZE expression
+    (62) expression -> . SETMINVALUE expression
+    (63) expression -> . SETMAXVALUE expression
+    (64) expression -> . SETSIZE expression
+    (65) expression -> . MINUS expression
     (66) expression -> . LPAREN expression RPAREN
     (67) expression -> . booleanValue
     (68) expression -> . identifier
@@ -4268,10 +4268,10 @@ state 101
     (76) number -> . NUMBER
 
     NOT             shift and go to state 34
-    MINUS           shift and go to state 27
     SETMINVALUE     shift and go to state 22
     SETMAXVALUE     shift and go to state 29
     SETSIZE         shift and go to state 33
+    MINUS           shift and go to state 27
     LPAREN          shift and go to state 30
     TRUE            shift and go to state 26
     FALSE           shift and go to state 31

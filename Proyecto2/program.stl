@@ -3,5 +3,7 @@ program {
     b = -b
   ;
 
-  println a - b, ", ", a % b, ", ", -a;
+  println -1,a - b, ", ", a % b, ", ", -a;
 }
+
+
