@@ -105,7 +105,10 @@ def p_instructionBlock(p):
 def p_ifInst(p):
     '''ifInst : IF LPAREN expression RPAREN instruction
 			  | IF LPAREN expression RPAREN instruction ELSE instruction '''
-	#p[0] = IfInst()
+    if len(p) == 6:
+        p[0] = IfInst(p[1],p[2],p[3],p[4],p[5])
+    else:
+        p[0] = IfInst(p[1],p[2],p[3],p[4],p[5],p[6],p[7])
 
 def p_forInst(p):
     '''forInst : FOR expression direction expression DO instruction'''
@@ -180,8 +183,7 @@ def p_expression(p):
 	              | SETMAXVALUE expression
 	              | SETSIZE expression
                   | LPAREN expression RPAREN
-                  | TRUE
-                  | FALSE              
+                  | booleanValue          
                   | identifier 
                   | set
                   | number'''
@@ -203,6 +205,11 @@ def p_setNumbers(p):
         p[0] = SetNumbers(p[1])
     else:
         p[0] = SetNumbers(p[1],p[2],p[3])
+
+def p_booleanValue(p):
+    ''' booleanValue : TRUE 
+                     | FALSE '''
+    p[0] = BooleanValue(p[1])
 
 def p_number(p):
     '''number : NUMBER'''

@@ -139,9 +139,25 @@ class InstructionBlock:
 
 
 class IfInst:
-	def __init__(self):
-		pass
+	def __init__(self, If, lparen, expression, rparen, instruction, Else="", elseInstruction=""):
+		self.If = If
+		self.lparen = lparen
+		self.expression = expression
+		self.rparen = rparen
+		self.instruction = instruction
+		self.Else = Else
+		self.elseInstruction = elseInstruction
 
+	def printTree(self, tabs):
+		string = indent(tabs)+"IF\n"
+		string += indent(tabs+1)+"condition\n"
+		string += self.expression.printTree(tabs+2)
+		string += indent(tabs+1)+"THEN\n"
+		string += self.instruction.printTree(tabs+2)
+		if (self.Else != ""):
+			string += indent(tabs)+"ELSE"
+			string += self.elseInstruction.printTree(tabs+1)
+		return string
 
 class ForInst:
 	def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -222,7 +238,7 @@ class PrintInst:
 		string = indent(tabs)+operator[self.Print]+"\n"
 		string += self.output.printTree(tabs+1)
 		if (self.Print == "println"):
-			string += String("\\n").printTree(tabs+1)
+			string += String("\"\\n\"").printTree(tabs+1)
 		return string
 
 
@@ -245,7 +261,7 @@ class String:
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"string\n"
-		string += indent(tabs+1)+'"'+self.string+'"'+"\n"
+		string += indent(tabs+1)+self.string+"\n"
 		return string
 
 
@@ -296,6 +312,15 @@ class SetNumbers:
 		string = self.expression.printTree(tabs)
 		if not isinstance(self.setNumbersRecursion, str):
 			string += self.setNumbersRecursion.printTree(tabs)
+		return string
+
+class BooleanValue:
+	def __init__(self,value):
+		self.value = value
+
+	def printTree(self, tabs):
+		string  = indent(tabs)+"bool\n"
+		string += indent(tabs+1)+self.value+"\n"
 		return string
 
 class Number:
