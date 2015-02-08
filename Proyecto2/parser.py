@@ -8,20 +8,20 @@ from   AST      import *
 
 # Precedencia de operadores (de menor a mayor)
 precedence = (
-	('right','RPAREN'),
-	('right','ELSE'),
+    ('right','RPAREN'),
+    ('right','ELSE'),
 
-	# Booleanos
-	('left','OR'),
-	('left','AND'),
-	('right','NOT'),
+    # Booleanos
+    ('left','OR'),
+    ('left','AND'),
+    ('right','NOT'),
 
-	# Comparativos
-	('nonassoc', 'LESSTHAN', 'GREATERTHAN', 'LESSEQUALTHAN', 'GREATEREQUALTHAN'),
-	('nonassoc', 'EQUALS', 'NOTEQUALS'),
+    # Comparativos
+    ('nonassoc', 'LESSTHAN', 'GREATERTHAN', 'LESSEQUALTHAN', 'GREATEREQUALTHAN'),
+    ('nonassoc', 'EQUALS', 'NOTEQUALS'),
     ('nonassoc', 'BELONGSTO'),  # no se si este esta bien aqui
 
-	# Aritméticos
+    # Aritméticos
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE', 'MODULE'),
     
@@ -33,8 +33,8 @@ precedence = (
     ('left','SETMAPPLUS','SETMAPMINUS'),						# tiene mayor precedencia sobre la union...
     ('left', 'SETMAPTIMES', 'SETMAPDIVIDE', 'SETMAPMODULE'),
 
-	# Falta el menos unario
-	('right','SETMINVALUE','SETMAXVALUE','SETSIZE'),
+    # Unarios
+    ('right','SETMINVALUE','SETMAXVALUE','SETSIZE','NEGATE'),
 )
 
 def p_program(p):
@@ -178,10 +178,10 @@ def p_expression(p):
                   | expression SETMAPMODULE expression
                   | expression BELONGSTO expression
                   | NOT expression
-                  | MINUS expression
-	              | SETMINVALUE expression
-	              | SETMAXVALUE expression
-	              | SETSIZE expression
+	                | SETMINVALUE expression
+	                | SETMAXVALUE expression
+	                | SETSIZE expression
+                  | MINUS expression %prec NEGATE
                   | LPAREN expression RPAREN
                   | booleanValue          
                   | identifier 
