@@ -21,9 +21,12 @@ except:
 data = data.read()
 
 lexer.input(data)
+lexer.lineno = 0
 while True:    
     tok = lexer.token()
     if not tok: break
+    elif tok.type == 'NEWLINE':
+        lexer.lineno += 1
 
 if lexError != []:
     for error in lexError:

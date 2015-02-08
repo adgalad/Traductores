@@ -1,9 +1,8 @@
 program {
   if (b < 0)
-    b = -b
-  ;
+    b = -b;
 
   print "jamon"
 
-  println a - b, ", ", a % b, ", ", -a;
+  ~println a - b, ", ", a % b, ", ", -a;
 }

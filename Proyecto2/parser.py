@@ -218,7 +218,7 @@ def p_number(p):
 def p_error(p):
     if p:
         yaccError.append('''ERROR: Se encontró un token inesperado "%s" en la Línea %d, Columna %d.''' \
-            % (p.value, p.lineno, findColumn(p.lexer.lexdata,p)))
+            % (p.value, p.lineno/2, findColumn(p.lexer.lexdata,p)))
     else:
         yaccError.append('''ERROR: Error de sintaxis en fin de archivo.''')
 
