@@ -41,4 +41,5 @@ class symbol:
 		return printSymbol()
 
 	def printSymbol(self):
+		pass
 
