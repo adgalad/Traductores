@@ -58,10 +58,14 @@ class Instruction:
 
 	def checkType(self,scope):
 		if self.assign == "":
+			return self.instruction
+		else:
 			var = self.id.checkType()
 			value = self.expression.checkType()
-			if scope.contains
-
+			symbol = scope.lookup(var)
+			if symbol:
+				scope.update(symbol.name, symbol.type, value)
+				return true
 
 
 class Block:
@@ -165,6 +169,10 @@ class InstructionBlock:
 		return string
 
 	def checkType(self,scope):
+		if (self.instruction.checkType(scope) and
+			self.instructionBlock.checkType(scope)):
+			return True
+		return False
 
 
 class IfInst:
