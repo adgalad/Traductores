@@ -1,0 +1,6 @@
+program {
+
+	x = (a + b) * 3;
+
+	print "jamon";
+}
