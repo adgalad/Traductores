@@ -25,7 +25,8 @@ class symbolTable:
 
 	def lookup(self, symbolName):
 		if self.contains(symbolName):
-			print self.currentScope[symbolName]
+			return self.currentScope[symbolName]
+		return None
 
 
 

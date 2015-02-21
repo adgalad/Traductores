@@ -24,6 +24,7 @@ class Program:
 	def __init__(self,program="",instruction=""):
 		self.program = program
 		self.instruction = instruction
+		self.scope = SymbolTable()
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"PROGRAM\n"
@@ -31,7 +32,7 @@ class Program:
 		return string
 
 	def checkType(self):
-		return self.instruction.checkType()
+		return self.instruction.checkType(self.scope)
 
 
 class Instruction:
@@ -55,9 +56,12 @@ class Instruction:
 			string += self.expression.printTree(tabs+2)
 		return string 
 
-	def checkType(self):
+	def checkType(self,scope):
 		if self.assign == "":
-			
+			var = self.id.checkType()
+			value = self.expression.checkType()
+			if scope.contains
+
 
 
 class Block:
@@ -71,6 +75,13 @@ class Block:
 		string += self.instructionBlock.printTree(tabs+1)
 		string += indent(tabs)+"BLOCK_END\n"
 		return string
+
+	def checkType(scope):
+		if scope.previusScope:
+			newScope = SymbolTable()
+			scope.previusScope.innerScopes += [newScope]
+			scope = newScope
+		return self.instructionBlock.checkType()
 
 
 class UsingInInst:
@@ -87,6 +98,9 @@ class UsingInInst:
 		string += self.instruction.printTree(tabs+1)
 		return string
 
+	def checkType(self, scope):
+		if (self.declaration.checkType(scope) and
+			self.instruction.checkType(scope)
 
 class DeclarationBlock:
 	def __init__(self,varType,Id,semicolon,declaration=""):
@@ -149,6 +163,8 @@ class InstructionBlock:
 			else:
 				string += self.instructionBlock.printTree(tabs)
 		return string
+
+	def checkType(self,scope):
 
 
 class IfInst:
