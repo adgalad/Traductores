@@ -21,14 +21,17 @@ def indent(tabs):
 	return "   "*tabs
 
 class Program:
-	def __init__(self,declarations="",instruction=""):
-		self.declarations = declarations
+	def __init__(self,program="",instruction=""):
+		self.program = program
 		self.instruction = instruction
 
 	def printTree(self,tabs):
 		string = indent(tabs)+"PROGRAM\n"
 		string += self.instruction.printTree(tabs+1)
 		return string
+
+	def checkType(self):
+		return self.instruction.checkType()
 
 
 class Instruction:
@@ -51,6 +54,10 @@ class Instruction:
 			string += indent(tabs+1)+"value\n"
 			string += self.expression.printTree(tabs+2)
 		return string 
+
+	def checkType(self):
+		if self.assign == "":
+			
 
 
 class Block:
