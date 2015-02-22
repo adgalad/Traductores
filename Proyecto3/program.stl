@@ -1,6 +1,5 @@
 program {
-
-	x = (a + b) * 3;
-
-	print "jamon";
+	if (1 + 2)
+		print "error"
+	;
 }
