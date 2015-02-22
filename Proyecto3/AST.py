@@ -78,13 +78,16 @@ class Instruction:
     def checkType(self,scope):
         if self.assign == "":
             if not isinstance(self.instruction, str):
-                self.instruction.checkType(scope)               # . . . A Y U D A
+                self.instruction.checkType(scope)              
                 return True
         else:
-            print("Asigno")
-            var = self.id.checkType()[0]
+            var = self.id.checkType(scope)[0]
             value = self.expression.checkType(scope)
+            print("*******")
+            print(var)
+            print("*******")
             symbol = scope.lookup(var)
+            print(symbol)
             if symbol:
                 scope.update(symbol.name, symbol.type, value)
                 return True
@@ -93,7 +96,6 @@ class Instruction:
 
 class Block:
     def __init__(self,lcurly, instructionBlock,rcurly):
-        
         self.rcurly = rcurly
         self.lcurly = lcurly
         self.instructionBlock = instructionBlock
@@ -119,9 +121,9 @@ class Block:
                 scope = newScope
                
         if self.instructionBlock.checkType(scope): 
-            if scope.previousScope:
-                scope = scope.previousScope
-                print(scope.previousScope)
+#            if scope.previousScope:
+#                scope = scope.previousScope
+            print(scope.currentScope)
             return True
 
         return False
@@ -169,6 +171,7 @@ class DeclarationBlock:
         varList = self.Id.checkType(scope)
         for var in varList:
             symbol = symbols.Symbol(var,varType,typeDefault[varType])
+            print(symbol.type)
             if not scope.insert(symbol):
                 return checkError('duplicated',"","",var)                 ###########################
 #            print(scope.currentScope)
