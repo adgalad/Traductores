@@ -82,11 +82,7 @@ class Instruction:
         else:
             var = self.id.checkType(scope)[0]
             value = self.expression.checkType(scope)
-            print("*******")
-            print(var)
-            print("*******")
             symbol = scope.lookup(var)
-            print(symbol)
             if symbol:
                 scope.update(symbol.name, symbol.type, value)
                 return True
@@ -106,7 +102,6 @@ class Block:
         return string
 
     def checkType(self,scope):
-#        print(scope.currentScope)
         if scope.previousScope:
             newScope = SymbolTable()
             newScope.previousScope = scope
@@ -122,7 +117,7 @@ class Block:
         if self.instructionBlock.checkType(scope): 
 #            if scope.previousScope:
 #                scope = scope.previousScope
-            print(scope.currentScope)
+#            print(scope.currentScope)
             return True
 
         return False
@@ -144,7 +139,6 @@ class UsingInInst:
 
     def checkType(self,scope):
         if (self.declaration.checkType(scope) and self.instruction.checkType(scope)):
-#            print(scope.currentScope)
             return True
         return False
 
@@ -169,11 +163,9 @@ class DeclarationBlock:
         varType = self.varType.checkType(scope)
         varList = self.Id.checkType(scope)
         for var in varList:
-            symbol = symbols.Symbol(var,varType,typeDefault[varType])
-            print(symbol.type)
+            symbol = Symbol(var,varType,typeDefault[varType])
             if not scope.insert(symbol):
                 return checkError('duplicated',"","",var)                 ###########################
-#            print(scope.currentScope)
         if self.declaration != "":
             self.declaration.checkType(scope)
         return True
