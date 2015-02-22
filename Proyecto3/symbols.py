@@ -18,12 +18,12 @@ class SymbolTable:
 		return self.printTable(0)
 
 	def printTable(self,tabs):
-		string = "SCOPE\n"
+		string = indent(tabs)+"SCOPE\n"
 		for var in self.currentScope:
 			string += indent(tabs+1) + self.currentScope[var].printSymbol()
 		for scope in self.innerScopes:
 			string += scope.printTable(tabs+1)
-		string += "END_SCOPE\n"
+		string += indent(tabs)+"END_SCOPE\n"
 		return string
 
 	def insert(self, symbol):

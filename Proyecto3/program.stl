@@ -1,32 +1,25 @@
 program 
 {
-
 	using
 		int x;
 		int y;
 	in 
 	{
 		print "hola";
-		while (True) do
+		if (true)
 		{
 			using
-				int z;
-				int w;
+				int i;
+				set s;
+				bool b;
 			in 
 			print "hola";
-		};	
+		} else {
 
-	
-		using
-			bool z;
-		in
-#			x = 1;
-#			print "hola";
-
-		if (z)
-			print "error"
-		;
+			using 
+				int h;
+			in
+			print "chao";
+		};
 	};
-
-
 }

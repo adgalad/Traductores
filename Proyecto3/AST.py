@@ -108,16 +108,8 @@ class Block:
         return string
 
     def checkType(self,scope):
-        if scope.previousScope:
-            newScope = SymbolTable()
-            newScope.previousScope = scope
-            if self.instructionBlock.checkType(newScope):
-                scope.innerScopes += [newScope]
-                return True
+        if self.instructionBlock.checkType(scope):
             return False
-        if self.instructionBlock.checkType(scope): 
-            return True
-        return False
 
 
 class UsingInInst:
@@ -135,6 +127,14 @@ class UsingInInst:
         return string
 
     def checkType(self,scope):
+        if scope.currentScope != {}:
+            newScope = SymbolTable()
+            newScope.previousScope = scope
+            if (self.declaration.checkType(newScope) and self.instruction.checkType(newScope)):
+                scope.innerScopes += [newScope]
+                return True
+            return False
+        print "hola"
         if (self.declaration.checkType(scope) and self.instruction.checkType(scope)):
             return True
         return False
@@ -224,6 +224,7 @@ class InstructionBlock:
         return string
 
     def checkType(self,scope):
+        
         if self.instruction != "":
             self.instruction.checkType(scope)
             if not isinstance(self.instructionBlock, str):
@@ -259,16 +260,19 @@ class IfInst:
 #            return False
 
     def checkType(self, scope):
+
         value = self.expression.checkType(scope)
+        print value + " aquiiii "
         if value == "bool":
+            print "si es bool"
             if self.instruction.checkType(scope):
                 if self.Else != "":
-                    if self.elseInstruction.checkType(scope):
-                        return True
+                    print "entro IFELSE"
+                    return self.elseInstruction.checkType(scope)
                 return True
             else:
                 return False
-        elif value != '':           # si devolvio un tipo erroneo, no considera las variables no declaradas
+        else:           # si devolvio un tipo erroneo, no considera las variables no declaradas
             return checkError('condition','if','bool',value)
 
 class ForInst:
@@ -487,6 +491,7 @@ class Expression:
                         self.opType = 'set'
                 return self.right.value
         else:
+            return "bool"
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
                 if isinstance(self.left.value,str):
