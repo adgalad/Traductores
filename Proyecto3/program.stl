@@ -1,16 +1,21 @@
-program 
-{
-
+program {
 	using
 		int x;
 		int y;
-	in 
-
-		x = -2;
-
-		if (true) 
-			print "error"
-		;
-
+	in
+		print "hola";
+		if (true){
+			using
+				int i;
+				set s;
+				bool b;
+			in
+				print "hola";
+		} else {
+			using
+				int h;
+			in
+				print "chao";
+		};
 
 }
