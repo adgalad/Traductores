@@ -5,11 +5,26 @@
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
 
-class symbolTable:
+def indent(tabs):
+    return "   "*tabs
+
+class SymbolTable:
 	def __init__(self):
 		self.previousScope = None
 		self.currentScope = {}
 		self.innerScopes = []
+
+	def __str__(self):
+		return self.printTable(0)
+
+	def printTable(self,tabs):
+		string = "SCOPE\n"
+		for var in self.currentScope:
+			string += indent(tabs+1) + self.currentScope[var].printSymbol()
+		for scope in self.innerScopes:
+			string += scope.printTable(tabs+1)
+		string += "END_SCOPE\n"
+		return string
 
 	def insert(self, symbol):
 		if not self.contains(symbol.name):
@@ -44,14 +59,14 @@ class symbolTable:
 				return self.currentScope[x]			# daba problemas si ponia self.currentScope[symbolName]
 		return None
 
-class Symbol:
+
+class Symbol(object):
+
 	def __init__(self, name, type, value):
 		self.name = name
 		self.type = type
 		self.value = value
 
-	def __str__(self):
-		return printSymbol()
-
 	def printSymbol(self):
-		pass
+		string =  "Variable: %s | Type: %s  | Value: %s\n"%(self.name,self.type,self.value)
+		return string
