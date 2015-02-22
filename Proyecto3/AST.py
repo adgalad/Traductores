@@ -108,10 +108,6 @@ class Block:
         return string
 
     def checkType(self,scope):
-<<<<<<< HEAD
-        print("entro")
-=======
->>>>>>> origin/Monica
         if scope.previousScope:
             newScope = SymbolTable()
             newScope.previousScope = scope
@@ -120,12 +116,6 @@ class Block:
                 return True
             return False
         if self.instructionBlock.checkType(scope): 
-<<<<<<< HEAD
-=======
-#            if scope.previousScope:
-#                scope = scope.previousScope
-#            print(scope.currentScope)
->>>>>>> origin/Monica
             return True
         return False
 
