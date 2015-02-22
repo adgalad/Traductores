@@ -5,7 +5,7 @@
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
 
-import  symbols
+from symbols import indent, SymbolTable, Symbol
 
 operator = {"+"   : "PLUS", 
             "-"   : "MINUS",
@@ -36,14 +36,13 @@ operator = {"+"   : "PLUS",
 
 typeDefault = { "int" : "0", "bool" : "False", "set" : "{}" }
 
-def indent(tabs):
-    return "   "*tabs
+
 
 class Program:
     def __init__(self,program="",instruction=""):
         self.program = program
         self.instruction = instruction
-        self.scope = symbols.symbolTable()
+        self.scope = SymbolTable()
 
     def printTree(self,tabs):
         string = indent(tabs)+"PROGRAM\n"
@@ -52,7 +51,7 @@ class Program:
 
     def checkType(self):
         if self.instruction.checkType(self.scope):
-            print self.scope.currentScope
+            print self.scope
 
 class Instruction:
     def __init__(self,instruction = "",Id="",assign="",expression=""):
@@ -81,7 +80,6 @@ class Instruction:
                 self.instruction.checkType(scope)               # . . . A Y U D A
                 return True
         else:
-            print("Asigno")
             var = self.id.checkType()[0]
             value = self.expression.checkType(scope)
             symbol = scope.lookup(var)
@@ -107,13 +105,13 @@ class Block:
     def checkType(self,scope):
 #        print(scope.currentScope)
         if scope.previousScope:
-            newScope = symbols.symbolTable()
+            newScope = SymbolTable()
             newScope.previousScope = scope
             scope.innerScopes += [newScope]
             scope = newScope
         else:
             if scope.currentScope != {}:
-                newScope = symbols.symbolTable()
+                newScope = SymbolTable()
                 newScope.previousScope = scope
                 scope.innerScopes += [newScope]
                 scope = newScope
@@ -168,7 +166,7 @@ class DeclarationBlock:
         varType = self.varType.checkType(scope)
         varList = self.Id.checkType(scope)
         for var in varList:
-            symbol = symbols.Symbol(var,varType,typeDefault[varType])
+            symbol = Symbol(var,varType,typeDefault[varType])
             if not scope.insert(symbol):
                 return checkError('duplicated',"","",var)                 ###########################
 #            print(scope.currentScope)
