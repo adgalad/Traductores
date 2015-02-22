@@ -233,8 +233,10 @@ class InstructionBlock:
         return string
 
     def checkType(self,scope):
-        print("NO ENTIENDO NADA :'(")
-        if (self.instruction.checkType(scope) and self.instructionBlock.checkType(scope)):
+        if self.instruction != "":
+            self.instruction.checkType(scope)
+            if not isinstance(self.instructionBlock, str):
+                self.instructionBlock.checkType(scope)
             return True
         return False
 
@@ -379,8 +381,7 @@ class PrintInst:
             string += String("\"\\n\"").printTree(tabs+2)
         return string
     
-    def checkType(self):
-        print("LLEGA AL PRINT")
+    def checkType(self,scope):
         return True
         
 
@@ -396,6 +397,8 @@ class OutputType:
             string += self.outputRecursion.printTree(tabs)
         return string
       
+    def checkType(self,scope):
+        return True
 
 class String:
     def __init__(self,string):
@@ -405,7 +408,9 @@ class String:
         string = indent(tabs)+"string\n"
         string += indent(tabs+1)+self.string+"\n"
         return string
-        
+
+    def checkType(self,scope):
+        return True        
 
 class Expression:
     def __init__(self,left,op="",right=""):
