@@ -51,6 +51,8 @@ class Program:
         string += self.instruction.printTree(tabs+1)
         return string
 
+    def checkType(self):
+        return self.instruction.checkType(self.scope)
 
 class Instruction:
 	def __init__(self,instruction = "",Id="",assign="",expression=""):
@@ -214,7 +216,7 @@ class InstructionBlock:
         return False
 
 
-<<<<<<< HEAD
+
 class IfInst:
     def __init__(self, If, lparen, expression, rparen, instruction, Else="", elseInstruction=""):
         self.If = If
@@ -313,7 +315,9 @@ class WhileInst:
 		expresionType = self.expression.checkType(scope)
 		if expresionType == "bool":
 			return self.instruction.checkType(scope)
-		return False
+		else:
+            checkError('condition','while','bool',expresionType)
+        return False
 
 
 class RepeatInst:
@@ -439,7 +443,7 @@ class Expression:
         return string
 
     def checkType(self):
-        return True
+        return self.opType
         
 
 class Set:
