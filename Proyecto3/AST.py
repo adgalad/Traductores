@@ -82,12 +82,16 @@ class Instruction:
                 return True
         else:
             var = self.id.checkType(scope)
-            value = self.expression.checkType(scope)
-
+            expresionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
-                print(symbol.type)
-                scope.update(symbol.name, symbol.type, symbol.value)            # no se actualiza el valor para esta entrega
+                if (symbol.type != expresionType):
+                    print("crear mensaje de error")
+                    print(expresionType)
+                    checkError('badDeclaration','assign',symbol.type,expresionType)
+
+#               else:
+#                   scope.update(symbol.name, symbol.type, expresionType)            # no se actualiza el valor para esta entrega
                 return True
             else:
                 print("no existe")
@@ -261,10 +265,8 @@ class IfInst:
 
     def checkType(self, scope):
 
-        value = self.expression.checkType(scope)
-        print value + " aquiiii "
-        if value == "bool":
-            print "si es bool"
+        expresionType = self.expression.checkType(scope)
+        if expresionType == "bool":
             if self.instruction.checkType(scope):
                 if self.Else != "":
                     print "entro IFELSE"
@@ -272,8 +274,8 @@ class IfInst:
                 return True
             else:
                 return False
-        else:           # si devolvio un tipo erroneo, no considera las variables no declaradas
-            return checkError('condition','if','bool',value)
+        elif expresionType != '':           # si devolvio un tipo erroneo, no considera las variables no declaradas
+            return checkError('condition','if','bool', expresionType)
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -440,69 +442,76 @@ class Expression:
         return string
 
     def checkType(self,scope):
-
         if self.op != "":
+            
+            # Operadores unarios
             if self.right == "":
-                self.left.checkType(scope)
-                if (self.left == "-"):                                          # MENOS UNARIO  # a numeros los toma con string?
-                    if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.op.value):       # si es un id
-                        var = self.op.checkType(scope)
-                        symbol = scope.lookup(var)
-                        if symbol:
-                            if symbol.type != 'int':                        
-                                return ('int',symbol.type)      # devuelve el tipo de expresion esperada con la obtenida
+                print(self.left.checkType(scope))
+                if (self.left.value != 'true') & (self.left.value != 'false'):
+                    if isinstance(self.left.value,str):
+                        if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):       # si es un id
+                            symbol = scope.lookup(self.left.value)
+                            if symbol:
+                                return symbol.type      # devuelve el tipo de expresion obtenida
                         else:
-                            checkError('undeclared','expr','int','')    # expected: int , got: nothing
-                    else:
-                        if self.op.value != 'int':                              # si era un numero
-                            return ('int',self.op.value)
+                            checkError('undeclared','expr','','')
+                            return ''
+                return self.left.checkType(scope)
 
-                elif (self.left == ">?") | (self.left == "<?") | (self.left == "$?"):           # UNARIOS CONJUNTOS
-                    var = self.op.checkType(scope)
-                    symbol = scope.lookup(var)
-                    if symbol:
-                        if symbol.type != 'set':
-                            return ('set',symbol.type)
-
-                elif self.op == 'not':
-                    var = self.op.checkType(scope)
-                    symbol = scope.lookup(var)
-                    if symbol:
-                        if symbol.type != 'bool':
-                            return ('bool',symbol.type)
-
+            # Operadores binarios
             else:
                 if self.left == "(" and self.right == ")":
                     self.op.checkType(scope)
                 else:
+                    self.left.checkType(scope)
+                    self.right.checkType(scope)
                     if (self.op == "+") | (self.op == "-") | (self.op == "*") | (self.op == "/") | (self.op == "%"): 
-                        varLeft = self.left.checkType(scope)
-                        varRight = self.right.checkType(scope)
-                        symbol1 = scope.lookup(var)
-                        symbol2 = scope.lookup(var)
-                        if symbol:
-                            if symbol.type != 'set':
-                                return ('set',symbol.type)
+                        if (self.left.value != 'true') & (self.left.value != 'false') \
+                            & (self.right.value != 'true') & (self.right.value != 'false'):
+                            if isinstance(self.left.value,str):
+                                if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):  #id
+                                    symbol1 = scope.lookup(self.left.value)
+                                    if symbol1:
+                                        if symbol1.type != 'int':
+                                            return symbol.type      # si ya es un error lo devuelvo. si no espero al segundo operando 
+                                    else:
+                                        checkError('undeclared','var','bool','')
+                                        return ''       # '' indica que se ingreso una variable no declarada
 
-                       
-                    elif (self.op == "and") | (self.op == "or")| (self.op == "<") | (self.op == ">") | (self.op == "<=") | (self.op == ">=") | (self.op == "==") | (self.op == "/=") | (self.op == "@"):
-                        self.opType = 'bool'
+                            if isinstance(self.right.value,str):
+                                if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.right.value):  #id
+                                    symbol2 = scope.lookup(self.right.value)
+                                    if symbol2:
+                                        if symbol2.type != 'int':
+                                            return symbol.type 
+                                    else:
+                                        checkError('undeclared','var','bool','')
+                                        return ''       # '' indica que se ingreso una variable no declarada
+                        else:
+                            return 'bool'
+                        return 'int'
+
+                    elif   (self.op == "and") | (self.op == "or")| (self.op == "<") | (self.op == ">") \
+                         | (self.op == "<=") | (self.op == ">=") | (self.op == "==") | (self.op == "/=") | (self.op == "@"):
+                        pass
                     else:
-                        self.opType = 'set'
+                        pass
+
                 return self.right.value
         else:
             return "bool"
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
-                if isinstance(self.left.value,str):
-                    if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):  #id
-                        symbol = scope.lookup(self.left.value)
-                        if symbol:
-                            return symbol.type 
-                        else:
-                            checkError('undeclared','var','bool','')
-                            return ''       # '' indica que se ingreso una variable no declarada
-                    return self.left
+                if (self.left.value != 'true') & (self.left.value != 'false'):      # si no se hace esto, se estaria considerando que true y false podrian no ser declaradas(no tiene sentido)
+                    if isinstance(self.left.value,str):
+                        if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):  #id
+                            symbol = scope.lookup(self.left.value)
+                            if symbol:
+                                return symbol.type 
+                            else:
+                                checkError('undeclared','var','bool','')
+                                return ''       # '' indica que se ingreso una variable no declarada
+                return self.left.checkType(scope)
         return ''
         
 
