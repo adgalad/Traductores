@@ -9,12 +9,15 @@ class symbolTable:
 	def insert(self, symbol):
 		if not self.contains(symbol.name):
 			self.currentScope[symbol.name] = symbol
+			return True
+		return False
 
 	def delete(self, symbol):
 		if self.contains(symbolName):
 			del self.currentScope[symbolName]
 
 	def update(self):
+		pass
 
 	def contains(self, symbolName):
 		if symbolName in self.currentScope:
