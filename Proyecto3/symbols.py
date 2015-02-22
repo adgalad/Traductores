@@ -1,10 +1,15 @@
+# -*- coding: utf-8 -*-
 
+## Interpretador del lenguaje Setlan.
+## Tabla de símbolos
+## Autores:  - Mónica Figuera   11-10328
+##           - Carlos Spaggiari 11-10987
 
 class symbolTable:
 	def __init__(self):
 		self.previousScope = None
 		self.currentScope = {}
-		innerScopes = []
+		self.innerScopes = []
 
 	def insert(self, symbol):
 		if not self.contains(symbol.name):
@@ -35,12 +40,9 @@ class symbolTable:
 
 	def lookup(self, symbolName):
 		if self.contains(symbolName):
-			return self.currentScope[symbolName]
+			if symbolName in self.currentScope:
+				return self.currentScope[x]			# daba problemas si ponia self.currentScope[symbolName]
 		return None
-
-
-
-
 
 class Symbol:
 	def __init__(self, name, type, value):
@@ -53,4 +55,3 @@ class Symbol:
 
 	def printSymbol(self):
 		pass
-
