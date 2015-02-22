@@ -5,17 +5,30 @@
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
 
-operator = { "+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
-			"/" : "DIVIDE", "%" : "MODULE", "and" : "AND",
-			"or" : "OR", "<" : "LESSTHAN",">" : "GREATERTHAN",
-			"<=" : "LESSEQUALSTHAN",">=" : "GREATEREQUALTHAN",
-			"@" : "BELONGSTO", "not" : "NOT", "++":"SETUNION",
-			"==" : "EQUALS","/=" : "NOTEQUALS","\\" : "SETDIFF", 
-			"><" : "SETINTERSECT", "<+>" : "SETMAPPLUS",
-			"<->" : "SETMAPMINUS", "<*>" : "SETMAPTIMES", 
-			"</>" : "SETMAPDIVIDE", "<%>" : "SETMAPMODULE", 
-			">?" : "SETMAXVALUE", "<?" : "SETMINVALUE",
-			"$?" : "SETSIZE"}
+operator = {"+"   : "PLUS", "-" :       "MINUS", "*" : "TIMES",
+			"/"   : "DIVIDE",           
+			"%"   : "MODULE", 
+			"and" : "AND",
+			"or"  : "OR", 
+			"<"   : "LESSTHAN",
+			">"   : "GREATERTHAN",
+			"<="  : "LESSEQUALSTHAN",   
+			"/="  : "NOTEQUALS",
+			"\\"  : "SETDIFF", 
+			">="  : "GREATEREQUALTHAN", 
+			"not" : "NOT", 
+			"++"  : "SETUNION",
+			"@"   : "BELONGSTO",      
+			"=="  : "EQUALS","/=" :   
+			"><"  : "SETINTERSECT",   
+			"<+>" : "SETMAPPLUS",
+			"<->" : "SETMAPMINUS",    
+			"<*>" : "SETMAPTIMES", 
+			"</>" : "SETMAPDIVIDE",   
+			"<%>" : "SETMAPMODULE", 
+			">?"  : "SETMAXVALUE",    
+			"<?"  : "SETMINVALUE",
+			"$?"  : "SETSIZE"}
 
 typeDefault = { "int" : "0", "bool":"False", "set":"{}" }
 
@@ -62,7 +75,7 @@ class Instruction:
 		if self.assign == "":
 			return self.instruction
 		else:
-			var = self.id.checkType()
+			var = self.id.checkType()[0]
 			value = self.expression.checkType()
 			symbol = scope.lookup(var)
 			if symbol:
@@ -215,6 +228,17 @@ class IfInst:
 			string += self.elseInstruction.printTree(tabs+1)
 		return string
 
+	def checkType(self, scope):
+		expresionType = self.expression.checkType(scope)
+		if expresionType == "bool":
+			if (self.instruction.checkType(scope) and 
+				self.elseInstruction.checkType(scope)):
+				return True
+			else:
+				return False
+		print("Error IFInst: no es booleano")
+		return False
+
 
 class ForInst:
 	def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -235,6 +259,11 @@ class ForInst:
 		string += self.instruction.printTree(tabs+2)
 		return string
 
+	def checkType(self,scope):
+		expresionType = self.set.checkType(scope)
+		if expresionType == "set":
+			return self.instruction.checkType(scope)
+		return False
 
 class Direction:
 	def __init__(self,direction):
@@ -261,6 +290,12 @@ class WhileInst:
 			string += indent(tabs)+"DO\n"
 			string += self.instruction.printTree(tabs+1)
 		return string
+
+	def checkType(self, scope):
+		expresionType = self.expression.checkType(scope)
+		if expresionType == "bool":
+			return self.instruction.checkType(scope)
+		return False
 
 
 class RepeatInst:
