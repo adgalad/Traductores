@@ -409,12 +409,6 @@ class Expression:
                 else:
                     string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
                 string += self.left.printTree(tabs+1)
-
-                if (self.op == "-") | (self.op == ">?") | (self.op == "<?") | (self.op == "$?"):
-                    self.opType = 'int' 
-                elif self.op == 'not':
-                    self.opType = 'bool'
-
             else:
                 if self.left == "(" and self.right == ")":
                     string += self.op.printTree(tabs)
@@ -422,15 +416,6 @@ class Expression:
                     string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
                     string += self.left.printTree(tabs+1)
                     string += self.right.printTree(tabs+1)
-
-
-                if (self.op == "+") | (self.op == "-") | (self.op == "*") | (self.op == "/") | (self.op == "%"): 
-                    self.opType = 'int'
-                elif (self.op == "and") | (self.op == "or")| (self.op == "<") | (self.op == ">") | (self.op == "<=") | (self.op == ">=") | (self.op == "==") | (self.op == "/=") | (self.op == "@"):
-                    self.opType = 'bool'
-                else:
-                    self.opType = 'set'
-
         else:
             if isinstance(self.left, str):
                 string += self.left
@@ -439,6 +424,22 @@ class Expression:
         return string
 
     def checkType(self):
+        if self.op != "":
+            if self.right == "":
+                if (self.op == "-") | (self.op == ">?") | (self.op == "<?") | (self.op == "$?"):
+                    self.opType = 'int' 
+                elif self.op == 'not':
+                    self.opType = 'bool'
+            else:
+                if self.left == "(" and self.right == ")":
+                    string += self.op.printTree(tabs)
+                else:
+                    if (self.op == "+") | (self.op == "-") | (self.op == "*") | (self.op == "/") | (self.op == "%"): 
+                        self.opType = 'int'
+                    elif (self.op == "and") | (self.op == "or")| (self.op == "<") | (self.op == ">") | (self.op == "<=") | (self.op == ">=") | (self.op == "==") | (self.op == "/=") | (self.op == "@"):
+                        self.opType = 'bool'
+                    else:
+                        self.opType = 'set'
         return self.opType
         
 
