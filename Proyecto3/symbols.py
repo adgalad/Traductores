@@ -56,7 +56,7 @@ class SymbolTable:
 	def lookup(self, symbolName):
 		if self.contains(symbolName):
 			if symbolName in self.currentScope:
-				return self.currentScope[x]			# daba problemas si ponia self.currentScope[symbolName]
+				return self.currentScope[symbolName]			# daba problemas si ponia self.currentScope[symbolName]
 		return None
 
 

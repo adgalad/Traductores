@@ -4,14 +4,17 @@ program {
 		int x;
 		int y;
 	in 
-		{
+	{
 		using
 			bool z;
 		in
-			x = 1;
-			print "hola";
-		};
-#	if (true)
-#		print "error"
-#	;
+#			x = 1;
+#			print "hola";
+
+		if (z)
+			print "error"
+		;
+	};
+
+	
 }
