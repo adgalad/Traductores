@@ -11,7 +11,7 @@ program {
 #			x = 1;
 #			print "hola";
 
-		if (z)
+		if (true)
 			print "error"
 		;
 	};
