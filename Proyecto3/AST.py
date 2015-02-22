@@ -217,7 +217,6 @@ class InstructionBlock:
         return False
 
 
-
 class IfInst:
     def __init__(self, If, lparen, expression, rparen, instruction, Else="", elseInstruction=""):
         self.If = If
@@ -251,7 +250,7 @@ class IfInst:
 				return True
 			else:
 				return False
-		checkError('condition','if','bool',expresionType)
+		return checkError('condition','if','bool',expresionType)
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -276,7 +275,7 @@ class ForInst:
 		expresionType = self.set.checkType(scope)
 		if expresionType == "set":
 			return self.instruction.checkType(scope)
-        checkError('condition','for','set',expresionType)
+        return checkError('condition','for','set',expresionType)
 
 class Direction:
     def __init__(self,direction):
@@ -423,7 +422,7 @@ class Expression:
                 string += self.left.printTree(tabs)
         return string
 
-    def checkType(self):
+    def checkType(self,scope):
         if self.op != "":
             if self.right == "":
                 if (self.op == "-") | (self.op == ">?") | (self.op == "<?") | (self.op == "$?"):
@@ -432,7 +431,7 @@ class Expression:
                     self.opType = 'bool'
             else:
                 if self.left == "(" and self.right == ")":
-                    string += self.op.printTree(tabs)
+                    self.op.checkType(scope)
                 else:
                     if (self.op == "+") | (self.op == "-") | (self.op == "*") | (self.op == "/") | (self.op == "%"): 
                         self.opType = 'int'
@@ -440,6 +439,12 @@ class Expression:
                         self.opType = 'bool'
                     else:
                         self.opType = 'set'
+        else:
+            if isinstance(self.left, str):
+                self.opType == 'int'
+            else:
+                string += self.left.printTree(tabs)
+        
         return self.opType
         
 
@@ -454,7 +459,7 @@ class Set:
         string += self.setNumbers.printTree(tabs+1)
         return string
         
-    def checkType(self):
+    def checkType(self,scope):
         return True
         
 
@@ -470,7 +475,7 @@ class SetNumbers:
             string += self.setNumbersRecursion.printTree(tabs)
         return string
     
-    def checkType(self):
+    def checkType(self,scope):
         return True
         
 
@@ -483,8 +488,8 @@ class BooleanValue:
         string += indent(tabs+1)+self.value+"\n"
         return string
 
-    def checkType(self):
-        return True
+    def checkType(self,scope):
+        return 'bool'
         
 
 class Number:
@@ -496,8 +501,8 @@ class Number:
         string += indent(tabs+1) + str(self.value) + "\n"
         return string
     
-    def checkType(self):
-        return True
+    def checkType(self,scope): 
+        return 'int'
         
 
 def checkError(error,inst="",expectedType="",wrongType=""):
