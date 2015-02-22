@@ -17,6 +17,8 @@ operator = { "+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
 			">?" : "SETMAXVALUE", "<?" : "SETMINVALUE",
 			"$?" : "SETSIZE"}
 
+typeDefault = { "int" : "0", "bool":"False", "set":"{}" }
+
 def indent(tabs):
 	return "   "*tabs
 
@@ -105,6 +107,8 @@ class UsingInInst:
 	def checkType(self, scope):
 		if (self.declaration.checkType(scope) and
 			self.instruction.checkType(scope)
+			return True
+		return False
 
 class DeclarationBlock:
 	def __init__(self,varType,Id,semicolon,declaration=""):
@@ -123,6 +127,18 @@ class DeclarationBlock:
 			string += self.declaration.printTree(tabs)
 		return string
 
+	def checkType(self, scope):
+		varType = self.varType.checkType(scope)
+		varList = self.id.checkType(scope)
+		for var in varList:
+			symbol = Symbol(var,varType,typeDefault[self.type])
+			scope.insert(symbol)
+		if self.declaration != "":
+			self.declaration.checkType(scope)
+
+		return True
+
+
 		
 class Type:
 	def __init__(self,type):
@@ -131,6 +147,9 @@ class Type:
 	def printTree(self,tabs):
 		string = indent(tabs)+self.type
 		return string
+
+	def checkType(self, scope):
+		return self.type
 
 
 class ID:
