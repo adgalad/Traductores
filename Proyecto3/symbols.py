@@ -2,7 +2,7 @@
 
 class symbolTable:
 	def __init__(self):
-		self.previusScope = None
+		self.previousScope = None
 		self.currentScope = {}
 		innerScopes = []
 
@@ -16,14 +16,15 @@ class symbolTable:
 		if self.contains(symbolName):
 			del self.currentScope[symbolName]
 
-	def update(self):
-		pass
+	def update(self, name, type, value):
+		if name in self.currentScope:
+			self.currentScope[name] = symbol
 
 	def contains(self, symbolName):
 		if symbolName in self.currentScope:
 			return True
-		elif self.previusScope:
-			return self.previusScope.contains(symbolName)
+		elif self.previousScope:
+			return self.previousScope.contains(symbolName)
 		return False
 
 	def lookup(self, symbolName):
@@ -35,7 +36,7 @@ class symbolTable:
 
 
 
-class symbol:
+class Symbol:
 	def __init__(self, name, type, value):
 		self.name = name
 		self.type = type
@@ -46,4 +47,3 @@ class symbol:
 
 	def printSymbol(self):
 		pass
-

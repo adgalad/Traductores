@@ -7,24 +7,37 @@
 
 import  symbols
 
-operator = { "+" : "PLUS", "-" : "MINUS", "*" : "TIMES",
-            "/" : "DIVIDE", "%" : "MODULE", "and" : "AND",
-            "or" : "OR", "<" : "LESSTHAN",">" : "GREATERTHAN",
-            "<=" : "LESSEQUALSTHAN",">=" : "GREATEREQUALTHAN",
-            "@" : "BELONGSTO", "not" : "NOT", "++":"SETUNION",
-            "==" : "EQUALS","/=" : "NOTEQUALS","\\" : "SETDIFF", 
-            "><" : "SETINTERSECT", "<+>" : "SETMAPPLUS",
-            "<->" : "SETMAPMINUS", "<*>" : "SETMAPTIMES", 
-            "</>" : "SETMAPDIVIDE", "<%>" : "SETMAPMODULE", 
-            ">?" : "SETMAXVALUE", "<?" : "SETMINVALUE",
-            "$?" : "SETSIZE"}
+operator = {"+"   : "PLUS", 
+            "-"   : "MINUS",
+            "*"   : "TIMES",
+			"/"   : "DIVIDE",           
+			"%"   : "MODULE", 
+			"and" : "AND",
+			"or"  : "OR", 
+			"<"   : "LESSTHAN",
+			">"   : "GREATERTHAN",
+			"<="  : "LESSEQUALSTHAN",   
+			"/="  : "NOTEQUALS",
+			"\\"  : "SETDIFF", 
+			">="  : "GREATEREQUALTHAN", 
+			"not" : "NOT", 
+			"++"  : "SETUNION",
+			"@"   : "BELONGSTO",      
+			"=="  : "EQUALS","/=" :   
+			"><"  : "SETINTERSECT",   
+			"<+>" : "SETMAPPLUS",
+			"<->" : "SETMAPMINUS",    
+			"<*>" : "SETMAPTIMES", 
+			"</>" : "SETMAPDIVIDE",   
+			"<%>" : "SETMAPMODULE", 
+			">?"  : "SETMAXVALUE",    
+			"<?"  : "SETMINVALUE",
+			"$?"  : "SETSIZE"}
 
-typeDefault = { "int" : "0", "bool": "False", "set": "{}" }
+typeDefault = { "int" : "0", "bool" : "False", "set" : "{}" }
 
 def indent(tabs):
     return "   "*tabs
-
-global scope
 
 class Program:
     def __init__(self,program="",instruction=""):
@@ -40,32 +53,37 @@ class Program:
 
 
 class Instruction:
-    def __init__(self,instruction = "",Id="",assign="",expression=""):
-        self.instruction = instruction
-        self.id = Id
-        self.assign = assign
-        self.expression = expression
+	def __init__(self,instruction = "",Id="",assign="",expression=""):
+		self.instruction = instruction
+		self.id = Id
+		self.assign = assign
+		self.expression = expression
 
-    def printTree(self,tabs):
-        string =""
-        if self.assign == "":
-            if isinstance(self.instruction, str):
-                string += indent(tabs)+self.instruction
-            else:
-                string += self.instruction.printTree(tabs)
-        else:
-            string += indent(tabs)+"ASSIGN\n"
-            string += self.id.printTree(tabs+1) 
-            string += indent(tabs+1)+"value\n"
-            string += self.expression.printTree(tabs+2)
-         
-        if self.assign != "":
-            global scope
-            symbol = scope.lookup(self.id.value)
-            if symbol:
-                scope.update(symbol.name, symbol.type, self.expression.left)
-                
-        return string
+	def printTree(self,tabs):
+		string =""
+		if self.assign == "":
+			if isinstance(self.instruction, str):
+				string += indent(tabs)+self.instruction
+			else:
+				string += self.instruction.printTree(tabs)
+		else:
+			string += indent(tabs)+"ASSIGN\n"
+			string += self.id.printTree(tabs+1) 
+			string += indent(tabs+1)+"value\n"
+			string += self.expression.printTree(tabs+2)
+		return string 
+
+	def checkType(self,scope):
+		if self.assign == "":
+			return self.instruction
+		else:
+			var = self.id.checkType()[0]
+			value = self.expression.checkType()
+			symbol = scope.lookup(var)
+			if symbol:
+				scope.update(symbol.name, symbol.type, value)
+				return true
+
 
 class Block:
     def __init__(self,lcurly, instructionBlock,rcurly):
@@ -78,14 +96,15 @@ class Block:
         string  = indent(tabs)+"BLOCK\n"
         string += self.instructionBlock.printTree(tabs+1)
         string += indent(tabs)+"BLOCK_END\n"
+        return string
 
-        global scope
+    def checkType(self,scope):
         if scope.previusScope:
             newScope = SymbolTable()
             scope.previusScope.innerScopes += [newScope]
             scope = newScope
+        return self.instructionBlock.checkType()
 
-        return string
 
 class UsingInInst:
     def __init__(self,Using,declaration,In,instruction):
@@ -101,6 +120,7 @@ class UsingInInst:
         string += self.instruction.printTree(tabs+1)
         return string
 
+    def checkType(self,scope):
         if (self.declaration.checkType(scope) and self.instruction.checkType(scope)):
             return True
         return False
@@ -188,13 +208,13 @@ class InstructionBlock:
                 string += self.instructionBlock.printTree(tabs)
         return string
 
-    #def checkType(self,scope):
-        if (self.instruction.checkType(scope) and
-            self.instructionBlock.checkType(scope)):
+    def checkType(self,scope):
+        if (self.instruction.checkType(scope) and self.instructionBlock.checkType(scope)):
             return True
         return False
 
 
+<<<<<<< HEAD
 class IfInst:
     def __init__(self, If, lparen, expression, rparen, instruction, Else="", elseInstruction=""):
         self.If = If
@@ -214,14 +234,23 @@ class IfInst:
         if (self.Else != ""):
             string += indent(tabs)+"ELSE\n"
             string += self.elseInstruction.printTree(tabs+1)
-        
+        return string        
 
 #    def checkType(self):
-        if self.expression.opType != 'bool':
-            checkError('condition','if','bool',self.expression.opType)
+#        if self.expression.opType != 'bool':
+#            checkError('condition','if','bool',self.expression.opType)
 #            return False
 
-        return string
+	def checkType(self, scope):
+		expresionType = self.expression.checkType(scope)
+		if expresionType == "bool":
+			if (self.instruction.checkType(scope) and 
+				self.elseInstruction.checkType(scope)):
+				return True
+			else:
+				return False
+		print("Error IFInst: no es booleano")
+		return False
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -245,6 +274,11 @@ class ForInst:
     def checkType(self):
         return True
 
+	def checkType(self,scope):
+		expresionType = self.set.checkType(scope)
+		if expresionType == "set":
+			return self.instruction.checkType(scope)
+		return False
 
 class Direction:
     def __init__(self,direction):
@@ -275,9 +309,12 @@ class WhileInst:
             string += self.instruction.printTree(tabs+1)
         return string
 
-    def checkType(self):
-        return True
-        
+	def checkType(self, scope):
+		expresionType = self.expression.checkType(scope)
+		if expresionType == "bool":
+			return self.instruction.checkType(scope)
+		return False
+
 
 class RepeatInst:
     def __init__(self,repeat,instruction,While):
