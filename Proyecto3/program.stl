@@ -5,28 +5,12 @@ program
 		int x;
 		int y;
 	in 
-	{
-		print "hola";
-		while (True) do
-		{
-			using
-				int z;
-				int w;
-			in 
-			print "hola";
-		};	
 
-	
-		using
-			bool z;
-		in
-#			x = 1;
-#			print "hola";
+		x = -2;
 
-		if (true)
+		if (true) 
 			print "error"
 		;
-	};
 
 
 }
