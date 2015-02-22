@@ -1,4 +1,9 @@
+# -*- coding: utf-8 -*-
 
+## Interpretador del lenguaje Setlan.
+## Tabla de símbolos
+## Autores:  - Mónica Figuera   11-10328
+##           - Carlos Spaggiari 11-10987
 
 def indent(tabs):
     return "   "*tabs
@@ -19,7 +24,6 @@ class SymbolTable:
 		for scope in self.innerScopes:
 			string += scope.printTable(tabs+1)
 		string += "END_SCOPE\n"
-
 		return string
 
 	def insert(self, symbol):
@@ -51,14 +55,13 @@ class SymbolTable:
 
 	def lookup(self, symbolName):
 		if self.contains(symbolName):
-			return self.currentScope[symbolName]
+			if symbolName in self.currentScope:
+				return self.currentScope[symbolName]			# daba problemas si ponia self.currentScope[symbolName]
 		return None
 
 
-
-
-
 class Symbol(object):
+
 	def __init__(self, name, type, value):
 		self.name = name
 		self.type = type
@@ -67,4 +70,3 @@ class Symbol(object):
 	def printSymbol(self):
 		string =  "Variable: %s | Type: %s  | Value: %s\n"%(self.name,self.type,self.value)
 		return string
-

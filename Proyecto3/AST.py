@@ -6,6 +6,7 @@
 ##           - Carlos Spaggiari 11-10987
 
 from symbols import indent, SymbolTable, Symbol
+import re
 
 operator = {"+"   : "PLUS", 
             "-"   : "MINUS",
@@ -77,21 +78,25 @@ class Instruction:
     def checkType(self,scope):
         if self.assign == "":
             if not isinstance(self.instruction, str):
-                self.instruction.checkType(scope)               # . . . A Y U D A
+                self.instruction.checkType(scope)              
                 return True
         else:
-            var = self.id.checkType()[0]
+            var = self.id.checkType(scope)
             value = self.expression.checkType(scope)
+
             symbol = scope.lookup(var)
             if symbol:
-                scope.update(symbol.name, symbol.type, value)
+                print(symbol.type)
+                scope.update(symbol.name, symbol.type, symbol.value)            # no se actualiza el valor para esta entrega
                 return True
+            else:
+                print("no existe")
+                print(var)
         return False
 
 
 class Block:
     def __init__(self,lcurly, instructionBlock,rcurly):
-        
         self.rcurly = rcurly
         self.lcurly = lcurly
         self.instructionBlock = instructionBlock
@@ -103,7 +108,10 @@ class Block:
         return string
 
     def checkType(self,scope):
+<<<<<<< HEAD
         print("entro")
+=======
+>>>>>>> origin/Monica
         if scope.previousScope:
             newScope = SymbolTable()
             newScope.previousScope = scope
@@ -112,6 +120,12 @@ class Block:
                 return True
             return False
         if self.instructionBlock.checkType(scope): 
+<<<<<<< HEAD
+=======
+#            if scope.previousScope:
+#                scope = scope.previousScope
+#            print(scope.currentScope)
+>>>>>>> origin/Monica
             return True
         return False
 
@@ -132,7 +146,6 @@ class UsingInInst:
 
     def checkType(self,scope):
         if (self.declaration.checkType(scope) and self.instruction.checkType(scope)):
-#            print(scope.currentScope)
             return True
         return False
 
@@ -160,7 +173,6 @@ class DeclarationBlock:
             symbol = Symbol(var,varType,typeDefault[varType])
             if not scope.insert(symbol):
                 return checkError('duplicated',"","",var)                 ###########################
-#            print(scope.currentScope)
         if self.declaration != "":
             self.declaration.checkType(scope)
         return True
@@ -202,7 +214,7 @@ class ID:
         else:
             if not scope.contains(self.value):
                 checkError('undeclared',self.value)
-        return self.value
+        return self.value       #devuelve el simbolo del id
 
 
 class InstructionBlock:
@@ -257,8 +269,8 @@ class IfInst:
 #            return False
 
     def checkType(self, scope):
-        expresionType = self.expression.checkType(scope)
-        if expresionType == "bool":
+        value = self.expression.checkType(scope)
+        if value == "bool":
             if self.instruction.checkType(scope):
                 if self.Else != "":
                     if self.elseInstruction.checkType(scope):
@@ -266,7 +278,8 @@ class IfInst:
                 return True
             else:
                 return False
-        return checkError('condition','if','bool',expresionType)
+        elif value != '':           # si devolvio un tipo erroneo, no considera las variables no declaradas
+            return checkError('condition','if','bool',value)
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -433,27 +446,69 @@ class Expression:
         return string
 
     def checkType(self,scope):
+
         if self.op != "":
             if self.right == "":
-                if (self.op == "-") | (self.op == ">?") | (self.op == "<?") | (self.op == "$?"):
-                    self.opType = 'int' 
+                self.left.checkType(scope)
+                if (self.left == "-"):                                          # MENOS UNARIO  # a numeros los toma con string?
+                    if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.op.value):       # si es un id
+                        var = self.op.checkType(scope)
+                        symbol = scope.lookup(var)
+                        if symbol:
+                            if symbol.type != 'int':                        
+                                return ('int',symbol.type)      # devuelve el tipo de expresion esperada con la obtenida
+                        else:
+                            checkError('undeclared','expr','int','')    # expected: int , got: nothing
+                    else:
+                        if self.op.value != 'int':                              # si era un numero
+                            return ('int',self.op.value)
+
+                elif (self.left == ">?") | (self.left == "<?") | (self.left == "$?"):           # UNARIOS CONJUNTOS
+                    var = self.op.checkType(scope)
+                    symbol = scope.lookup(var)
+                    if symbol:
+                        if symbol.type != 'set':
+                            return ('set',symbol.type)
+
                 elif self.op == 'not':
-                    self.opType = 'bool'
+                    var = self.op.checkType(scope)
+                    symbol = scope.lookup(var)
+                    if symbol:
+                        if symbol.type != 'bool':
+                            return ('bool',symbol.type)
+
             else:
                 if self.left == "(" and self.right == ")":
                     self.op.checkType(scope)
                 else:
                     if (self.op == "+") | (self.op == "-") | (self.op == "*") | (self.op == "/") | (self.op == "%"): 
-                        self.opType = 'int'
+                        varLeft = self.left.checkType(scope)
+                        varRight = self.right.checkType(scope)
+                        symbol1 = scope.lookup(var)
+                        symbol2 = scope.lookup(var)
+                        if symbol:
+                            if symbol.type != 'set':
+                                return ('set',symbol.type)
+
+                       
                     elif (self.op == "and") | (self.op == "or")| (self.op == "<") | (self.op == ">") | (self.op == "<=") | (self.op == ">=") | (self.op == "==") | (self.op == "/=") | (self.op == "@"):
                         self.opType = 'bool'
                     else:
                         self.opType = 'set'
+                return self.right.value
         else:
             if not isinstance(self.left, str):
-                self.opType = self.left.checkType(scope)
-        
-        return self.opType
+                self.left.checkType(scope)
+                if isinstance(self.left.value,str):
+                    if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):  #id
+                        symbol = scope.lookup(self.left.value)
+                        if symbol:
+                            return symbol.type 
+                        else:
+                            checkError('undeclared','var','bool','')
+                            return ''       # '' indica que se ingreso una variable no declarada
+                    return self.left
+        return ''
         
 
 class Set:
@@ -499,6 +554,10 @@ class BooleanValue:
         return string
 
     def checkType(self,scope):
+#        if self.value == 'true':
+#            return 'true'
+#        else:
+#            return 'false'
         return 'bool'
         
 
