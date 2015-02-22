@@ -1,10 +1,22 @@
-program {
+program 
+{
 
 	using
 		int x;
 		int y;
 	in 
 	{
+		print "hola";
+		while (True) do
+		{
+			using
+				int z;
+				int w;
+			in 
+			print "hola";
+		};	
+
+	
 		using
 			bool z;
 		in
@@ -16,5 +28,5 @@ program {
 		;
 	};
 
-	
+
 }

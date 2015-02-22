@@ -111,21 +111,12 @@ class Block:
         if scope.previousScope:
             newScope = SymbolTable()
             newScope.previousScope = scope
-            scope.innerScopes += [newScope]
-            scope = newScope
-        else:
-            if scope.currentScope != {}:
-                newScope = SymbolTable()
-                newScope.previousScope = scope
+            if self.instructionBlock.checkType(newScope):
                 scope.innerScopes += [newScope]
-                scope = newScope
-               
+                return True
+            return False
         if self.instructionBlock.checkType(scope): 
-#            if scope.previousScope:
-#                scope = scope.previousScope
-#            print(scope.currentScope)
             return True
-
         return False
 
 
