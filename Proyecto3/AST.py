@@ -151,6 +151,13 @@ class ID:
 			string += self.IDrecursion.printTree(tabs,varType)
 		return string 
 
+    def checkType(self):
+        #buscar en la tabla de simbolos si fue declarada y esta siendo usada, si esta duplicada
+        reportError('duplicated',self.value)
+        reportError('undeclared',self.value)
+        
+        return False
+
 
 class InstructionBlock:
 	def __init__(self,instruction="",semicolon="",instructionBlock=""):
@@ -196,6 +203,10 @@ class IfInst:
 			string += self.elseInstruction.printTree(tabs+1)
 		return string
 
+    def checkType(self):
+        if self.expression.opType != 'bool':
+            reportError('condition','if','bool',self.expression.opType)
+            return False
 
 class ForInst:
 	def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -311,6 +322,7 @@ class Expression:
         self.left  = left
         self.right = right
         self.op    = op
+        self.opType = None
 
     def printTree(self,tabs):
     	string = ""
@@ -321,6 +333,12 @@ class Expression:
     			else:
 	    			string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
 	    		string += self.left.printTree(tabs+1)
+
+				if (self.op == "-") | (self.op == ">?") | (self.op == "<?") | (self.op == "$?"):
+					self.opType = 'int' 
+				elif self.op == 'not':
+					self.opType = 'bool'
+
 	    	else:
 	    		if self.left == "(" and self.right == ")":
 	    			string += self.op.printTree(tabs)
@@ -328,6 +346,15 @@ class Expression:
 		    		string += indent(tabs)+operator[self.op]+" "+self.op+"\n"
 		    		string += self.left.printTree(tabs+1)
 		    		string += self.right.printTree(tabs+1)
+
+
+		    	if (self.op == "+") | (self.op == "-") | (self.op == "*") | (self.op == "/") | (self.op == "%"): 
+		    	 	self.opType = 'int'
+		    	elif re.match(r'[and|or|<|>|<=|>=|==|/=|@]',self.op):
+                    self.opType = 'bool'
+                else:
+                    self.opType = 'set'
+
     	else:
     		if isinstance(self.left, str):
     			string += self.left
@@ -379,3 +406,13 @@ class Number:
 		string  = indent(tabs)+"int\n"
 		string += indent(tabs+1) + str(self.value) + "\n"
 		return string
+
+
+def checkError(error,inst="",expectedType="",wrongType=""):
+    if error == 'condition':
+        if (inst == 'if') | (inst == 'while'):
+            typeError.append(''' ''') 
+    return False
+
+
+typeError = []
