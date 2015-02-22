@@ -84,7 +84,8 @@ class Instruction:
 			symbol = scope.lookup(var)
 			if symbol:
 				scope.update(symbol.name, symbol.type, value)
-				return true
+				return True
+            return False
 
 
 class Block:
@@ -246,13 +247,11 @@ class IfInst:
 	def checkType(self, scope):
 		expresionType = self.expression.checkType(scope)
 		if expresionType == "bool":
-			if (self.instruction.checkType(scope) and 
-				self.elseInstruction.checkType(scope)):
+			if (self.instruction.checkType(scope) and self.elseInstruction.checkType(scope)):
 				return True
 			else:
 				return False
-		print("Error IFInst: no es booleano")
-		return False
+		checkError('condition','if','bool',expresionType)
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -273,14 +272,11 @@ class ForInst:
         string += self.instruction.printTree(tabs+2)
         return string
 
-    def checkType(self):
-        return True
-
 	def checkType(self,scope):
 		expresionType = self.set.checkType(scope)
 		if expresionType == "set":
 			return self.instruction.checkType(scope)
-		return False
+        checkError('condition','for','set',expresionType)
 
 class Direction:
     def __init__(self,direction):
