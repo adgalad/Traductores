@@ -42,7 +42,7 @@ def main():
             exit(1)
         else:
             print arbol.printTree(0)
-#            arbol.checkType()
+            arbol.checkType()
 
 if __name__ == "__main__":
     main()

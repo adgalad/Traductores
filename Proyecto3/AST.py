@@ -50,9 +50,9 @@ class Program:
         string += self.instruction.printTree(tabs+1)
         return string
 
-    def checkType(self,scope):
+    def checkType(self):
         if self.instruction.checkType(self.scope):
-            print self.scope
+            print self.scope.currentScope
 
 class Instruction:
     def __init__(self,instruction = "",Id="",assign="",expression=""):
@@ -77,15 +77,18 @@ class Instruction:
 
     def checkType(self,scope):
         if self.assign == "":
-            return self.instruction.checkType(scope)
+            if not isinstance(self.instruction, str):
+                self.instruction.checkType(scope)               # . . . A Y U D A
+                return True
         else:
+            print("Asigno")
             var = self.id.checkType()[0]
             value = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
                 scope.update(symbol.name, symbol.type, value)
                 return True
-            return False
+        return False
 
 
 class Block:
@@ -102,15 +105,25 @@ class Block:
         return string
 
     def checkType(self,scope):
-        #if scope.previousScope:
-        newScope = symbols.symbolTable()
-        newScope.previousScope = scope
-        scope.innerScopes += [newScope]
-        scope = newScope
-        if self.instructionBlock.checkType(scope):
+#        print(scope.currentScope)
+        if scope.previousScope:
+            newScope = symbols.symbolTable()
+            newScope.previousScope = scope
+            scope.innerScopes += [newScope]
+            scope = newScope
+        else:
+            if scope.currentScope != {}:
+                newScope = symbols.symbolTable()
+                newScope.previousScope = scope
+                scope.innerScopes += [newScope]
+                scope = newScope
+               
+        if self.instructionBlock.checkType(scope): 
             if scope.previousScope:
                 scope = scope.previousScope
+                print(scope.previousScope)
             return True
+
         return False
 
 
@@ -130,6 +143,7 @@ class UsingInInst:
 
     def checkType(self,scope):
         if (self.declaration.checkType(scope) and self.instruction.checkType(scope)):
+#            print(scope.currentScope)
             return True
         return False
 
@@ -154,11 +168,12 @@ class DeclarationBlock:
         varType = self.varType.checkType(scope)
         varList = self.Id.checkType(scope)
         for var in varList:
-            symbol = Symbol(var,varType,typeDefault[self.type])
-            scope.insert(symbol)
+            symbol = symbols.Symbol(var,varType,typeDefault[varType])
+            if not scope.insert(symbol):
+                return checkError('duplicated',"","",var)                 ###########################
+#            print(scope.currentScope)
         if self.declaration != "":
             self.declaration.checkType(scope)
-
         return True
 
         
@@ -192,12 +207,13 @@ class ID:
             string += self.IDrecursion.printTree(tabs,varType)
         return string 
 
-    def checkType(self):
-        #buscar en la tabla de simbolos si fue declarada y esta siendo usada, si esta duplicada
-        checkError('duplicated',self.value)
-        checktError('undeclared',self.value)
-        
-        return False
+    def checkType(self,scope):
+        if not isinstance(self.IDrecursion,str):
+            self.IDrecursion.checkType(scope)
+        else:
+            if not scope.contains(self.value):
+                checkError('undeclared',self.value)
+        return self.value
 
 
 class InstructionBlock:
@@ -217,6 +233,7 @@ class InstructionBlock:
         return string
 
     def checkType(self,scope):
+        print("NO ENTIENDO NADA :'(")
         if (self.instruction.checkType(scope) and self.instructionBlock.checkType(scope)):
             return True
         return False
@@ -318,6 +335,7 @@ class WhileInst:
         
         return checkError('condition','while','bool',expresionType)
 
+
 class RepeatInst:
     def __init__(self,repeat,instruction,While):
         self.While = While
@@ -362,6 +380,7 @@ class PrintInst:
         return string
     
     def checkType(self):
+        print("LLEGA AL PRINT")
         return True
         
 

@@ -1,5 +1,15 @@
 program {
-	if (1 + 2)
-		print "error"
-	;
+
+	using
+		int x;
+	in 
+	#	{
+#		using
+#			bool y;
+#		in
+			print "hola";
+#		};
+#	if (true)
+#		print "error"
+#	;
 }
