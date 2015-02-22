@@ -23,7 +23,7 @@ operator = {"+"   : "PLUS",
 			"not" : "NOT", 
 			"++"  : "SETUNION",
 			"@"   : "BELONGSTO",      
-			"=="  : "EQUALS","/=" :   
+			"=="  : "EQUALS",   
 			"><"  : "SETINTERSECT",   
 			"<+>" : "SETMAPPLUS",
 			"<->" : "SETMAPMINUS",    
@@ -41,23 +41,27 @@ def indent(tabs):
 
 class Program:
     def __init__(self,program="",instruction=""):
-        global scope
         self.program = program
         self.instruction = instruction
-        scope = symbols.symbolTable()
+        self.scope = symbols.symbolTable()
 
     def printTree(self,tabs):
         string = indent(tabs)+"PROGRAM\n"
         string += self.instruction.printTree(tabs+1)
         return string
 
+    def checkType(self):
+    	if self.instruction.checkType(self.scope):
+    		print self.scope
+
+
 
 class Instruction:
 	def __init__(self,instruction = "",Id="",assign="",expression=""):
 		self.instruction = instruction
-		self.id = Id
-		self.assign = assign
-		self.expression = expression
+		self.id          = Id
+		self.assign      = assign
+		self.expression  = expression
 
 	def printTree(self,tabs):
 		string =""
@@ -99,11 +103,16 @@ class Block:
         return string
 
     def checkType(self,scope):
-        if scope.previusScope:
+        if scope.previousScope:
             newScope = SymbolTable()
-            scope.previusScope.innerScopes += [newScope]
+            newScope.previousScope = scope
+            scope.previousScope.innerScopes += [newScope]
             scope = newScope
-        return self.instructionBlock.checkType()
+        if self.instructionBlock.checkType():
+        	if scope.previousScope:
+        		scope = scope.previousScope
+        	return True
+        return False
 
 
 class UsingInInst:
@@ -214,19 +223,18 @@ class InstructionBlock:
         return False
 
 
-<<<<<<< HEAD
 class IfInst:
     def __init__(self, If, lparen, expression, rparen, instruction, Else="", elseInstruction=""):
-        self.If = If
-        self.lparen = lparen
-        self.expression = expression
-        self.rparen = rparen
-        self.instruction = instruction
-        self.Else = Else
+        self.If              = If
+        self.lparen          = lparen
+        self.expression      = expression
+        self.rparen          = rparen
+        self.instruction     = instruction
+        self.Else            = Else
         self.elseInstruction = elseInstruction
 
     def printTree(self, tabs):
-        string = indent(tabs)+"IF\n"
+        string  = indent(tabs)+"IF\n"
         string += indent(tabs+1)+"condition\n"
         string += self.expression.printTree(tabs+2)
         string += indent(tabs+1)+"THEN\n"
