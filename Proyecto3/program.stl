@@ -4,21 +4,25 @@ program
 		int x;
 		int y;
 	in 
-	{
-		print "hola";
-		if (true)
-		{
-			using
-				int i;
-				set s;
-				bool b;
-			in
-				print "hola";
-		} else {
-			using
-				int h;
-			in
-				print "chao";
-		};
-	};
+#	{
+#		x = {}; 		# falta arreglar el arbol para los conjuntos vacios y para que verifique si todo lo que contiene son numeros o cosas raras
+
+		x = true+a;
+
+#		print "hola";
+#		if (true)
+#		{
+#			using
+#				int i;
+#				set s;
+#				bool b;
+#			in
+#				print "hola";
+#		} else {
+#			using
+#				int h;
+#			in
+#				print "chao";
+#		};
+#	};
 }
