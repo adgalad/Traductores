@@ -59,7 +59,7 @@ class Program:
                 print error
             return ""
 
-class Instruction:
+class Instruction:                                                              #############################################################
     def __init__(self,instruction = "",Id="",assign="",expression=""):
         self.instruction = instruction
         self.id          = Id
@@ -92,6 +92,7 @@ class Instruction:
             expressionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
+                print(symbol.type,expressionType)
                 if symbol.type != expressionType:
                     return checkError('badDeclaration',symbol.name,symbol.type)
                 return True
@@ -243,11 +244,12 @@ class InstructionBlock:
         return string
 
     def checkType(self,scope):
-        
         if not isinstance(self.instruction,str):
-            self.instruction.checkType(scope)
-            if not isinstance(self.instructionBlock, str):
-                return self.instructionBlock.checkType(scope)
+            if self.instruction.checkType(scope):
+                if not isinstance(self.instructionBlock, str):
+                    return self.instructionBlock.checkType(scope)
+            else:
+                return False
         return True
 
 
@@ -468,9 +470,10 @@ class Expression:
                 if self.left == "(" and self.right == ")":
                     return self.op.checkType(scope)
                 else:
+
                     type1 = self.left.checkType(scope)
                     type2 = self.right.checkType(scope)
-                    if re.match(r'[+|*|/|-|%]',self.op) and type1 == type2 == "int":
+                    if re.match(r'[+|*|/|\-|%]',self.op) and type1 == type2 == "int":
                         return "int"
                     elif re.match(r'[and|or]',self.op) and type1 == type2 == "bool":
                         return "bool"
@@ -478,7 +481,7 @@ class Expression:
                         return "bool"
                     elif re.match(r'[++|><|\\]',self.op) and type1 == type2 == "set":
                         return "set"
-                    elif re.match(r'[<+>|<->|<*>|</>|<%>]',self.op) and (type1 == "int" or type1 == "set") and (type2 == "int" or type2 == "set") and type1 != type2:
+                    elif re.match(r'[<+>|<\->|<*>|</>|<%>]',self.op) and (type1 == "int" or type1 == "set") and (type2 == "int" or type2 == "set") and type1 != type2:
                         return "set"
                     elif re.match(r'[@]',self.op) and type1 == "int" and type2 == "set":
                         return "bool"
