@@ -27,15 +27,17 @@ class SymbolTable:
 		return string
 
 	def insert(self, symbol):
-		if not self.contains(symbol.name):
+		if not symbol.name in self.currentScope:
 			self.currentScope[symbol.name] = symbol
 			return True
 		return False
 
-	def delete(self, symbol):
-		if self.contains(symbolName):
+	def delete(self, symbolName):
+		if symbolBame in self.currentScope:
 			del self.currentScope[symbolName]
 			return True
+		elif self.previousScope:
+			return self.previousScope.delete(symbolName)
 		return False
 
 	def update(self, name, type, value):

@@ -352,7 +352,7 @@ class RepeatInst:
         return string
     
     def checkType(self,scope):
-        return (self.instruccion.checkType(scope) and self.While.checkType(scope))
+        return (self.instruction.checkType(scope) and self.While.checkType(scope))
 
         
 
@@ -482,7 +482,7 @@ class Set:
 
     def printTree(self, tabs):
         string = indent(tabs)+"set\n"
-        string += self.setNumbers.printTree(tabs+1)
+        string += self.value.printTree(tabs+1)
         return string
         
     def checkType(self,scope):
