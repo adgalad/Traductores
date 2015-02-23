@@ -85,9 +85,10 @@ class Instruction:
             expresionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
+                #print(symbol.type,expresionType)
                 if (symbol.type != expresionType):
                     print("crear mensaje de error")
-                    print(expresionType)
+                    #print(symbol.type,expresionType)
                     checkError('badDeclaration','assign',symbol.type,expresionType)
 
 #               else:
@@ -138,7 +139,7 @@ class UsingInInst:
                 scope.innerScopes += [newScope]
                 return True
             return False
-        print "hola"
+
         if (self.declaration.checkType(scope) and self.instruction.checkType(scope)):
             return True
         return False
@@ -264,7 +265,6 @@ class IfInst:
 #            return False
 
     def checkType(self, scope):
-
         expresionType = self.expression.checkType(scope)
         if expresionType == "bool":
             if self.instruction.checkType(scope):
@@ -274,8 +274,7 @@ class IfInst:
                 return True
             else:
                 return False
-        elif expresionType != '':           # si devolvio un tipo erroneo, no considera las variables no declaradas
-            return checkError('condition','if','bool', expresionType)
+        return checkError('condition','if','bool', expresionType)
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -446,17 +445,7 @@ class Expression:
             
             # Operadores unarios
             if self.right == "":
-                print(self.left.checkType(scope))
-                if (self.left.value != 'true') & (self.left.value != 'false'):
-                    if isinstance(self.left.value,str):
-                        if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):       # si es un id
-                            symbol = scope.lookup(self.left.value)
-                            if symbol:
-                                return symbol.type      # devuelve el tipo de expresion obtenida
-                        else:
-                            checkError('undeclared','expr','','')
-                            return ''
-                return self.left.checkType(scope)
+                self.left.checkType(scope)
 
             # Operadores binarios
             else:
@@ -465,60 +454,26 @@ class Expression:
                 else:
                     self.left.checkType(scope)
                     self.right.checkType(scope)
-                    if (self.op == "+") | (self.op == "-") | (self.op == "*") | (self.op == "/") | (self.op == "%"): 
-                        if (self.left.value != 'true') & (self.left.value != 'false') \
-                            & (self.right.value != 'true') & (self.right.value != 'false'):
-                            if isinstance(self.left.value,str):
-                                if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):  #id
-                                    symbol1 = scope.lookup(self.left.value)
-                                    if symbol1:
-                                        if symbol1.type != 'int':
-                                            return symbol.type      # si ya es un error lo devuelvo. si no espero al segundo operando 
-                                    else:
-                                        checkError('undeclared','var','bool','')
-                                        return ''       # '' indica que se ingreso una variable no declarada
-
-                            if isinstance(self.right.value,str):
-                                if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.right.value):  #id
-                                    symbol2 = scope.lookup(self.right.value)
-                                    if symbol2:
-                                        if symbol2.type != 'int':
-                                            return symbol.type 
-                                    else:
-                                        checkError('undeclared','var','bool','')
-                                        return ''       # '' indica que se ingreso una variable no declarada
-                        else:
-                            return 'bool'
-                        return 'int'
-
-                    elif   (self.op == "and") | (self.op == "or")| (self.op == "<") | (self.op == ">") \
-                         | (self.op == "<=") | (self.op == ">=") | (self.op == "==") | (self.op == "/=") | (self.op == "@"):
-                        pass
-                    else:
-                        pass
-
-                return self.right.value
         else:
-            return "bool"
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
-                if (self.left.value != 'true') & (self.left.value != 'false'):      # si no se hace esto, se estaria considerando que true y false podrian no ser declaradas(no tiene sentido)
-                    if isinstance(self.left.value,str):
-                        if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):  #id
-                            symbol = scope.lookup(self.left.value)
-                            if symbol:
-                                return symbol.type 
-                            else:
-                                checkError('undeclared','var','bool','')
-                                return ''       # '' indica que se ingreso una variable no declarada
-                return self.left.checkType(scope)
-        return ''
+                if isinstance(self.left.value,str):
+                    if (self.left.value != 'true') & (self.left.value != 'false'):
+                        if isinstance(self.left.value,str):
+                            if re.match(r'[a-zA-Z_][a-zA-Z_0-9]*',self.left.value):     # verifica si el id usado fue declarado y chequea su tipo
+                                symbol = scope.lookup(self.left.value)
+                                if symbol:
+                                    return symbol.type 
+                                else: 
+                                    return ''                                           # '' indica que se ingreso una variable no declarada
+            print(self.left.checkType(scope),self.left.value)
+            return self.left.checkType(scope)
         
 
 class Set:
     def __init__(self,lcurly,setNumbers,rcurly):
         self.lcurly = lcurly
-        self.setNumbers = setNumbers
+        self.value = setNumbers
         self.rcurly = rcurly
 
     def printTree(self, tabs):
@@ -527,7 +482,7 @@ class Set:
         return string
         
     def checkType(self,scope):
-        return self.setNumbers.checkType(scope)
+        return 'set'
         
 
 class SetNumbers:
@@ -544,9 +499,9 @@ class SetNumbers:
     
     def checkType(self,scope):
         if not isinstance(self.setNumbersRecursion, str):
-            string += self.setNumbersRecursion.checkType(scope)
+            self.setNumbersRecursion.checkType(scope)
         else: 
-            return 'set'
+            return True
 
 class BooleanValue:
     def __init__(self,value):
@@ -558,10 +513,6 @@ class BooleanValue:
         return string
 
     def checkType(self,scope):
-#        if self.value == 'true':
-#            return 'true'
-#        else:
-#            return 'false'
         return 'bool'
         
 
@@ -583,6 +534,10 @@ def checkError(error,inst="",expectedType="",wrongType=""):
         if (inst == 'if') | (inst == 'while'):
             typeError.append('''ERROR: esperada condicion de tipo "%s", se encontro una de tipo "%s"''' % (expectedType,wrongType)) 
             print(typeError)
+
+
+    # if wrongtype == ''... undeclared
+
     return False
 
 
