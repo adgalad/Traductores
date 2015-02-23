@@ -2,50 +2,87 @@ program
 {
 	using
 		int Jamonsito,Quesito,CAFESHITO;
+	    int  a, b; # inicializan en 0
+	    set  c, d; # inicializan en false
+	    bool e, f; # inicializan en {}
+
 		set y;
-		bool y;
+
+		#bool y;
 	in 
-		jk = 0;
 
-		if (true)
-		{
-			using 
-				int h;
-			in
-			print "chao";
-		};
-
-		while (true) do
-		{
-			using 
-				set x,g,j;
-			in 
-				print "hola";
-		};
-
-		for o min y do
-		{
-			using 
-				int Perrito, Gatito, Zamuro;
-			in
-			if (true)
+	while (true) do
 			{
-				using
-					int SANTA;
+				using 
+					set x,g,j;
+				in 
+					print "hola";
+			};
+
+			for o min y do
+			{
+				using 
+					int Perrito, Gatito, Zamuro;
 				in
 				if (true)
 				{
-					using 
-						set ES_UN;
+					using
+						int SANTA;
 					in
 					if (true)
 					{
 						using 
-							bool GORDITO;
+							set ES_UN;
 						in
-						print "JAJAJAJEJEJIJIJIJOJOJUJUJU";
+						if (true)
+						{
+							using 
+								bool GORDITO;
+							in
+							print "JAJAJAJEJEJIJIJIJOJOJUJUJU";
+						};
 					};
 				};
 			};
-		};
+	if (true)
+	{
+		using 
+			int y;
+		in
+		print "chao";
+	};
+
+
+	a = 10;
+	scan b;
+
+    c = {1,2,3};                         
+	e = true;
+	scan f;
+
+	print "first: ", b, ", ";
+	println "second: ", f;
+
+	if (b @ c)                              ####### b @ c  no esta siendo aceptado
+		for i min d ++ c do                  ####### d ++ c no esta siendo aceptado
+		{
+		  using 
+		  	int c;
+		  in
+		  c = c + i * 2;
+		}
+	else if (b @ c) {
+		println "improbable";
+	};
+
+	repeat
+	f = e or a + b @ c ++ d
+	while (not f) do
+		e = a < b or f
+	;
+
+	a = 0;
+	if (b < 0)
+		b = -b
+	;
 }
