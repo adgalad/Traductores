@@ -38,8 +38,6 @@ operator = {"+"   : "PLUS",
 
 typeDefault = { "int" : "0", "bool" : "False", "set" : "{}" }
 
-global stack,aux
-
 class Program:
     def __init__(self,program="",instruction=""):
         self.program = program
@@ -81,10 +79,6 @@ class Instruction:                                                              
         return string 
 
     def checkType(self,scope):
-        global stack,stackOp
-        stack = []
-        stackOp = []
-
         if not isinstance(self.instruction, str):
             return self.instruction.checkType(scope)              
         else:
@@ -92,7 +86,8 @@ class Instruction:                                                              
             expressionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
-                print(symbol.type,expressionType)
+                if symbol.iterator:
+                    return checkError('forIterator',symbol.name)
                 if symbol.type != expressionType:
                     return checkError('badDeclaration',symbol.name,symbol.type)
                 return True
@@ -305,9 +300,14 @@ class ForInst:
         return string
 
     def checkType(self,scope):
+        symbol = Symbol(self.id.value,"int",0,True) # es un iterator
+        newScope = SymbolTable()
+        newScope.insert(symbol)
+        newScope.previousScope = scope
+        scope.innerScopes += [newScope]
         expressionType = self.set.checkType(scope)
         if expressionType == "set":
-            return self.instruction.checkType(scope)
+            return self.instruction.checkType(newScope)
         return checkError('range','for','set',expressionType)
 
 class Direction:
@@ -451,8 +451,6 @@ class Expression:
         return string
 
     def checkType(self,scope):
-        global aux
-        #aux = len(stack)
         if self.op != "":
             
             # Operadores unarios
@@ -462,6 +460,8 @@ class Expression:
 
                 if re.match(r'[not]',self.op) and type1 == "bool":
                     return "bool"
+                elif re.match(r'[\-]',self.op) and type1 == "int":
+                    return "int"
                 elif re.match(r'[>?|<?|$?]',self.op) and type1 == "set":
                     return "int"
                 
@@ -562,8 +562,6 @@ class Number:
         
 
 def checkError(error,inst="",expectedType="",wrongType=""):
-    global stack
-    #print(stack)
     if error == 'condition':
         typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera condicion de tipo "%s", no de tipo "%s".''' \
         % (1, 1, inst, expectedType, wrongType))
@@ -578,6 +576,9 @@ def checkError(error,inst="",expectedType="",wrongType=""):
             % (1, 1, inst, expectedType))
     elif error == 'duplicated':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" ya fue declarada en este alcance.''' \
+            % (1, 1, inst))
+    elif error == 'forIterator':
+        typeError.append('''ERROR en la Linea %d, Columna %d: La variable de iteracion "%s" no puede ser modificada.''' \
             % (1, 1, inst))
     return False
 

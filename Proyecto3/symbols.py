@@ -32,12 +32,10 @@ class SymbolTable:
 			return True
 		return False
 
-	def delete(self, symbolName):
-		if symbolBame in self.currentScope:
+	def delete(self, symbol):
+		if self.contains(symbolName):
 			del self.currentScope[symbolName]
 			return True
-		elif self.previousScope:
-			return self.previousScope.delete(symbolName)
 		return False
 
 	def update(self, name, type, value):
@@ -56,19 +54,20 @@ class SymbolTable:
 		return False
 
 	def lookup(self, symbolName):
-		if self.contains(symbolName):
-			if symbolName in self.currentScope:
-				return self.currentScope[symbolName]			# daba problemas si ponia self.currentScope[symbolName]
+		if symbolName in self.currentScope:
+			return self.currentScope[symbolName]
+		elif self.previousScope:
+			return self.previousScope.lookup(symbolName)
 		return None
 
 
 class Symbol(object):
 
-	def __init__(self, name, type, value):
+	def __init__(self, name, type, value, iterator = False):
 		self.name = name
 		self.type = type
 		self.value = value
-
+		self.iterator = iterator
 	def printSymbol(self):
 		string =  "Variable: %s | Type: %s  | Value: %s\n"%(self.name,self.type,self.value)
 		return string

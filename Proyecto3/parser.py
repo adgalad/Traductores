@@ -122,7 +122,7 @@ def p_ifInst(p):
 
 # Regla forInst: Regla para la sintaxis de la instrucción for
 def p_forInst(p):
-    '''forInst : FOR expression direction expression DO instruction'''
+    '''forInst : FOR identifier direction expression DO instruction'''
     p[0] = ForInst(p[1],p[2],p[3],p[4],p[5],p[6])
 
 # Regla direction: Direcciones válidas para el orden de ejecución en una instrucción for.
