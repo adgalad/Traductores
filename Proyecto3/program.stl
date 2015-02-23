@@ -1,13 +1,51 @@
 program 
 {
 	using
-		int x;
-		int a;
+		int Jamonsito,Quesito,CAFESHITO;
+		set y;
+		bool y;
 	in 
+		jk = 0;
 
-#		x = {}; 		# falta arreglar el arbol para los conjuntos vacios y para que verifique si todo lo que contiene son numeros o cosas raras
+		if (true)
+		{
+			using 
+				int h;
+			in
+			print "chao";
+		};
 
-		x = {1,2};
-		for i min {1,2,3} do
-			print "hola";
+		while (true) do
+		{
+			using 
+				set x,g,j;
+			in 
+				print "hola";
+		};
+
+		for o min y do
+		{
+			using 
+				int Perrito, Gatito, Zamuro;
+			in
+			if (true)
+			{
+				using
+					int SANTA;
+				in
+				if (true)
+				{
+					using 
+						set ES_UN;
+					in
+					if (true)
+					{
+						using 
+							bool GORDITO;
+						in
+						print "JAJAJAJEJEJIJIJIJOJOJUJUJU";
+					};
+				};
+			};
+		};
 }

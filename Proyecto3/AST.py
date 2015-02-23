@@ -79,23 +79,17 @@ class Instruction:
         return string 
 
     def checkType(self,scope):
-        if self.assign == "":
-            if not isinstance(self.instruction, str):
-                self.instruction.checkType(scope)              
-                return True
+        if not isinstance(self.instruction, str):
+            self.instruction.checkType(scope)              
+            return True
         else:
-            var = self.id.checkType(scope)
+            var = self.id.checkType(scope)[0]
             expressionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
                 if (symbol.type != expressionType):
                     checkError('badDeclaration',symbol.name,symbol.type)
-#               else:
-#                   scope.update(symbol.name, symbol.type, expresionType)            # no se actualiza el valor para esta entrega
                 return True
-            else:
-                print("no existe")
-                print(var)
         return False
 
 
@@ -113,7 +107,8 @@ class Block:
 
     def checkType(self,scope):
         if self.instructionBlock.checkType(scope):
-            return False
+            return True
+        return False
 
 
 class UsingInInst:
@@ -204,12 +199,13 @@ class ID:
 
     def checkType(self,scope):
         if not isinstance(self.IDrecursion,str):
-            self.IDrecursion.checkType(scope)
+            varList = [self.value] + self.IDrecursion.checkType(scope)
+            return varList
         else:
             if not scope.contains(self.value):
                 print(scope.currentScope)
                 checkError('undeclared',self.value)
-        return self.value       #devuelve el simbolo del id
+        return [self.value]       #devuelve el simbolo del id
 
 
 class InstructionBlock:
@@ -324,8 +320,8 @@ class WhileInst:
     def checkType(self, scope):
         expressionType = self.expression.checkType(scope)
         if expressionType == "bool":
-            return self.instruction.checkType(scope)
-        
+            if self.Do != "":
+                return self.instruction.checkType(scope)
         return checkError('condition','while','bool',expressionType)
 
 
@@ -460,7 +456,6 @@ class Expression:
                                     return symbol.type 
                                 else: 
                                     return ''                                           # '' indica que se ingreso una variable no declarada
-            print(self.left.checkType(scope),self.left.value)
             return self.left.checkType(scope)
         
 
@@ -533,6 +528,7 @@ def checkError(error,inst="",expectedType="",wrongType=""):
     elif error == 'badDeclaration':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" espera valores de tipo "%s".''' \
             % (1, 1, inst, expectedType))
+    return False
 
 typeError = []
 
