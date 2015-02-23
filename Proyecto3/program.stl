@@ -21,6 +21,14 @@ program
 			in
 			print "chao";
 		};
+
+		while (true) do
+		{
+			using 
+				set x,g,j;
+			in 
+				print "hola";
+		};
 	};
 
 }
