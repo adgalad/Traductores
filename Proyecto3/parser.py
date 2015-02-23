@@ -137,7 +137,6 @@ def p_whileInst(p):
     '''whileInst : WHILE LPAREN expression RPAREN DO instruction
                  | WHILE LPAREN expression RPAREN'''
     if len(p) == 7:
-        print "Si entro"
         p[0] = WhileInst(p[1],p[2],p[3],p[4],p[5],p[6])
     else:
         p[0] = WhileInst(p[1],p[2],p[3],p[4])
