@@ -38,7 +38,7 @@ operator = {"+"   : "PLUS",
 
 typeDefault = { "int" : "0", "bool" : "False", "set" : "{}" }
 
-
+global stack,aux
 
 class Program:
     def __init__(self,program="",instruction=""):
@@ -79,6 +79,10 @@ class Instruction:
         return string 
 
     def checkType(self,scope):
+        global stack,stackOp
+        stack = []
+        stackOp = []
+
         if not isinstance(self.instruction, str):
             self.instruction.checkType(scope)              
             return True
@@ -87,11 +91,10 @@ class Instruction:
             expressionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
-                if (symbol.type != expressionType):
-                    checkError('badDeclaration',symbol.name,symbol.type)
+                if symbol.type != expressionType:
+                    return checkError('badDeclaration',symbol.name,symbol.type)
                 return True
         return False
-
 
 class Block:
     def __init__(self,lcurly, instructionBlock,rcurly):
@@ -161,7 +164,7 @@ class DeclarationBlock:
         for var in varList:
             symbol = Symbol(var,varType,typeDefault[varType])
             if not scope.insert(symbol):
-                return checkError('duplicated',"","",var)                 ###########################
+                return checkError('duplicated',var)
         if self.declaration != "":
             self.declaration.checkType(scope)
         return True
@@ -203,7 +206,7 @@ class ID:
             return varList
         else:
             if not scope.contains(self.value):
-                print(scope.currentScope)
+                #print(scope.currentScope)
                 checkError('undeclared',self.value)
         return [self.value]       #devuelve el simbolo del id
 
@@ -431,19 +434,39 @@ class Expression:
         return string
 
     def checkType(self,scope):
+        global aux
+        #aux = len(stack)
         if self.op != "":
             
             # Operadores unarios
             if self.right == "":
-                self.left.checkType(scope)
 
+                type1 = self.left.checkType(scope)
+
+                if re.match(r'[not]',self.op) and type1 == "bool":
+                    return "bool"
+                elif re.match(r'[>?|<?|$?]',self.op) and type1 == "set":
+                    return "int"
+                
             # Operadores binarios
             else:
                 if self.left == "(" and self.right == ")":
-                    self.op.checkType(scope)
+                    return self.op.checkType(scope)
                 else:
-                    self.left.checkType(scope)
-                    self.right.checkType(scope)
+                    type1 = self.left.checkType(scope)
+                    type2 = self.right.checkType(scope)
+                    if re.match(r'[+|*|/|-|%]',self.op) and type1 == type2 == "int":
+                        return "int"
+                    elif re.match(r'[and|or]',self.op) and type1 == type2 == "bool":
+                        return "bool"
+                    elif re.match(r'[<|>|<=|>=|/=]',self.op) and type1 == type2 == "int":
+                        return "bool"
+                    elif re.match(r'[++|><|\\]',self.op) and type1 == type2 == "set":
+                        return "set"
+                    elif re.match(r'[<+>|<->|<*>|</>|<%>]',self.op) and (type1 == "int" or type1 == "set") and (type2 == "int" or type2 == "set") and type1 != type2:
+                        return "set"
+                    elif re.match(r'[@]',self.op) and type1 == "int" and type2 == "set":
+                        return "bool"
         else:
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
@@ -456,7 +479,9 @@ class Expression:
                                     return symbol.type 
                                 else: 
                                     return ''                                           # '' indica que se ingreso una variable no declarada
+            
             return self.left.checkType(scope)
+        return "ERRRRRROR"
         
 
 class Set:
@@ -467,7 +492,7 @@ class Set:
 
     def printTree(self, tabs):
         string = indent(tabs)+"set\n"
-        string += self.setNumbers.printTree(tabs+1)
+        string += self.value.printTree(tabs+1)
         return string
         
     def checkType(self,scope):
@@ -519,15 +544,23 @@ class Number:
         
 
 def checkError(error,inst="",expectedType="",wrongType=""):
-    if (error == 'condition') | (error == 'range'):
-        typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera %s de tipo "%s", no de tipo "%s".''' \
-        % (1, 1, inst, error, expectedType, wrongType))
+    global stack
+    #print(stack)
+    if error == 'condition':
+        typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera condicion de tipo "%s", no de tipo "%s".''' \
+        % (1, 1, inst, expectedType, wrongType))
+    elif error == 'range':
+        typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera rango de tipo "%s", no de tipo "%s".''' \
+        % (1, 1, inst, expectedType, wrongType))
     elif error == 'undeclared':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" no ha sido declarada en este alcance.''' \
             % (1, 1, inst))
     elif error == 'badDeclaration':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" espera valores de tipo "%s".''' \
             % (1, 1, inst, expectedType))
+    elif error == 'duplicated':
+        typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" ya fue declarada en este alcance.''' \
+            % (1, 1, inst))
     return False
 
 typeError = []
