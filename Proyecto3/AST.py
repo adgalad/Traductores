@@ -53,9 +53,11 @@ class Program:
 
     def checkType(self):
         if self.instruction.checkType(self.scope):
+            return self.scope
+        else:
             for error in typeError:
                 print error
-            return self.scope
+            return ""
 
 class Instruction:
     def __init__(self,instruction = "",Id="",assign="",expression=""):
@@ -80,15 +82,14 @@ class Instruction:
 
     def checkType(self,scope):
         if not isinstance(self.instruction, str):
-            self.instruction.checkType(scope)              
-            return True
+            return self.instruction.checkType(scope)              
         else:
             var = self.id.checkType(scope)[0]
             expressionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
                 if (symbol.type != expressionType):
-                    checkError('badDeclaration',symbol.name,symbol.type)
+                    return checkError('badDeclaration',symbol.name,symbol.type)
                 return True
         return False
 
@@ -106,10 +107,7 @@ class Block:
         return string
 
     def checkType(self,scope):
-        if self.instructionBlock.checkType(scope):
-            return True
-        return False
-
+        return self.instructionBlock.checkType(scope)
 
 class UsingInInst:
     def __init__(self,Using,declaration,In,instruction):
@@ -133,10 +131,9 @@ class UsingInInst:
                 scope.innerScopes += [newScope]
                 return True
             return False
+        else:   
+            return (self.declaration.checkType(scope) and self.instruction.checkType(scope))
 
-        if (self.declaration.checkType(scope) and self.instruction.checkType(scope)):
-            return True
-        return False
 
 class DeclarationBlock:
     def __init__(self,varType,Id,semicolon,declaration=""):
@@ -159,11 +156,13 @@ class DeclarationBlock:
         varType = self.varType.checkType(scope)
         varList = self.Id.checkType(scope)
         for var in varList:
-            symbol = Symbol(var,varType,typeDefault[varType])
-            if not scope.insert(symbol):
-                return checkError('duplicated',"","",var)                 ###########################
+            if not var in scope.currentScope:
+                symbol = Symbol(var,varType,typeDefault[varType])
+                scope.insert(symbol)
+            else:
+                return checkError('duplicated',"","",var)
         if self.declaration != "":
-            self.declaration.checkType(scope)
+            return self.declaration.checkType(scope)
         return True
 
         
@@ -178,8 +177,7 @@ class Type:
     def checkType(self, scope):
         return self.type
 
-
-class ID:
+class IDList:
     def __init__(self,value,comma="",IDrecursion=""):
         self.type = 'id'
         self.value = value
@@ -197,14 +195,31 @@ class ID:
             string += self.IDrecursion.printTree(tabs,varType)
         return string 
 
-    def checkType(self,scope):
+    def checkType(self,scope):        
+        varList = [self.value]
         if not isinstance(self.IDrecursion,str):
             varList = [self.value] + self.IDrecursion.checkType(scope)
-            return varList
+        return varList
+
+class ID:
+    def __init__(self,value):
+        self.type = 'id'
+        self.value = value
+
+    def printTree(self,tabs,varType=None):
+        string = ""
+        if varType:
+            string += varType.printTree(tabs)
+            string += " "+self.value+"\n"
         else:
-            if not scope.contains(self.value):
-                print(scope.currentScope)
-                checkError('undeclared',self.value)
+            string += indent(tabs)+"variable\n"
+            string += indent(tabs+1)+self.value+"\n"
+        return string 
+
+    def checkType(self,scope):
+        if scope.contains(self.value):
+            return [self.value]
+        checkError('undeclared',self.value)
         return [self.value]       #devuelve el simbolo del id
 
 
@@ -226,12 +241,11 @@ class InstructionBlock:
 
     def checkType(self,scope):
         
-        if self.instruction != "":
+        if not isinstance(self.instruction,str):
             self.instruction.checkType(scope)
             if not isinstance(self.instructionBlock, str):
-                self.instructionBlock.checkType(scope)
-            return True
-        return False
+                return self.instructionBlock.checkType(scope)
+        return True
 
 
 class IfInst:
@@ -338,7 +352,8 @@ class RepeatInst:
         return string
     
     def checkType(self,scope):
-        return True
+        return (self.instruccion.checkType(scope) and self.While.checkType(scope))
+
         
 
 class ScanInst:
@@ -528,9 +543,9 @@ def checkError(error,inst="",expectedType="",wrongType=""):
     elif error == 'badDeclaration':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" espera valores de tipo "%s".''' \
             % (1, 1, inst, expectedType))
+    elif error == 'duplicated':
+        typeError.append('Error en la linea %d, Columna %d: La variable "%s" esta duplicada en este alcance.'%(1,1,wrongType))
     return False
 
 typeError = []
 
-for error in typeError:
-    print error

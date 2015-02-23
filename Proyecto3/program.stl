@@ -3,9 +3,9 @@ program
 	using
 		int Jamonsito,Quesito,CAFESHITO;
 		set y;
-		bool y;
+		#bool y;
 	in 
-		jk = 0;
+
 
 		if (true)
 		{

@@ -93,11 +93,11 @@ def p_type(p):
 # Regla idList: identificador o lista de identificadores dentro de un bloque de declaraciones
 def p_idList(p):
     '''idList : IDENTIFIER COMMA idList
-                  | IDENTIFIER'''
+              | IDENTIFIER'''
     if len(p) == 4:
-        p[0] = ID(p[1],p[2],p[3])
+        p[0] = IDList(p[1],p[2],p[3])
     else:
-        p[0] = ID(p[1])
+        p[0] = IDList(p[1])
 
 # Regla instruccionBlock: Contiene las instrucciones dentro de un bloque (block).
 #                         Por estar dentro de un bloque terminan con ';'
@@ -114,7 +114,7 @@ def p_instructionBlock(p):
 # Regla ifInst: Regla para la sintaxis de la instrucción if
 def p_ifInst(p):
     '''ifInst : IF LPAREN expression RPAREN instruction
-                    | IF LPAREN expression RPAREN instruction ELSE instruction '''
+              | IF LPAREN expression RPAREN instruction ELSE instruction '''
     if len(p) == 6:
         p[0] = IfInst(p[1],p[2],p[3],p[4],p[5])
     else:
