@@ -30,11 +30,11 @@ precedence = (
     ('left', 'TIMES', 'DIVIDE', 'MODULE'),
     
     # Conjuntos
-    ('left', 'SETUNION', 'SETDIFF'),	
+    ('left', 'SETUNION', 'SETDIFF'),    
     ('left','SETINTERSECT'),
 
     # Conjuntos aritméticos
-    ('left','SETMAPPLUS','SETMAPMINUS'),	
+    ('left','SETMAPPLUS','SETMAPMINUS'),    
     ('left', 'SETMAPTIMES', 'SETMAPDIVIDE', 'SETMAPMODULE'),
 
     # Unarios
@@ -77,7 +77,7 @@ def p_usingInInst(p):
 # Regla declarationBlock: Lista de variables declaradas dentro de su bloque respectivo (Luego de un USING)
 def p_declarationBlock(p):
     '''declarationBlock : type idList SEMICOLON declarationBlock
-			   			          | type idList SEMICOLON'''
+                                  | type idList SEMICOLON'''
     if len(p) == 5:
         p[0] = DeclarationBlock(p[1],p[2],p[3],p[4])
     else:
@@ -86,14 +86,14 @@ def p_declarationBlock(p):
 # Regla type: Tipos de variables válidas del lenguaje
 def p_type(p):
     '''type : INT 
-  			    | BOOL 
-  			    | SET'''
+                | BOOL 
+                | SET'''
     p[0] = Type(p[1])
 
 # Regla idList: identificador o lista de identificadores dentro de un bloque de declaraciones
 def p_idList(p):
     '''idList : IDENTIFIER COMMA idList
-		          | IDENTIFIER'''
+                  | IDENTIFIER'''
     if len(p) == 4:
         p[0] = ID(p[1],p[2],p[3])
     else:
@@ -114,7 +114,7 @@ def p_instructionBlock(p):
 # Regla ifInst: Regla para la sintaxis de la instrucción if
 def p_ifInst(p):
     '''ifInst : IF LPAREN expression RPAREN instruction
-			        | IF LPAREN expression RPAREN instruction ELSE instruction '''
+                    | IF LPAREN expression RPAREN instruction ELSE instruction '''
     if len(p) == 6:
         p[0] = IfInst(p[1],p[2],p[3],p[4],p[5])
     else:
@@ -129,14 +129,15 @@ def p_forInst(p):
 #                  (de menor a mayor: min, de mayor a menor: max)
 def p_direction(p):
     '''direction : MIN
-				         | MAX'''
+                 | MAX'''
     p[0] = Direction(p[1])
 
 # Regla whileInst: Regla para la sintaxis de la instrucción while
 def p_whileInst(p):
     '''whileInst : WHILE LPAREN expression RPAREN DO instruction
-			         	 | WHILE LPAREN expression RPAREN'''
+                 | WHILE LPAREN expression RPAREN'''
     if len(p) == 7:
+        print "Si entro"
         p[0] = WhileInst(p[1],p[2],p[3],p[4],p[5],p[6])
     else:
         p[0] = WhileInst(p[1],p[2],p[3],p[4])
@@ -154,13 +155,13 @@ def p_scanInst(p):
 # Regla printInst: Regla para la sintaxis de la instrucción print/println
 def p_printInst(p):
     '''printInst : PRINT outputType
-				         | PRINTLN outputType'''
+                 | PRINTLN outputType'''
     p[0] = PrintInst(p[1],p[2])
 
 # Regla outputType: Tipos de salida válidos de la instrucción print/println
 def p_outputType(p):
     '''outputType : expression COMMA outputType
-				          | expression
+                  | expression
                   | string COMMA outputType
                   | string'''
     if (len(p) == 2):
@@ -198,9 +199,9 @@ def p_expression(p):
                   | expression SETMAPMODULE expression
                   | expression BELONGSTO expression
                   | NOT expression
-	                | SETMINVALUE expression
-	                | SETMAXVALUE expression
-	                | SETSIZE expression
+                  | SETMINVALUE expression
+                  | SETMAXVALUE expression
+                  | SETSIZE expression
                   | MINUS expression %prec NEGATE
                   | LPAREN expression RPAREN
                   | booleanValue
@@ -210,9 +211,9 @@ def p_expression(p):
     if len(p) == 2:
       p[0] = Expression(p[1])
     elif len(p) == 3:
-    	p[0] = Expression(p[2],p[1])
+        p[0] = Expression(p[2],p[1])
     else:
-    	p[0] = Expression(p[1],p[2],p[3])
+        p[0] = Expression(p[1],p[2],p[3])
 
 # Regla booleanValue: Regla que contiene los tipos de expresiones booleanas
 def p_booleanValue(p):
@@ -223,7 +224,6 @@ def p_booleanValue(p):
 # Regla string: Regla que contiene un identificador (creada para la impresión del árbol)
 def p_identifier(p):
     '''identifier : IDENTIFIER'''
-    print "entro"
     p[0] = ID(p[1])
 
 # Regla set: Regla para la sintaxis de los conjuntos
@@ -235,7 +235,7 @@ def p_set(p):
 # Regla setNumber: Regla que contiene el o los números dentro de un conjunto
 def p_setNumbers(p):
     '''setNumbers : expression COMMA setNumbers
-			            | expression'''
+                  | expression'''
     if len(p) == 2:
         p[0] = SetNumbers(p[1])
     else:

@@ -76,27 +76,18 @@ class Instruction:
         return string 
 
     def checkType(self,scope):
-        if self.assign == "":
-            if not isinstance(self.instruction, str):
-                self.instruction.checkType(scope)              
-                return True
+        if not isinstance(self.instruction, str):
+            self.instruction.checkType(scope)              
+            return True
         else:
-            var = self.id.checkType(scope)
+            var = self.id.checkType(scope)[0]
             expresionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
-                #print(symbol.type,expresionType)
                 if (symbol.type != expresionType):
                     print("crear mensaje de error")
-                    #print(symbol.type,expresionType)
-                    checkError('badDeclaration','assign',symbol.type,expresionType)
-
-#               else:
-#                   scope.update(symbol.name, symbol.type, expresionType)            # no se actualiza el valor para esta entrega
+                    return checkError('badDeclaration','assign',symbol.type,expresionType)
                 return True
-            else:
-                print("no existe")
-                print(var)
         return False
 
 
@@ -114,7 +105,8 @@ class Block:
 
     def checkType(self,scope):
         if self.instructionBlock.checkType(scope):
-            return False
+            return True
+        return False
 
 
 class UsingInInst:
@@ -205,11 +197,12 @@ class ID:
 
     def checkType(self,scope):
         if not isinstance(self.IDrecursion,str):
-            self.IDrecursion.checkType(scope)
+            varList = [self.value] + self.IDrecursion.checkType(scope)
+            return varList
         else:
             if not scope.contains(self.value):
                 checkError('undeclared',self.value)
-        return self.value       #devuelve el simbolo del id
+        return [self.value]       #devuelve el simbolo del id
 
 
 class InstructionBlock:
@@ -269,7 +262,6 @@ class IfInst:
         if expresionType == "bool":
             if self.instruction.checkType(scope):
                 if self.Else != "":
-                    print "entro IFELSE"
                     return self.elseInstruction.checkType(scope)
                 return True
             else:
@@ -330,8 +322,8 @@ class WhileInst:
     def checkType(self, scope):
         expresionType = self.expression.checkType(scope)
         if expresionType == "bool":
-            return self.instruction.checkType(scope)
-        
+            if self.Do != "":
+                return self.instruction.checkType(scope)
         return checkError('condition','while','bool',expresionType)
 
 
@@ -466,7 +458,6 @@ class Expression:
                                     return symbol.type 
                                 else: 
                                     return ''                                           # '' indica que se ingreso una variable no declarada
-            print(self.left.checkType(scope),self.left.value)
             return self.left.checkType(scope)
         
 

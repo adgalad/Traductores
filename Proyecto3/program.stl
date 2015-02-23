@@ -1,10 +1,11 @@
 program 
 {
 	using
-		int x;
-		int y;
+		int Jamonsito,Quesito,CAFESHITO;
+		set y;
+		bool y;
 	in 
-
+		jk = 0;
 
 		if (true)
 		{
@@ -21,5 +22,31 @@ program
 			in 
 				print "hola";
 		};
-	x = true+a;
+
+		for o min y do
+		{
+			using 
+				int Perrito, Gatito, Zamuro;
+			in
+			if (true)
+			{
+				using
+					int SANTA;
+				in
+				if (true)
+				{
+					using 
+						set ES_UN;
+					in
+					if (true)
+					{
+						using 
+							bool GORDITO;
+						in
+						print "JAJAJAJEJEJIJIJIJOJOJUJUJU";
+					};
+				};
+			};
+		};
+
 }
