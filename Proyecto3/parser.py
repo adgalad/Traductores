@@ -203,12 +203,12 @@ def p_expression(p):
 	                | SETSIZE expression
                   | MINUS expression %prec NEGATE
                   | LPAREN expression RPAREN
-                  | booleanValue          
-                  | set 
+                  | booleanValue
+                  | set
                   | identifier
                   | number'''
     if len(p) == 2:
-    	p[0] = Expression(p[1])
+      p[0] = Expression(p[1])
     elif len(p) == 3:
     	p[0] = Expression(p[2],p[1])
     else:
@@ -216,13 +216,14 @@ def p_expression(p):
 
 # Regla booleanValue: Regla que contiene los tipos de expresiones booleanas
 def p_booleanValue(p):
-    ''' booleanValue : TRUE 
-                     | FALSE '''
+    ''' booleanValue : TRUE
+                     | FALSE'''
     p[0] = BooleanValue(p[1])
 
 # Regla string: Regla que contiene un identificador (creada para la impresión del árbol)
 def p_identifier(p):
     '''identifier : IDENTIFIER'''
+    print "entro"
     p[0] = ID(p[1])
 
 # Regla set: Regla para la sintaxis de los conjuntos

@@ -1,10 +1,13 @@
-program {
+program 
+{
 	using
 		int x;
 		int y;
-	in
+	in 
+	{
 		print "hola";
-		if (true){
+		if (true)
+		{
 			using
 				int i;
 				set s;
@@ -17,5 +20,5 @@ program {
 			in
 				print "chao";
 		};
-
+	};
 }

@@ -112,16 +112,8 @@ class Block:
         return string
 
     def checkType(self,scope):
-        if scope.previousScope:
-            newScope = SymbolTable()
-            newScope.previousScope = scope
-            if self.instructionBlock.checkType(newScope):
-                scope.innerScopes += [newScope]
-                return True
+        if self.instructionBlock.checkType(scope):
             return False
-        if self.instructionBlock.checkType(scope): 
-            return True
-        return False
 
 
 class UsingInInst:
@@ -139,6 +131,14 @@ class UsingInInst:
         return string
 
     def checkType(self,scope):
+        if scope.currentScope != {}:
+            newScope = SymbolTable()
+            newScope.previousScope = scope
+            if (self.declaration.checkType(newScope) and self.instruction.checkType(newScope)):
+                scope.innerScopes += [newScope]
+                return True
+            return False
+        print "hola"
         if (self.declaration.checkType(scope) and self.instruction.checkType(scope)):
             return True
         return False
@@ -228,6 +228,7 @@ class InstructionBlock:
         return string
 
     def checkType(self,scope):
+        
         if self.instruction != "":
             self.instruction.checkType(scope)
             if not isinstance(self.instructionBlock, str):
@@ -263,12 +264,13 @@ class IfInst:
 #            return False
 
     def checkType(self, scope):
+
         expresionType = self.expression.checkType(scope)
         if expresionType == "bool":
             if self.instruction.checkType(scope):
                 if self.Else != "":
-                    if self.elseInstruction.checkType(scope):
-                        return True
+                    print "entro IFELSE"
+                    return self.elseInstruction.checkType(scope)
                 return True
             else:
                 return False
@@ -497,6 +499,7 @@ class Expression:
 
                 return self.right.value
         else:
+            return "bool"
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
                 if (self.left.value != 'true') & (self.left.value != 'false'):      # si no se hace esto, se estaria considerando que true y false podrian no ser declaradas(no tiene sentido)
