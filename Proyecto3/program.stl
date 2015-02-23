@@ -2,27 +2,12 @@ program
 {
 	using
 		int x;
-		int y;
+		int a;
 	in 
-#	{
+
 #		x = {}; 		# falta arreglar el arbol para los conjuntos vacios y para que verifique si todo lo que contiene son numeros o cosas raras
 
-		x = true+a;
-
-#		print "hola";
-#		if (true)
-#		{
-#			using
-#				int i;
-#				set s;
-#				bool b;
-#			in
-#				print "hola";
-#		} else {
-#			using
-#				int h;
-#			in
-#				print "chao";
-#		};
-#	};
+		x = {1,2};
+		for i min {1,2,3} do
+			print "hola";
 }

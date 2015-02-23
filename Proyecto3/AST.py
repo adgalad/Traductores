@@ -5,8 +5,9 @@
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
 
-from symbols import indent, SymbolTable, Symbol
-import re
+from    lexer   import tokens, findColumn
+from    symbols import indent, SymbolTable, Symbol
+import  re
 
 operator = {"+"   : "PLUS", 
             "-"   : "MINUS",
@@ -52,7 +53,9 @@ class Program:
 
     def checkType(self):
         if self.instruction.checkType(self.scope):
-            print self.scope
+            for error in typeError:
+                print error
+            return self.scope
 
 class Instruction:
     def __init__(self,instruction = "",Id="",assign="",expression=""):
@@ -82,15 +85,11 @@ class Instruction:
                 return True
         else:
             var = self.id.checkType(scope)
-            expresionType = self.expression.checkType(scope)
+            expressionType = self.expression.checkType(scope)
             symbol = scope.lookup(var)
             if symbol:
-                #print(symbol.type,expresionType)
-                if (symbol.type != expresionType):
-                    print("crear mensaje de error")
-                    #print(symbol.type,expresionType)
-                    checkError('badDeclaration','assign',symbol.type,expresionType)
-
+                if (symbol.type != expressionType):
+                    checkError('badDeclaration',symbol.name,symbol.type)
 #               else:
 #                   scope.update(symbol.name, symbol.type, expresionType)            # no se actualiza el valor para esta entrega
                 return True
@@ -208,6 +207,7 @@ class ID:
             self.IDrecursion.checkType(scope)
         else:
             if not scope.contains(self.value):
+                print(scope.currentScope)
                 checkError('undeclared',self.value)
         return self.value       #devuelve el simbolo del id
 
@@ -259,22 +259,16 @@ class IfInst:
             string += self.elseInstruction.printTree(tabs+1)
         return string        
 
-#    def checkType(self):
-#        if self.expression.opType != 'bool':
-#            checkError('condition','if','bool',self.expression.opType)
-#            return False
-
     def checkType(self, scope):
-        expresionType = self.expression.checkType(scope)
-        if expresionType == "bool":
+        expressionType = self.expression.checkType(scope)
+        if expressionType == "bool":
             if self.instruction.checkType(scope):
                 if self.Else != "":
-                    print "entro IFELSE"
                     return self.elseInstruction.checkType(scope)
                 return True
             else:
                 return False
-        return checkError('condition','if','bool', expresionType)
+        return checkError('condition','if','bool', expressionType)
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -296,10 +290,10 @@ class ForInst:
         return string
 
     def checkType(self,scope):
-        expresionType = self.set.checkType(scope)
-        if expresionType == "set":
+        expressionType = self.set.checkType(scope)
+        if expressionType == "set":
             return self.instruction.checkType(scope)
-        return checkError('condition','for','set',expresionType)
+        return checkError('range','for','set',expressionType)
 
 class Direction:
     def __init__(self,direction):
@@ -328,11 +322,11 @@ class WhileInst:
         return string
 
     def checkType(self, scope):
-        expresionType = self.expression.checkType(scope)
-        if expresionType == "bool":
+        expressionType = self.expression.checkType(scope)
+        if expressionType == "bool":
             return self.instruction.checkType(scope)
         
-        return checkError('condition','while','bool',expresionType)
+        return checkError('condition','while','bool',expressionType)
 
 
 class RepeatInst:
@@ -530,15 +524,17 @@ class Number:
         
 
 def checkError(error,inst="",expectedType="",wrongType=""):
-    if error == 'condition':
-        if (inst == 'if') | (inst == 'while'):
-            typeError.append('''ERROR: esperada condicion de tipo "%s", se encontro una de tipo "%s"''' % (expectedType,wrongType)) 
-            print(typeError)
-
-
-    # if wrongtype == ''... undeclared
-
-    return False
-
+    if (error == 'condition') | (error == 'range'):
+        typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera %s de tipo "%s", no de tipo "%s".''' \
+        % (1, 1, inst, error, expectedType, wrongType))
+    elif error == 'undeclared':
+        typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" no ha sido declarada en este alcance.''' \
+            % (1, 1, inst))
+    elif error == 'badDeclaration':
+        typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" espera valores de tipo "%s".''' \
+            % (1, 1, inst, expectedType))
 
 typeError = []
+
+for error in typeError:
+    print error

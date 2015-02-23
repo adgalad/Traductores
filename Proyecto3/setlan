@@ -8,8 +8,9 @@
 
 import  sys
 import  re
-from    lexer  import *
-from    parser import *
+from    lexer   import *
+from    parser  import *
+from    AST     import *
 
 def main():
     if len(sys.argv) < 1:
@@ -45,7 +46,11 @@ def main():
                 if sys.argv[i] == "-a":
                     print arbol.printTree(0)
                 if sys.argv[i] == "-s":
-                    arbol.checkType()
+                    if typeError != []:
+                        for error in typeError:
+                            print error
+                    else:
+                        print arbol.checkType()
 
 if __name__ == "__main__":
     main()
