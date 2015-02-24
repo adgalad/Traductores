@@ -50,11 +50,11 @@ class Program:
 
     def checkType(self):
         if self.instruction.checkType(self.scope):
+            if typeError != []:
+                for error in typeError:
+                    print error
+                return ""
             return self.scope
-        else:
-            for error in typeError:
-                print error
-            return ""
 
 class Instruction:                                                              #############################################################
     def __init__(self,instruction = "",Id="",assign="",expression=""):
@@ -78,7 +78,6 @@ class Instruction:                                                              
         return string 
 
     def checkType(self,scope):
-        print("hola")
         if not isinstance(self.instruction, str):
             return self.instruction.checkType(scope)
         else:
@@ -87,11 +86,11 @@ class Instruction:                                                              
             symbol = scope.lookup(var.value)
             if symbol:
                 if symbol.iterator:
-                    return checkError('forIterator',symbol.name,"","",var.lineno,var.column)
+                    checkError('forIterator',symbol.name,"","",var.lineno,var.column)
                 if symbol.type != expressionType:
-                    return checkError('badDeclaration',symbol.name,symbol.type,"",var.lineno,var.column)
+                    checkError('badDeclaration',symbol.name,symbol.type,"",var.lineno,var.column)
                 return True
-        return False
+        return True
 
 class Block:
     def __init__(self,lcurly, instructionBlock,rcurly):
@@ -152,7 +151,6 @@ class DeclarationBlock:
         return string
 
     def checkType(self, scope):
-        print "hola2"
         varType = self.varType.checkType(scope)
         varList = self.Id.checkType(scope)
         for var in varList:
@@ -160,7 +158,7 @@ class DeclarationBlock:
                 symbol = Symbol(var.value,varType,typeDefault[varType])
                 scope.insert(symbol)
             else:
-                return checkError('duplicated',var.value,"","",var.lineno,var.column)
+                checkError('duplicated',var.value,"","",var.lineno,var.column)
         if self.declaration != "":
             return self.declaration.checkType(scope)
         return True
@@ -223,10 +221,10 @@ class ID:
         return string 
 
     def checkType(self,scope):
-        print "hola3"
         if scope.contains(self.value):
             return [self]
-        return checkError('undeclared',self.value,"","",self.lineno,self.column)
+        checkError('undeclared',self.value,"","",self.lineno,self.column)
+        return [self]
         #return [self]       #devuelve el simbolo del id
 
 
@@ -280,7 +278,6 @@ class IfInst:
         return string        
 
     def checkType(self, scope):
-        print "hola4"
         expressionType = self.expression.checkType(scope)
         if expressionType == "bool":
             if self.instruction.checkType(scope):
@@ -289,8 +286,8 @@ class IfInst:
                 return True
             else:
                 return False
-        return checkError('condition','if','bool', expressionType,self.lineno,self.column)
-
+        checkError('condition','if','bool', expressionType,self.lineno,self.column)
+        return True
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -312,7 +309,6 @@ class ForInst:
         return string
 
     def checkType(self,scope):
-        print "hola5"
         symbol = Symbol(self.id.value,"int",0,True) # es un iterator
         newScope = SymbolTable()
         newScope.insert(symbol)
@@ -321,8 +317,8 @@ class ForInst:
         expressionType = self.set.checkType(scope)
         if expressionType == "set":
             return self.instruction.checkType(newScope)
-        return checkError('range','for','set',expressionType,self.dir.checkType(scope).lineno,self.dir.checkType(scope).column)
-
+        checkError('range','for','set',expressionType,self.dir.checkType(scope).lineno,self.dir.checkType(scope).column)
+        return True
 
 class Direction:
     def __init__(self,direction,lineno,column):
@@ -358,12 +354,12 @@ class WhileInst:
         return string
 
     def checkType(self, scope):
-        print "hola6"
         expressionType = self.expression.checkType(scope)
         if expressionType == "bool":
             if self.Do != "":
                 return self.instruction.checkType(scope)
-        return checkError('condition','while','bool',expressionType,self.lineno,self.column)
+        checkError('condition','while','bool',expressionType,self.lineno,self.column)
+        return True
 
 
 class RepeatInst:

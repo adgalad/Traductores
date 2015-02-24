@@ -3,6 +3,10 @@ program {
 		set x;
 		int y,y;
 	in
+		if (1 > {1,2,3})				
+			print "a"
+		;
+
 		while (1) do {
 			print "hola";
 		};
@@ -16,7 +20,10 @@ program {
 			print "santa";
 		};
 
-		if (1 > {1,2,3})				
-			print "a"
-		;
+
+		while (1) do {
+			print "hola";
+		};
+
+		z = 3;
 }
