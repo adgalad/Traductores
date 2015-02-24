@@ -5,9 +5,8 @@
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
 
-from    lexer   import tokens, findColumn
-from    symbols import indent, SymbolTable, Symbol
 import  re
+from    symbols import indent, SymbolTable, Symbol
 
 operator = {"+"   : "PLUS", 
             "-"   : "MINUS",
@@ -16,17 +15,17 @@ operator = {"+"   : "PLUS",
             "%"   : "MODULE", 
             "and" : "AND",
             "or"  : "OR", 
+            "not" : "NOT", 
             "<"   : "LESSTHAN",
             ">"   : "GREATERTHAN",
             "<="  : "LESSEQUALSTHAN",   
             "/="  : "NOTEQUALS",
-            "\\"  : "SETDIFF", 
             ">="  : "GREATEREQUALTHAN", 
-            "not" : "NOT", 
-            "++"  : "SETUNION",
             "@"   : "BELONGSTO",      
-            "=="  : "EQUALS",   
+            "=="  : "EQUALS",
+            "++"  : "SETUNION",
             "><"  : "SETINTERSECT",   
+            "\\"  : "SETDIFF", 
             "<+>" : "SETMAPPLUS",
             "<->" : "SETMAPMINUS",    
             "<*>" : "SETMAPTIMES", 
@@ -79,17 +78,18 @@ class Instruction:                                                              
         return string 
 
     def checkType(self,scope):
+        print("hola")
         if not isinstance(self.instruction, str):
-            return self.instruction.checkType(scope)              
+            return self.instruction.checkType(scope)
         else:
             var = self.id.checkType(scope)[0]
             expressionType = self.expression.checkType(scope)
-            symbol = scope.lookup(var)
+            symbol = scope.lookup(var.value)
             if symbol:
                 if symbol.iterator:
-                    return checkError('forIterator',symbol.name)
+                    return checkError('forIterator',symbol.name,"","",var.lineno,var.column)
                 if symbol.type != expressionType:
-                    return checkError('badDeclaration',symbol.name,symbol.type)
+                    return checkError('badDeclaration',symbol.name,symbol.type,"",var.lineno,var.column)
                 return True
         return False
 
@@ -152,14 +152,15 @@ class DeclarationBlock:
         return string
 
     def checkType(self, scope):
+        print "hola2"
         varType = self.varType.checkType(scope)
         varList = self.Id.checkType(scope)
         for var in varList:
-            if not var in scope.currentScope:
-                symbol = Symbol(var,varType,typeDefault[varType])
+            if not var.value in scope.currentScope:
+                symbol = Symbol(var.value,varType,typeDefault[varType])
                 scope.insert(symbol)
             else:
-                return checkError('duplicated',var)
+                return checkError('duplicated',var.value,"","",var.lineno,var.column)
         if self.declaration != "":
             return self.declaration.checkType(scope)
         return True
@@ -176,11 +177,14 @@ class Type:
     def checkType(self, scope):
         return self.type
 
+
 class IDList:
-    def __init__(self,value,comma="",IDrecursion=""):
+    def __init__(self,value,comma="",IDrecursion="",lineno="",column=""):
         self.type = 'id'
         self.value = value
         self.IDrecursion = IDrecursion
+        self.lineno = lineno
+        self.column = column
 
     def printTree(self,tabs,varType=None):
         string = ""
@@ -195,15 +199,18 @@ class IDList:
         return string 
 
     def checkType(self,scope):        
-        varList = [self.value]
+        varList = [self]
         if not isinstance(self.IDrecursion,str):
-            varList = [self.value] + self.IDrecursion.checkType(scope)
+            varList = [self] + self.IDrecursion.checkType(scope)
         return varList
 
+
 class ID:
-    def __init__(self,value):
+    def __init__(self,value,lineno,column):
         self.type = 'id'
         self.value = value
+        self.lineno = lineno
+        self.column = column
 
     def printTree(self,tabs,varType=None):
         string = ""
@@ -216,10 +223,11 @@ class ID:
         return string 
 
     def checkType(self,scope):
+        print "hola3"
         if scope.contains(self.value):
-            return [self.value]
-        checkError('undeclared',self.value)
-        return [self.value]       #devuelve el simbolo del id
+            return [self]
+        return checkError('undeclared',self.value,"","",self.lineno,self.column)
+        #return [self]       #devuelve el simbolo del id
 
 
 class InstructionBlock:
@@ -249,7 +257,7 @@ class InstructionBlock:
 
 
 class IfInst:
-    def __init__(self, If, lparen, expression, rparen, instruction, Else="", elseInstruction=""):
+    def __init__(self, If, lparen, expression, rparen, instruction, Else="", elseInstruction="",lineno="",column=""):
         self.If              = If
         self.lparen          = lparen
         self.expression      = expression
@@ -257,6 +265,8 @@ class IfInst:
         self.instruction     = instruction
         self.Else            = Else
         self.elseInstruction = elseInstruction
+        self.lineno          = lineno
+        self.column          = column
 
     def printTree(self, tabs):
         string  = indent(tabs)+"IF\n"
@@ -270,6 +280,7 @@ class IfInst:
         return string        
 
     def checkType(self, scope):
+        print "hola4"
         expressionType = self.expression.checkType(scope)
         if expressionType == "bool":
             if self.instruction.checkType(scope):
@@ -278,7 +289,8 @@ class IfInst:
                 return True
             else:
                 return False
-        return checkError('condition','if','bool', expressionType)
+        return checkError('condition','if','bool', expressionType,self.lineno,self.column)
+
 
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
@@ -300,6 +312,7 @@ class ForInst:
         return string
 
     def checkType(self,scope):
+        print "hola5"
         symbol = Symbol(self.id.value,"int",0,True) # es un iterator
         newScope = SymbolTable()
         newScope.insert(symbol)
@@ -308,24 +321,32 @@ class ForInst:
         expressionType = self.set.checkType(scope)
         if expressionType == "set":
             return self.instruction.checkType(newScope)
-        return checkError('range','for','set',expressionType)
+        return checkError('range','for','set',expressionType,self.dir.checkType(scope).lineno,self.dir.checkType(scope).column)
+
 
 class Direction:
-    def __init__(self,direction):
+    def __init__(self,direction,lineno,column):
         self.direction = direction
+        self.lineno = lineno
+        self.column = column
 
     def printTree(self,tabs):
         string = indent(tabs)+"DIRECTION\n"
         string += indent(tabs+1)+self.direction+"\n"
         return string
 
+    def checkType(self,scope):
+        return self
+
 
 class WhileInst:
-    def __init__(self,While,lparen,expression,rparen,Do="",instruction=""):
+    def __init__(self,While,lparen,expression,rparen,Do="",instruction="",lineno="",column=""):
         self.While = While
         self.expression = expression
         self.Do = Do
         self.instruction = instruction
+        self.lineno = lineno
+        self.column = column
 
     def printTree(self,tabs):
         string = indent(tabs)+"WHILE\n"
@@ -337,11 +358,12 @@ class WhileInst:
         return string
 
     def checkType(self, scope):
+        print "hola6"
         expressionType = self.expression.checkType(scope)
         if expressionType == "bool":
             if self.Do != "":
                 return self.instruction.checkType(scope)
-        return checkError('condition','while','bool',expressionType)
+        return checkError('condition','while','bool',expressionType,self.lineno,self.column)
 
 
 class RepeatInst:
@@ -358,7 +380,6 @@ class RepeatInst:
     
     def checkType(self,scope):
         return (self.instruction.checkType(scope) and self.While.checkType(scope))
-
         
 
 class ScanInst:
@@ -425,7 +446,6 @@ class Expression:
         self.left  = left
         self.right = right
         self.op    = op
-        self.opType = None
 
     def printTree(self,tabs):
         string = ""
@@ -452,12 +472,9 @@ class Expression:
 
     def checkType(self,scope):
         if self.op != "":
-            
             # Operadores unarios
             if self.right == "":
-
                 type1 = self.left.checkType(scope)
-
                 if re.match(r'[not]',self.op) and type1 == "bool":
                     return "bool"
                 elif re.match(r'[\-]',self.op) and type1 == "int":
@@ -470,7 +487,6 @@ class Expression:
                 if self.left == "(" and self.right == ")":
                     return self.op.checkType(scope)
                 else:
-
                     type1 = self.left.checkType(scope)
                     type2 = self.right.checkType(scope)
                     if re.match(r'[+|*|/|\-|%]',self.op) and type1 == type2 == "int":
@@ -499,23 +515,25 @@ class Expression:
                                     return ''                                           # '' indica que se ingreso una variable no declarada
             
             return self.left.checkType(scope)
-        return "ERRRRRROR"
+        return ''
         
 
 class Set:
-    def __init__(self,lcurly,setNumbers,rcurly):
+    def __init__(self,lcurly,setNumbers="",rcurly=""):
         self.lcurly = lcurly
         self.value = setNumbers
         self.rcurly = rcurly
 
     def printTree(self, tabs):
         string = indent(tabs)+"set\n"
-        string += self.value.printTree(tabs+1)
+        if not isinstance(self.value, str):
+            string += self.value.printTree(tabs+1)
         return string
         
     def checkType(self,scope):
-        return 'set'
-        
+        if not isinstance(self.value,str):
+            return self.value.checkType(scope)
+        return 'set'    # conjunto vacio    
 
 class SetNumbers:
     def __init__(self, expression, comma="", setNumbersRecursion=""):
@@ -530,10 +548,11 @@ class SetNumbers:
         return string
     
     def checkType(self,scope):
+        if self.expression.checkType(scope) != 'int':
+            return ''
         if not isinstance(self.setNumbersRecursion, str):
             self.setNumbersRecursion.checkType(scope)
-        else: 
-            return True
+        return 'set'
 
 class BooleanValue:
     def __init__(self,value):
@@ -561,26 +580,25 @@ class Number:
         return 'int'
         
 
-def checkError(error,inst="",expectedType="",wrongType=""):
+def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=""):
     if error == 'condition':
         typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera condicion de tipo "%s", no de tipo "%s".''' \
-        % (1, 1, inst, expectedType, wrongType))
+        % (lineno, column, instOrVar, expectedType, wrongType))
     elif error == 'range':
         typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera rango de tipo "%s", no de tipo "%s".''' \
-        % (1, 1, inst, expectedType, wrongType))
+        % (lineno, column, instOrVar, expectedType, wrongType))
     elif error == 'undeclared':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" no ha sido declarada en este alcance.''' \
-            % (1, 1, inst))
+            % (lineno, column, instOrVar))
     elif error == 'badDeclaration':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" espera valores de tipo "%s".''' \
-            % (1, 1, inst, expectedType))
+            % (lineno, column, instOrVar, expectedType))
     elif error == 'duplicated':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" ya fue declarada en este alcance.''' \
-            % (1, 1, inst))
+            % (lineno, column, instOrVar))
     elif error == 'forIterator':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable de iteracion "%s" no puede ser modificada.''' \
-            % (1, 1, inst))
+            % (lineno, column, instOrVar))
     return False
 
 typeError = []
-

@@ -77,7 +77,7 @@ def p_usingInInst(p):
 # Regla declarationBlock: Lista de variables declaradas dentro de su bloque respectivo (Luego de un USING)
 def p_declarationBlock(p):
     '''declarationBlock : type idList SEMICOLON declarationBlock
-                                  | type idList SEMICOLON'''
+                        | type idList SEMICOLON'''
     if len(p) == 5:
         p[0] = DeclarationBlock(p[1],p[2],p[3],p[4])
     else:
@@ -95,9 +95,9 @@ def p_idList(p):
     '''idList : IDENTIFIER COMMA idList
               | IDENTIFIER'''
     if len(p) == 4:
-        p[0] = IDList(p[1],p[2],p[3])
+        p[0] = IDList(p[1],p[2],p[3],p.lineno(1),findColumn(p.lexer.lexdata,p.lexpos(1)))
     else:
-        p[0] = IDList(p[1])
+        p[0] = IDList(p[1],"","",p.lineno(1),findColumn(p.lexer.lexdata,p.lexpos(1)))
 
 # Regla instruccionBlock: Contiene las instrucciones dentro de un bloque (block).
 #                         Por estar dentro de un bloque terminan con ';'
@@ -116,9 +116,9 @@ def p_ifInst(p):
     '''ifInst : IF LPAREN expression RPAREN instruction
               | IF LPAREN expression RPAREN instruction ELSE instruction '''
     if len(p) == 6:
-        p[0] = IfInst(p[1],p[2],p[3],p[4],p[5])
+        p[0] = IfInst(p[1],p[2],p[3],p[4],p[5],"","",p.lineno(2),findColumn(p.lexer.lexdata,p.lexpos(2)))
     else:
-        p[0] = IfInst(p[1],p[2],p[3],p[4],p[5],p[6],p[7])
+        p[0] = IfInst(p[1],p[2],p[3],p[4],p[5],p[6],p[7],p.lineno(2),findColumn(p.lexer.lexdata,p.lexpos(2)))
 
 # Regla forInst: Regla para la sintaxis de la instrucción for
 def p_forInst(p):
@@ -130,16 +130,16 @@ def p_forInst(p):
 def p_direction(p):
     '''direction : MIN
                  | MAX'''
-    p[0] = Direction(p[1])
+    p[0] = Direction(p[1],p.lineno(1),findColumn(p.lexer.lexdata,p.lexpos(1)+4))
 
 # Regla whileInst: Regla para la sintaxis de la instrucción while
 def p_whileInst(p):
     '''whileInst : WHILE LPAREN expression RPAREN DO instruction
                  | WHILE LPAREN expression RPAREN'''
     if len(p) == 7:
-        p[0] = WhileInst(p[1],p[2],p[3],p[4],p[5],p[6])
+        p[0] = WhileInst(p[1],p[2],p[3],p[4],p[5],p[6],p.lineno(2),findColumn(p.lexer.lexdata,p.lexpos(2)))
     else:
-        p[0] = WhileInst(p[1],p[2],p[3],p[4])
+        p[0] = WhileInst(p[1],p[2],p[3],p[4],"","",p.lineno(2),findColumn(p.lexer.lexdata,p.lexpos(2)))
 
 # Regla repeatInst: Regla para la sintaxis de la instrucción repeat
 def p_repeatInst(p):
@@ -223,13 +223,16 @@ def p_booleanValue(p):
 # Regla string: Regla que contiene un identificador (creada para la impresión del árbol)
 def p_identifier(p):
     '''identifier : IDENTIFIER'''
-    p[0] = ID(p[1])
+    p[0] = ID(p[1],p.lineno(1),findColumn(p.lexer.lexdata,p.lexpos(1)))
 
 # Regla set: Regla para la sintaxis de los conjuntos
 def p_set(p):
     '''set : LCURLY setNumbers RCURLY
            | LCURLY RCURLY'''
-    p[0] = Set(p[1],p[2],p[3])
+    if len(p) == 4:
+        p[0] = Set(p[1],p[2],p[3])
+    else:
+        p[0] = Set(p[1],"",p[2])
 
 # Regla setNumber: Regla que contiene el o los números dentro de un conjunto
 def p_setNumbers(p):
@@ -249,9 +252,9 @@ def p_number(p):
 def p_error(p):
     if p:
         yaccError.append('''ERROR: Se encontró un token inesperado "%s" en la Línea %d, Columna %d.''' \
-            % (p.value, p.lineno, findColumn(p.lexer.lexdata,p)))
+            % (p.value, p.lineno, findColumn(p.lexer.lexdata,p.lexpos)))
     else:
-        yaccError.append('''ERROR: Error de sintaxis en fin de archivo.''')
+        yaccError.append('''ERROR: No se puede leer. El archivo llegó a su fin.''')
 
 # Construcción del parser
 parser = yacc.yacc()
