@@ -1,8 +1,6 @@
 program {
-	using
-		int x;
-	in
-		for i min true do {
-			i = 1;	
-		};
+    using int a; set b; bool c;
+    
+    in
+	    print a, b + a;
 }

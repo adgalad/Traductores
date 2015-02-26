@@ -413,7 +413,7 @@ class PrintInst:
         return string
     
     def checkType(self,scope):
-        return True
+        return self.output.checkType(scope)
         
 
 class OutputType:
@@ -429,6 +429,9 @@ class OutputType:
         return string
       
     def checkType(self,scope):
+        self.expression.checkType(scope)
+        if not isinstance(self.outputRecursion,str):
+            self.outputRecursion.checkType(scope)
         return True
 
 class String:
@@ -500,10 +503,12 @@ class Expression:
                         return "bool"
                     elif re.match(r'[++|><|\\]',self.op) and type1 == type2 == "set":
                         return "set"
-                    elif re.match(r'[<+>|<\->|<*>|</>|<%>]',self.op) and (type1 == "int" or type1 == "set") and (type2 == "int" or type2 == "set") and type1 != type2:
+                    elif ((self.op == "<+>") | (self.op == "<->") | (self.op == "<*>") | (self.op == "</>") | (self.op == "<%>")) \
+                     and (type1 == "int" or type1 == "set") and (type2 == "int" or type2 == "set") and type1 != type2:
                         return "set"
                     elif re.match(r'[@]',self.op) and type1 == "int" and type2 == "set":
                         return "bool"
+                checkError('expression',self.op,type1,type2)
         else:
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
@@ -611,6 +616,13 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
             wrongType = "*no declarada*"
         typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "scan" no puede escanear variable de tipo "%s".''' \
             % (lineno, column,wrongType))
+    elif error == 'expression':
+        if (expectedType == ""):
+            expectedType = "*no especificado*"
+        if (wrongType == ""):
+            wrongType = "*no especificado*"
+        typeError.append('''ERROR en la Linea %d, Columna %d: El operador "%s" no opera sobre tipos "%s" y "%s".''' \
+            % (0000, 0000, instOrVar, expectedType, wrongType))        
     return False
 
 typeError = []
