@@ -111,12 +111,12 @@ def findColumn(input,tokLexpos):
 
 def t_error(t):
     lexError.append('''ERROR: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d.''' \
-        % (t.value[0], t.lineno, findColumn(t.lexer.lexdata,t)))
+        % (t.value[0], t.lineno, findColumn(t.lexer.lexdata,t.lexpos)))
     t.lexer.skip(1)
 
 def error_NUMBER(t):
     lexError.append('''ERROR: Entero fuera de rango "%s" en la Línea %d, Columna %d.''' \
-        % (t.value, t.lineno, findColumn(t.lexer.lexdata, t)))
+        % (t.value, t.lineno, findColumn(t.lexer.lexdata, t.lexpos)))
 
 def printLex(data):
     lex2 = lex.lex()

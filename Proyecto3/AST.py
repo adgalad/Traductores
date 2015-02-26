@@ -318,6 +318,7 @@ class ForInst:
         if expressionType == "set":
             return self.instruction.checkType(newScope)
         checkError('range','for','set',expressionType,self.dir.checkType(scope).lineno,self.dir.checkType(scope).column)
+        self.instruction.checkType(newScope)
         return True
 
 class Direction:
@@ -359,6 +360,7 @@ class WhileInst:
             if self.Do != "":
                 return self.instruction.checkType(scope)
         checkError('condition','while','bool',expressionType,self.lineno,self.column)
+        self.instruction.checkType(scope)
         return True
 
 
@@ -379,9 +381,11 @@ class RepeatInst:
         
 
 class ScanInst:
-    def __init__(self,scan,expression):
+    def __init__(self,scan,expression,lineno,column):
         self.scan = scan
         self.expression = expression
+        self.lineno = lineno
+        self.column = column
 
     def printTree(self,tabs):
         string = indent(tabs)+"SCAN\n"
@@ -389,6 +393,9 @@ class ScanInst:
         return string
     
     def checkType(self,scope):
+        expressionType = self.expression.checkType(scope)
+        if (expressionType != 'int') & (expressionType != 'bool'):
+            checkError('scanSet','','',expressionType,self.lineno,self.column)
         return True
         
 
@@ -578,9 +585,13 @@ class Number:
 
 def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=""):
     if error == 'condition':
+        if wrongType == "":
+            wrongType = "*no especificado*"
         typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera condicion de tipo "%s", no de tipo "%s".''' \
         % (lineno, column, instOrVar, expectedType, wrongType))
     elif error == 'range':
+        if wrongType == "":
+            wrongType = "*no especificado*"
         typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera rango de tipo "%s", no de tipo "%s".''' \
         % (lineno, column, instOrVar, expectedType, wrongType))
     elif error == 'undeclared':
@@ -595,6 +606,11 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
     elif error == 'forIterator':
         typeError.append('''ERROR en la Linea %d, Columna %d: La variable de iteracion "%s" no puede ser modificada.''' \
             % (lineno, column, instOrVar))
+    elif error == 'scanSet':
+        if wrongType == "":
+            wrongType = "*no declarada*"
+        typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "scan" no puede escanear variable de tipo "%s".''' \
+            % (lineno, column,wrongType))
     return False
 
 typeError = []

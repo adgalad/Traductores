@@ -1,0 +1,8 @@
+program {
+	using
+		int x;
+	in
+		for i min true do {
+			i = 1;	
+		};
+}

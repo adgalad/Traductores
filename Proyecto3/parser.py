@@ -149,7 +149,7 @@ def p_repeatInst(p):
 # Regla scanInst: Regla para la sintaxis de la instrucción scan
 def p_scanInst(p):
     '''scanInst : SCAN expression'''
-    p[0] = ScanInst(p[1],p[2])
+    p[0] = ScanInst(p[1],p[2],p.lineno(1),findColumn(p.lexer.lexdata,p.lexpos(1)))
 
 # Regla printInst: Regla para la sintaxis de la instrucción print/println
 def p_printInst(p):

@@ -1,0 +1,21 @@
+## Interpretador del lenguaje Setlan.
+## Etapa 3.
+## Autores:  - Mónica Figuera   11-10328
+##           - Carlos Spaggiari 11-10987
+
+** 1. Estado actual del proyecto. **
+
+Con la etapa 3 del proyecto, se está realizando el análisis lexicográfico,
+sintáctico y el chequeo de tipos para el interpretador del lenguaje Setlan.
+
+Dependiendo de la opción seleccionada, se muesta la lista de tokens del lenguaje,
+el análisis sintáctico realizado mediante el AST, o la tabla de símbolos si no hay
+errores. Si no, se muestran los errores de tokens, de sintaxis o de chequeo de tipos,
+respectivamente.
+
+
+** 2. Problemas presentes. **
+
+** 3. Comentarios. **
+
+
