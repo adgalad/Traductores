@@ -155,7 +155,7 @@ def p_scanInst(p):
 def p_printInst(p):
     '''printInst : PRINT outputType
                  | PRINTLN outputType'''
-    p[0] = PrintInst(p[1],p[2])
+    p[0] = PrintInst(p[1],p[2],p.lineno(1),findColumn(p.lexer.lexdata,p.lexpos(1)))
 
 # Regla outputType: Tipos de salida válidos de la instrucción print/println
 def p_outputType(p):

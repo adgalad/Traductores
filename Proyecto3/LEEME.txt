@@ -18,4 +18,6 @@ respectivamente.
 
 ** 3. Comentarios. **
 
-
+Cuando se evalua una expresion cuyos operandos no son válidos para el operador de la
+expresión, se devuelve un error diciendo que el tipo de dicha expresión es *no especificado*
+puesto que no tiene ningún valor de retorno válido.
