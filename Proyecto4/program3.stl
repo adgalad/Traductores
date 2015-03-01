@@ -1,0 +1,6 @@
+program {
+    using int a; set b; bool c;
+    
+    in
+	    print a, b + a;
+}
