@@ -8,8 +8,9 @@
 
 import  sys
 import  re
-from    lexer  import *
-from    parser import *
+from    lexer   import *
+from    parser  import *
+from    AST     import *
 
 def main():
     if len(sys.argv) < 1:
@@ -20,7 +21,7 @@ def main():
         exit(1)
 
     for i in range(2,len(sys.argv)):
-        if not re.match(r'^-[r|s|t]$',sys.argv[i]):
+        if not re.match(r'^-[t|a|s]$',sys.argv[i]):
             print("ERROR: '%s' es un flag inválido." % sys.argv[i])
             exit(1)
 
@@ -41,7 +42,15 @@ def main():
             print yaccError[0]
             exit(1)
         else:
-            print arbol.printTree(0)
+            for i in range(2,len(sys.argv)):
+                if sys.argv[i] == "-a":
+                    print arbol.printTree(0)
+
+                elif sys.argv[i] == "-s":    
+                    print arbol.checkType()
+                
+                elif sys.argv[i] == "-t":
+                    printLex(open(sys.argv[1]).read())
 
 if __name__ == "__main__":
     main()

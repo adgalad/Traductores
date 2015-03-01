@@ -102,22 +102,37 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-def findColumn(input,t):
-    beginOfLine = input.rfind('\n',0,t.lexpos)
+def findColumn(input,tokLexpos):
+    beginOfLine = input.rfind('\n',0,tokLexpos)
     if beginOfLine < 0:
         beginOfLine = -1
-    column = (t.lexpos - beginOfLine)
+    column = (tokLexpos - beginOfLine)
     return column
 
 def t_error(t):
     lexError.append('''ERROR: Se encontró un caracter inesperado "%s" en la Línea %d, Columna %d.''' \
-        % (t.value[0], t.lineno, findColumn(t.lexer.lexdata,t)))
+        % (t.value[0], t.lineno, findColumn(t.lexer.lexdata,t.lexpos)))
     t.lexer.skip(1)
 
 def error_NUMBER(t):
     lexError.append('''ERROR: Entero fuera de rango "%s" en la Línea %d, Columna %d.''' \
-        % (t.value, t.lineno, findColumn(t.lexer.lexdata, t)))
+        % (t.value, t.lineno, findColumn(t.lexer.lexdata, t.lexpos)))
 
+def printLex(data):
+    lex2 = lex.lex()
+    lex2.input(data)
+    while True:
+        tok = lex2.token()
+        if not tok : 
+            print ""
+            break
+        if len(tok.type) > 9:
+            print '''Token %s\tvalor (%s), en la Línea %d, Columna %d.''' \
+                % (tok.type,tok.value,tok.lineno,findColumn(lex2.lexdata, tok.lexpos))
+        else:
+            print '''Token %s\t\tvalor (%s), en la Línea %d, Columna %d.''' % \
+                (tok.type,tok.value,tok.lineno,findColumn(lex2.lexdata, tok.lexpos))
 
+# Construcción del lexer
 lexer = lex.lex()
 lexError = []
