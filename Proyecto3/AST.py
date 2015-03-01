@@ -400,11 +400,9 @@ class ScanInst:
         
 
 class PrintInst:
-    def __init__(self,Print,output,lineno,column):
+    def __init__(self,Print,output):
         self.Print = Print
         self.output = output
-        self.lineno = lineno
-        self.column = column
 
     def printTree(self,tabs):
         string = indent(tabs)+"PRINT"+"\n"
@@ -415,11 +413,8 @@ class PrintInst:
         return string
     
     def checkType(self,scope):
-        if self.output.checkType(scope) == True:
-            return True
-        if (self.output.checkType(scope) != 'set') & (self.output.checkType(scope) != 'int ') & (self.output.checkType(scope) != 'bool'):
-            checkError('expression','','','*no especificada*',self.lineno,self.column)
-        return True
+        return self.output.checkType(scope)
+        
 
 class OutputType:
     def __init__(self,expression,comma="",outputRecursion=""):
@@ -434,10 +429,10 @@ class OutputType:
         return string
       
     def checkType(self,scope):
-        expressionType = self.expression.checkType(scope)
+        self.expression.checkType(scope)
         if not isinstance(self.outputRecursion,str):
             self.outputRecursion.checkType(scope)
-        return expressionType
+        return True
 
 class String:
     def __init__(self,string):
@@ -513,8 +508,7 @@ class Expression:
                         return "set"
                     elif re.match(r'[@]',self.op) and type1 == "int" and type2 == "set":
                         return "bool"
-                #checkError('expression',self.op,type1,type2)
-                    return ""
+                checkError('expression',self.op,type1,type2)
         else:
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
@@ -623,14 +617,12 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
         typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "scan" no puede escanear variable de tipo "%s".''' \
             % (lineno, column,wrongType))
     elif error == 'expression':
-    #    if (expectedType == ""):
-    #        expectedType = "*no especificado*"
-    #    if (wrongType == ""):
-    #        wrongType = "*no especificado*"
-    #    typeError.append('''ERROR en la Linea %d, Columna %d: El operador "%s" no opera sobre tipos "%s" y "%s".''' \
-    #        % (0000, 0000, instOrVar, expectedType, wrongType))   
-        typeError.append('''ERROR en la Linea %d, Columna %d: expresion invalida de tipo "%s".''' \
-            % (lineno, column, wrongType))        
+        if (expectedType == ""):
+            expectedType = "*no especificado*"
+        if (wrongType == ""):
+            wrongType = "*no especificado*"
+        typeError.append('''ERROR en la Linea %d, Columna %d: El operador "%s" no opera sobre tipos "%s" y "%s".''' \
+            % (0000, 0000, instOrVar, expectedType, wrongType))        
     return False
 
 typeError = []

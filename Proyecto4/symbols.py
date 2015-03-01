@@ -38,9 +38,12 @@ class SymbolTable:
 			return True
 		return False
 
-	def update(self, name, type, value):
+	def update(self, name, value, type = None):
 		if name in self.currentScope:
-			self.currentScope[name] = Symbol(name,type,value)
+			if type:
+				self.currentScope[name] = Symbol(name,type,value)
+			else:
+				self.currentScope[name] = Symbol(name,self.currentScope[name].type,value)
 			return True
 		elif self.previousScope:
 			return self.previousScope.update(name,type,value)
