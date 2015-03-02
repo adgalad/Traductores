@@ -58,7 +58,7 @@ class Program:
             return self.scope
 
     def evaluate(self):
-        if not self.instruction.evaluate(self.scope):
+        if not self.instruction.execute(self.scope):
             print "\n"
             if typeError != []:
                 for error in typeError:
@@ -102,9 +102,9 @@ class Instruction:                                                              
                 return True
         return True
 
-    def evaluate(self,scope):
+    def execute(self,scope):
         if not isinstance(self.instruction, str):
-            return self.instruction.evaluate(scope)
+            return self.instruction.execute(scope)
         else:
             value = self.expression.evaluate(scope)
             if value != None:
@@ -128,7 +128,7 @@ class Block:
     def checkType(self,scope):
         return self.instructionBlock.checkType(scope)
 
-    def evaluate(self,scope):
+    def execute(self,scope):
         return self.instructionBlock.evaluate(scope)
 
 class UsingInInst:
@@ -288,7 +288,7 @@ class InstructionBlock:
 
     def evaluate(self,scope):
         if not isinstance(self.instruction,str):
-            if self.instruction.evaluate(scope):
+            if self.instruction.execute(scope):
                 if not isinstance(self.instructionBlock, str):
                     return self.instructionBlock.evaluate(scope)
                 return True
@@ -332,13 +332,12 @@ class IfInst:
         checkError('condition','if','bool', expressionType,self.lineno,self.column)
         return True
 
-    def evaluate(self,scope):
-        if self.instruction.evaluate(scope):
-            if self.Else != "":
-                return self.elseInstruction.evaluate(scope)
-            else:
-                return True
-        else: 
+    def execute(self,scope):
+        if self.expression.evaluate(scope):
+            return self.instruction.execute(scope)
+        elif self.Else != "":
+            return self.elseInstruction.execute(scope)
+        else:
             return True
 
 class ForInst:
@@ -374,8 +373,23 @@ class ForInst:
         self.instruction.checkType(self.scope)
         return True
 
-    def evaluate(self,scope):
-        return self.instruction.evaluate(self.scope)
+    def execute(self,scope):
+        Set = list(self.set.evaluate(scope))
+        iterator = self.id.value
+        if Set == None:
+            return False
+        Set.sort()
+        if self.dir.direction == "min":
+            for element in Set:
+                self.scope.update(iterator,element)
+                if not self.instruction.evaluate(self.scope):
+                    return False
+        else:
+            for element in reversed(Set):
+                self.scope.update(iterator,element)
+                if not self.instruction.execute(self.scope):
+                    return False
+        return True
 
 class Direction:
     def __init__(self,direction,lineno,column):
@@ -419,9 +433,9 @@ class WhileInst:
         self.instruction.checkType(scope)
         return True
 
-    def evaluate(self,scope):
-        while self.expression.evaluate(scope) == "true":
-            if not self.instruction.evaluate(scope):
+    def execute(self,scope):
+        while self.expression.evaluate(scope):
+            if not self.instruction.execute(scope):
                 return False
         return True
 
@@ -441,8 +455,8 @@ class RepeatInst:
     def checkType(self,scope):
         return (self.instruction.checkType(scope) and self.While.checkType(scope))
         
-    def evaluate(self,scope):
-        return self.instruction.evaluate(scope)
+    def execute(self,scope):
+        return self.instruction.execute(scope)
 
 class ScanInst:
     def __init__(self,scan,expression,lineno,column):
@@ -462,7 +476,7 @@ class ScanInst:
             checkError('scanSet','','',expressionType,self.lineno,self.column)
         return True
         
-    def evaluate(self,scope):
+    def execute(self,scope):
         return True         ################ Debe funcionar scanear una variable?
 
 class PrintInst:
@@ -481,7 +495,7 @@ class PrintInst:
     def checkType(self,scope):
         return self.output.checkType(scope)
         
-    def evaluate(self,scope):
+    def execute(self,scope):
         if self.output.evaluate(scope):
             if self.Print == "println":
                 sys.stdout.write("\n")

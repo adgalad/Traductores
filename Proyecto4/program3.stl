@@ -2,6 +2,16 @@ program {
 	using
 		bool g;
 	in
-	g = true;
-	println g," ",-123," hola amigo ",>?{1,2,3,4,5};
+	for i max {3,4,5} do {
+		println i;
+	};
+	println "hola";
+	if (true)
+	{
+		println "if";
+	}
+	else
+	{
+		println "else";
+	};
 }
