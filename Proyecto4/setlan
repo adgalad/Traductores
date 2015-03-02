@@ -16,7 +16,7 @@ def main():
     if len(sys.argv) < 1:
         print "ERROR: Debe introducir el nombre de un archivo."
         exit(1)
-    elif len(sys.argv) > 5 or len(sys.argv) < 3:
+    elif len(sys.argv) > 5 or len(sys.argv) < 2:
         print "ERROR: Número inválido de argumentos."
         exit(1)
 
@@ -31,7 +31,7 @@ def main():
         print "ERROR: El archivo '%s' no existe." % (sys.argv[1])
         exit(1)
 
-    arbol = parser.parse(data.read())
+    arbol = parser.parse(data.read())            # LEXER Y PARSER
 
     if lexError != []:
         for error in lexError:
@@ -42,15 +42,17 @@ def main():
             print yaccError[0]
             exit(1)
         else:
-            for i in range(2,len(sys.argv)):
-                if sys.argv[i] == "-a":
-                    print arbol.printTree(0)
+            if arbol.checkType():                            # CHECKTYPE
+                for i in range(2,len(sys.argv)):
+                    if sys.argv[i] == "-a":
+                        print arbol.printTree(0)
 
-                elif sys.argv[i] == "-s":    
-                    print arbol.checkType()
-                
-                elif sys.argv[i] == "-t":
-                    printLex(open(sys.argv[1]).read())
+                    elif sys.argv[i] == "-s":    
+                        print arbol.scope
+                    
+                    elif sys.argv[i] == "-t":
+                        printLex(open(sys.argv[1]).read())
+                arbol.evaluate()
 
 if __name__ == "__main__":
     main()

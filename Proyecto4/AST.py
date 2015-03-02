@@ -7,6 +7,7 @@
 
 import  re
 from    symbols import indent, SymbolTable, Symbol
+import sys
 
 operator = {"+"   : "PLUS", 
             "-"   : "MINUS",
@@ -35,13 +36,13 @@ operator = {"+"   : "PLUS",
             "<?"  : "SETMINVALUE",
             "$?"  : "SETSIZE"}
 
-typeDefault = { "int" : "0", "bool" : "False", "set" : "{}" }
+typeDefault = { "int" : 0, "bool" : False, "set" : set() }
 
 class Program:
     def __init__(self,program="",instruction=""):
-        self.program = program
+        self.program     = program
         self.instruction = instruction
-        self.scope = SymbolTable()
+        self.scope       = SymbolTable()
 
     def printTree(self,tabs):
         string = indent(tabs)+"PROGRAM\n"
@@ -57,7 +58,13 @@ class Program:
             return self.scope
 
     def evaluate(self):
-        self.instruction.evaluate(self.scope)
+        if not self.instruction.evaluate(self.scope):
+            print "\n"
+            if typeError != []:
+                for error in typeError:
+                    print error
+                return False
+        return True
 
 class Instruction:                                                              #############################################################
     def __init__(self,instruction = "",Id="",assign="",expression=""):
@@ -97,16 +104,19 @@ class Instruction:                                                              
 
     def evaluate(self,scope):
         if not isinstance(self.instruction, str):
-            self.instruction.evaluate(scope)
+            return self.instruction.evaluate(scope)
         else:
-            var   = self.id.evaluate(scope)
             value = self.expression.evaluate(scope)
-            scope.update(self.id, )
+            if value != None:
+                scope.update(self.id.value,value)
+                return True
+            else:
+                return False
 
 class Block:
     def __init__(self,lcurly, instructionBlock,rcurly):
-        self.rcurly = rcurly
-        self.lcurly = lcurly
+        self.rcurly           = rcurly
+        self.lcurly           = lcurly
         self.instructionBlock = instructionBlock
 
     def printTree(self,tabs):
@@ -118,15 +128,19 @@ class Block:
     def checkType(self,scope):
         return self.instructionBlock.checkType(scope)
 
+    def evaluate(self,scope):
+        return self.instructionBlock.evaluate(scope)
+
 class UsingInInst:
     def __init__(self,Using,declaration,In,instruction):
         self.Using = Using
         self.declaration = declaration
         self.In = In
         self.instruction = instruction
+        self.scope = None
 
     def printTree(self,tabs):
-        string = indent(tabs)+"USING\n"
+        string  = indent(tabs)+"USING\n"
         string += self.declaration.printTree(tabs+1)
         string += indent(tabs)+"IN\n"
         string += self.instruction.printTree(tabs+1)
@@ -143,12 +157,18 @@ class UsingInInst:
         else:   
             return (self.declaration.checkType(scope) and self.instruction.checkType(scope))
 
+    def evaluate(self,scope):
+        if self.scope != None:
+            return self.instruction.evaluate(self.scope)
+        else:
+            return self.instruction.evaluate(scope)
+
 
 class DeclarationBlock:
     def __init__(self,varType,Id,semicolon,declaration=""):
-        self.varType = varType
-        self.Id = Id
-        self.semicolon = semicolon
+        self.varType     = varType
+        self.Id          = Id
+        self.semicolon   = semicolon
         self.declaration = declaration
 
     def printTree(self,tabs):
@@ -189,11 +209,11 @@ class Type:
 
 class IDList:
     def __init__(self,value,comma="",IDrecursion="",lineno="",column=""):
-        self.type = 'id'
-        self.value = value
+        self.type        = 'id'
+        self.value       = value
         self.IDrecursion = IDrecursion
-        self.lineno = lineno
-        self.column = column
+        self.lineno      = lineno
+        self.column      = column
 
     def printTree(self,tabs,varType=None):
         string = ""
@@ -216,8 +236,8 @@ class IDList:
 
 class ID:
     def __init__(self,value,lineno,column):
-        self.type = 'id'
-        self.value = value
+        self.type   = 'id'
+        self.value  = value
         self.lineno = lineno
         self.column = column
 
@@ -239,12 +259,12 @@ class ID:
         #return [self]       #devuelve el simbolo del id
 
     def evaluate(self,scope):
-        return self.value
+        return scope.lookup(self.value).value
 
 class InstructionBlock:
     def __init__(self,instruction="",semicolon="",instructionBlock=""):
-        self.instruction = instruction
-        self.semicolon = semicolon
+        self.instruction      = instruction
+        self.semicolon        = semicolon
         self.instructionBlock = instructionBlock
 
     def printTree(self,tabs):
@@ -265,6 +285,16 @@ class InstructionBlock:
             else:
                 return False
         return True
+
+    def evaluate(self,scope):
+        if not isinstance(self.instruction,str):
+            if self.instruction.evaluate(scope):
+                if not isinstance(self.instructionBlock, str):
+                    return self.instructionBlock.evaluate(scope)
+                return True
+            return False
+        else:
+            return True
 
 
 class IfInst:
@@ -302,17 +332,27 @@ class IfInst:
         checkError('condition','if','bool', expressionType,self.lineno,self.column)
         return True
 
+    def evaluate(self,scope):
+        if self.instruction.evaluate(scope):
+            if self.Else != "":
+                return self.elseInstruction.evaluate(scope)
+            else:
+                return True
+        else: 
+            return True
+
 class ForInst:
     def __init__(self,For,Id,Dir,Set,Do,instruction):
         self.For = For
-        self.id = Id
+        self.id  = Id
         self.dir = Dir
         self.set = Set
-        self.Do = Do
+        self.Do  = Do
         self.instruction = instruction
+        self.scope = None
 
     def printTree(self,tabs):
-        string = indent(tabs)+"FOR\n"
+        string  = indent(tabs)+"FOR\n"
         string += self.id.printTree(tabs+1)
         string += self.dir.printTree(tabs+1)
         string += indent(tabs+1)+"IN\n"
@@ -322,11 +362,11 @@ class ForInst:
         return string
 
     def checkType(self,scope):
-        symbol = Symbol(self.id.value,"int",0,True) # es un iterator
-        self.scope = SymbolTable()
+        symbol                   = Symbol(self.id.value,"int",0,True) # es un iterator
+        self.scope               = SymbolTable()
         self.scope.insert(symbol)
         self.scope.previousScope = scope
-        scope.innerScopes += [self.scope]
+        scope.innerScopes       += [self.scope]
         expressionType = self.set.checkType(scope)
         if expressionType == "set":
             return self.instruction.checkType(self.scope)
@@ -334,11 +374,14 @@ class ForInst:
         self.instruction.checkType(self.scope)
         return True
 
+    def evaluate(self,scope):
+        return self.instruction.evaluate(self.scope)
+
 class Direction:
     def __init__(self,direction,lineno,column):
         self.direction = direction
-        self.lineno = lineno
-        self.column = column
+        self.lineno    = lineno
+        self.column    = column
 
     def printTree(self,tabs):
         string = indent(tabs)+"DIRECTION\n"
@@ -351,15 +394,15 @@ class Direction:
 
 class WhileInst:
     def __init__(self,While,lparen,expression,rparen,Do="",instruction="",lineno="",column=""):
-        self.While = While
-        self.expression = expression
-        self.Do = Do
+        self.While       = While
+        self.expression  = expression
+        self.Do          = Do
         self.instruction = instruction
-        self.lineno = lineno
-        self.column = column
+        self.lineno      = lineno
+        self.column      = column
 
     def printTree(self,tabs):
-        string = indent(tabs)+"WHILE\n"
+        string  = indent(tabs)+"WHILE\n"
         string += indent(tabs+1)+"condition\n"
         string += self.expression.printTree(tabs+2)
         if not isinstance(self.instruction,str):
@@ -376,15 +419,21 @@ class WhileInst:
         self.instruction.checkType(scope)
         return True
 
+    def evaluate(self,scope):
+        while self.expression.evaluate(scope) == "true":
+            if not self.instruction.evaluate(scope):
+                return False
+        return True
+
 
 class RepeatInst:
     def __init__(self,repeat,instruction,While):
-        self.While = While
-        self.repeat = repeat
+        self.While       = While
+        self.repeat      = repeat
         self.instruction = instruction
 
     def printTree(self,tabs):
-        string = indent(tabs)+"REPEAT\n"
+        string  = indent(tabs)+"REPEAT\n"
         string += self.instruction.printTree(tabs+1)
         string += self.While.printTree(tabs)
         return string
@@ -392,13 +441,15 @@ class RepeatInst:
     def checkType(self,scope):
         return (self.instruction.checkType(scope) and self.While.checkType(scope))
         
+    def evaluate(self,scope):
+        return self.instruction.evaluate(scope)
 
 class ScanInst:
     def __init__(self,scan,expression,lineno,column):
-        self.scan = scan
+        self.scan       = scan
         self.expression = expression
-        self.lineno = lineno
-        self.column = column
+        self.lineno     = lineno
+        self.column     = column
 
     def printTree(self,tabs):
         string = indent(tabs)+"SCAN\n"
@@ -411,14 +462,16 @@ class ScanInst:
             checkError('scanSet','','',expressionType,self.lineno,self.column)
         return True
         
+    def evaluate(self,scope):
+        return True         ################ Debe funcionar scanear una variable?
 
 class PrintInst:
     def __init__(self,Print,output):
-        self.Print = Print
+        self.Print  = Print
         self.output = output
 
     def printTree(self,tabs):
-        string = indent(tabs)+"PRINT"+"\n"
+        string  = indent(tabs)+"PRINT"+"\n"
         string += indent(tabs+1)+"elements\n"
         string += self.output.printTree(tabs+2)
         if (self.Print == "println"):
@@ -428,11 +481,17 @@ class PrintInst:
     def checkType(self,scope):
         return self.output.checkType(scope)
         
+    def evaluate(self,scope):
+        if self.output.evaluate(scope):
+            if self.Print == "println":
+                sys.stdout.write("\n")
+            return True
+        return False
 
 class OutputType:
     def __init__(self,expression,comma="",outputRecursion=""):
-        self.expression = expression
-        self.comma = comma
+        self.expression      = expression
+        self.comma           = comma
         self.outputRecursion = outputRecursion
 
     def printTree(self,tabs):
@@ -447,6 +506,30 @@ class OutputType:
             self.outputRecursion.checkType(scope)
         return True
 
+    def evaluate(self,scope):
+
+        output = self.expression.evaluate(scope)
+        if output == None:
+            return False
+        elif isinstance(output,set):
+            Set = "{"
+            for j in output:
+                Set += str(j)+","
+            if Set[len(Set)-1] == ",":
+                Set = Set[:len(Set)-1]
+            Set += "}"
+            sys.stdout.write(Set)
+        elif isinstance(output,bool):
+            if output:
+                sys.stdout.write("true")
+            else:
+                sys.stdout.write("false")
+        else:
+            sys.stdout.write(str(output))
+        if self.comma != "":
+            return self.outputRecursion.evaluate(scope)
+        return True
+
 class String:
     def __init__(self,string):
         self.string = string
@@ -457,7 +540,10 @@ class String:
         return string
 
     def checkType(self,scope):
-        return True        
+        return True
+
+    def evaluate(self,scope):
+        return self.string[1:len(self.string)-1]        
 
 class Expression:
     def __init__(self,left,op="",right=""):
@@ -534,10 +620,35 @@ class Expression:
                                     return symbol.type 
                                 else: 
                                     return ''                                           # '' indica que se ingreso una variable no declarada
+                                                   # '' indica que se ingreso una variable no declarada
             
             return self.left.checkType(scope)
         return ''
         
+    def evaluate(self,scope):
+        if self.op != "":
+            if self.right == "":
+                value = self.left.evaluate(scope)
+                if (self.op == "-"):
+                    return -value
+                elif (self.op == "not"):
+                    return not value
+                elif self.op == ">?":
+                    if len(value):
+                        return max(value)
+                    else:
+                        return checkError("emptySetOperation")
+                elif self.op == "<?": 
+                    if len(value):
+                        return min(value)
+                    else:
+                        return checkError("emptySetOperation")
+                elif self.op == "$?":
+                    return len(value)
+            else:
+                pass
+        elif not isinstance(self.left,str):
+            return self.left.evaluate(scope)
 
 class Set:
     def __init__(self,lcurly,setNumbers="",rcurly=""):
@@ -555,6 +666,12 @@ class Set:
         if not isinstance(self.value,str):
             return self.value.checkType(scope)
         return 'set'    # conjunto vacio    
+
+    def evaluate(self,scope):
+        Set = []
+        if not isinstance(self.value, str):
+            Set += self.value.evaluate(scope)
+        return set(Set)
 
 class SetNumbers:
     def __init__(self, expression, comma="", setNumbersRecursion=""):
@@ -575,6 +692,12 @@ class SetNumbers:
             self.setNumbersRecursion.checkType(scope)
         return 'set'
 
+    def evaluate(self,scope):
+        Set = [self.expression.evaluate(scope)]
+        if self.comma != "":
+            Set += self.setNumbersRecursion.evaluate(scope)
+        return Set
+
 class BooleanValue:
     def __init__(self,value):
         self.value = value
@@ -586,7 +709,10 @@ class BooleanValue:
 
     def checkType(self,scope):
         return 'bool'
-        
+
+    def evaluate(self,scope):
+        return self.value == "true"
+
 
 class Number:
     def __init__(self,value):
@@ -600,6 +726,8 @@ class Number:
     def checkType(self,scope): 
         return 'int'
         
+    def evaluate(self,scope):
+        return self.value
 
 def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=""):
     if error == 'condition':
@@ -635,7 +763,9 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
         if (wrongType == ""):
             wrongType = "*no especificado*"
         typeError.append('''ERROR en la Linea %d, Columna %d: El operador "%s" no opera sobre tipos "%s" y "%s".''' \
-            % (0000, 0000, instOrVar, expectedType, wrongType))        
+            % (0000, 0000, instOrVar, expectedType, wrongType)) 
+    elif error == 'emptySetOperation':
+        typeError.append("Error en la linea %d, Columna %d: Operación sobre un conjunto vacio"%(1,1)       )
     return False
 
 typeError = []

@@ -72,5 +72,18 @@ class Symbol(object):
 		self.value = value
 		self.iterator = iterator
 	def printSymbol(self):
-		string =  "Variable: %s | Type: %s  | Value: %s\n"%(self.name,self.type,self.value)
-		return string
+		if self.type == "set":
+			return "Variable: %s | Type: %s  | Value: {}\n"%(self.name,self.type)
+		if self.type == "bool":
+			value = "false"
+			if self.value:
+				value = "true"
+			return "Variable: %s | Type: %s  | Value: %s\n"%(self.name,self.type,value)
+		else:
+			return "Variable: %s | Type: %s  | Value: %s\n"%(self.name,self.type,self.value)
+
+
+
+
+
+

@@ -1,6 +1,7 @@
 program {
-    using int a; set b; bool c;
-    
-    in
-	    print a, b + a;
+	using
+		bool g;
+	in
+	g = true;
+	println g," ",-123," hola amigo ",>?{1,2,3,4,5};
 }
