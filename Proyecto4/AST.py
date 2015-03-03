@@ -487,6 +487,7 @@ class ScanInst:
                 value  = int(value)
             elif bool(re.search("true", value)) or bool(re.search("false", value)):
                 valueType = "bool"
+                value = bool(value)
 
             if vartype == valueType:
                 break
