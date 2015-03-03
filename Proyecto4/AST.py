@@ -259,8 +259,8 @@ class ID:
         #return [self]       #devuelve el simbolo del id
 
     def evaluate(self,scope):
-        #return scope.lookup(self.value).value
-        return scope.lookup(self.value)
+        return scope.lookup(self.value).value
+        #return scope.lookup(self.value)
 
 class InstructionBlock:
     def __init__(self,instruction="",semicolon="",instructionBlock=""):
@@ -478,20 +478,23 @@ class ScanInst:
         return True
         
     def execute(self,scope):
+        vartype = scope.lookup(self.expression.value).type
         value = raw_input('Introduzca un valor: ')
         valueType = ""
         while True:
             if re.match(r'[ ]*\d+[ ]*',value):
                 valueType = "int"
+                value  = int(value)
             elif bool(re.search("true", value)) or bool(re.search("false", value)):
                 valueType = "bool"
-            if self.expression.evaluate(scope).type == valueType:
+
+            if vartype == valueType:
                 break
             else:
                 value = raw_input('Introduzca un valor: ')
         
 
-        scope.update(self.expression.evaluate(scope).name,value)
+        scope.update(self.expression.value,value)
 
         return True         ################ Debe funcionar scanear una variable?
 
@@ -555,10 +558,7 @@ class OutputType:
             else:
                 sys.stdout.write("false")
         else:
-            if not isinstance(output,str):
-                sys.stdout.write(str(output.value))
-            else:
-                sys.stdout.write(str(output))
+            sys.stdout.write(str(output))
         if self.comma != "":
             return self.outputRecursion.evaluate(scope)
         return True
