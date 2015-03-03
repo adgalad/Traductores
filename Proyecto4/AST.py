@@ -259,7 +259,8 @@ class ID:
         #return [self]       #devuelve el simbolo del id
 
     def evaluate(self,scope):
-        return scope.lookup(self.value).value
+        #return scope.lookup(self.value).value
+        return scope.lookup(self.value)
 
 class InstructionBlock:
     def __init__(self,instruction="",semicolon="",instructionBlock=""):
@@ -467,16 +468,31 @@ class ScanInst:
 
     def printTree(self,tabs):
         string = indent(tabs)+"SCAN\n"
-        string += self.expression.printTree(tabs+1)
+        #string += self.expression.printTree(tabs+1)
         return string
     
     def checkType(self,scope):
-        expressionType = self.expression.checkType(scope)
-        if (expressionType != 'int') & (expressionType != 'bool'):
-            checkError('scanSet','','',expressionType,self.lineno,self.column)
+        #expressionType = self.expression.checkType(scope)
+        #if (expressionType != 'int') & (expressionType != 'bool'):
+        #    checkError('scanSet','','',expressionType,self.lineno,self.column)
         return True
         
     def execute(self,scope):
+        value = raw_input('Introduzca un valor: ')
+        valueType = ""
+        while True:
+            if re.match(r'[ ]*\d+[ ]*',value):
+                valueType = "int"
+            elif bool(re.search("true", value)) or bool(re.search("false", value)):
+                valueType = "bool"
+            if self.expression.evaluate(scope).type == valueType:
+                break
+            else:
+                value = raw_input('Introduzca un valor: ')
+        
+
+        scope.update(self.expression.evaluate(scope).name,value)
+
         return True         ################ Debe funcionar scanear una variable?
 
 class PrintInst:
@@ -539,7 +555,10 @@ class OutputType:
             else:
                 sys.stdout.write("false")
         else:
-            sys.stdout.write(str(output))
+            if not isinstance(output,str):
+                sys.stdout.write(str(output.value))
+            else:
+                sys.stdout.write(str(output))
         if self.comma != "":
             return self.outputRecursion.evaluate(scope)
         return True
@@ -660,9 +679,103 @@ class Expression:
                 elif self.op == "$?":
                     return len(value)
             else:
-                pass
+                if self.left == "(" and self.right == ")":
+                    return self.op.evaluate(scope)
+                else:
+                    leftValue = self.left.evaluate(scope)
+                    rightValue = self.right.evaluate(scope)
+                    if self.op == "+":
+                        return leftValue + rightValue
+                    elif self.op == "-":
+                        return leftValue - rightValue
+                    elif self.op == "*":
+                        return leftValue * rightValue
+                    elif self.op == "/":
+                        return leftValue / rightValue
+                    elif self.op == "%":
+                        return leftValue % rightValue
+
+                    elif self.op == "and":
+                        return leftValue and rightValue
+
+                    elif self.op == "or":
+                        return leftValue or rightValue
+
+                    elif self.op == "<":
+                        if leftValue < rightValue:
+                            return True
+                        return False
+
+                    elif self.op == ">":
+                        if leftValue > rightValue:
+                            return True
+                        return False
+                    
+                    elif self.op == "<=":
+                        if leftValue <= rightValue:
+                            return True
+                        return False
+                    
+                    elif self.op == ">=":
+                        if leftValue >= rightValue:
+                            return True
+                        return False
+                    
+                    elif self.op == "/=":
+                        if leftValue != rightValue:
+                            return True
+                        return False
+                    
+                    elif self.op == "++":
+                        return leftValue | rightValue
+
+                    elif self.op == "><":
+                        return leftValue & rightValue
+
+                    elif self.op == "\\":
+                        return leftValue - rightValue
+
+                    elif self.op == "<+>":
+                        Set = []
+                        for i in rightValue:
+                            i += leftValue
+                            Set.append(i)
+                        return set(Set)
+
+                    elif self.op == "<->":
+                        Set = []
+                        for i in rightValue:
+                            i -= leftValue
+                            Set.append(i)
+                        return set(Set)
+
+                    elif self.op == "<*>":
+                        Set = []
+                        for i in rightValue:
+                            i = i*leftValue
+                            Set.append(i)
+                        return set(Set)
+
+                    elif self.op == "</>":
+                        Set = []
+                        for i in rightValue:
+                            i = i/leftValue
+                            Set.append(i)
+                        return set(Set)
+
+                    elif self.op == "<%>":
+                        Set = []
+                        for i in rightValue:
+                            i = i*leftValue
+                            Set.append(i)
+                        return set(Set)
+
+                    elif self.op == "@":
+                        return leftValue in rightValue
+
         elif not isinstance(self.left,str):
             return self.left.evaluate(scope)
+
 
 class Set:
     def __init__(self,lcurly,setNumbers="",rcurly=""):

@@ -1,0 +1,7 @@
+program{
+	using
+		int x;
+	in
+		scan x;
+		println "hola",x;
+}
