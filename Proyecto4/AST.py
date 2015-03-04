@@ -383,7 +383,7 @@ class ForInst:
         if self.dir.direction == "min":
             for element in Set:
                 self.scope.update(iterator,element)
-                if not self.instruction.evaluate(self.scope):
+                if not self.instruction.execute(self.scope):
                     return False
         else:
             for element in reversed(Set):
@@ -460,7 +460,7 @@ class RepeatInst:
         return self.instruction.execute(scope)
 
 class ScanInst:
-    def __init__(self,scan,expression,lineno,column):
+    def __init__(self,scan,expression,lineno,column):   # cambiar expression por var
         self.scan       = scan
         self.expression = expression
         self.lineno     = lineno
@@ -468,10 +468,13 @@ class ScanInst:
 
     def printTree(self,tabs):
         string = indent(tabs)+"SCAN\n"
-        #string += self.expression.printTree(tabs+1)
+        string += self.expression.printTree(tabs+1)
         return string
     
     def checkType(self,scope):
+        varType = scope.lookup(self.expression.value).type
+        if (varType != 'int') & (varType != 'bool'):
+            checkError('scanSet','','',varType,self.lineno,self.column)
         #expressionType = self.expression.checkType(scope)
         #if (expressionType != 'int') & (expressionType != 'bool'):
         #    checkError('scanSet','','',expressionType,self.lineno,self.column)
@@ -494,8 +497,10 @@ class ScanInst:
             else:
                 value = raw_input('Introduzca un valor: ')
         
-
-        scope.update(self.expression.value,value)
+        if (valueType == "int") and (value > 2147483648):
+            checkError('overflow','','','',self.lineno,self.column)
+        else:
+            scope.update(self.expression.value,value)
 
         return True         ################ Debe funcionar scanear una variable?
 
@@ -686,16 +691,27 @@ class Expression:
                     leftValue = self.left.evaluate(scope)
                     rightValue = self.right.evaluate(scope)
                     if self.op == "+":
-                        return leftValue + rightValue
+                        if leftValue + rightValue > 2147483648:
+                            checkError('overflow','','','',0,0)
+                        else:
+                            return leftValue + rightValue
                     elif self.op == "-":
                         return leftValue - rightValue
                     elif self.op == "*":
-                        return leftValue * rightValue
+                        if leftValue * rightValue > 2147483648:
+                            checkError('overflow','','','',0,0)
+                        else:
+                            return leftValue * rightValue
                     elif self.op == "/":
-                        return leftValue / rightValue
+                        if rightValue != 0:
+                            return leftValue / rightValue
+                        else:
+                            checkError('zeroDivision','','','',0,0)
                     elif self.op == "%":
-                        return leftValue % rightValue
-
+                        if rightValue != 0:
+                            return leftValue % rightValue
+                        else:
+                            checkError('zeroDivision','','','',0,0)
                     elif self.op == "and":
                         return leftValue and rightValue
 
@@ -740,6 +756,9 @@ class Expression:
                         Set = []
                         for i in rightValue:
                             i += leftValue
+                            if i + leftValue > 2147483648:
+                                checkError('overflow','','','',0,0)
+                                break
                             Set.append(i)
                         return set(Set)
 
@@ -754,20 +773,31 @@ class Expression:
                         Set = []
                         for i in rightValue:
                             i = i*leftValue
+                            if i * leftValue > 2147483648:
+                                checkError('overflow','','','',0,0)
+                                break
                             Set.append(i)
                         return set(Set)
 
                     elif self.op == "</>":
                         Set = []
                         for i in rightValue:
-                            i = i/leftValue
+                            if leftValue != 0:
+                                i = i/leftValue
+                            else:
+                                checkError('zeroDivision','','','',0,0)
+                                break
                             Set.append(i)
                         return set(Set)
 
                     elif self.op == "<%>":
                         Set = []
                         for i in rightValue:
-                            i = i*leftValue
+                            if leftValue != 0:
+                                i = i%leftValue
+                            else:
+                                checkError('zeroDivision','','','',0,0)
+                                break
                             Set.append(i)
                         return set(Set)
 
@@ -892,8 +922,19 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
             wrongType = "*no especificado*"
         typeError.append('''ERROR en la Linea %d, Columna %d: El operador "%s" no opera sobre tipos "%s" y "%s".''' \
             % (0000, 0000, instOrVar, expectedType, wrongType)) 
+
+    # Errores dinamicos
+    if error == 'overflow':
+        typeError.append('''ERROR en la Linea %d, Columna %d: Se encontró un overflow.''' \
+            % (lineno, column))
     elif error == 'emptySetOperation':
-        typeError.append("Error en la linea %d, Columna %d: Operación sobre un conjunto vacio"%(1,1)       )
+        typeError.append('''ERROR en la Linea %d, Columna %d: Operación sobre un conjunto vacío''' \
+            % (lineno, column))
+    elif error == 'zeroDivision':
+        typeError.append('''ERROR en la Linea %d, Columna %d: División por cero.''' \
+            % (lineno, column))
+
+    #print(typeError)
     return False
 
 typeError = []
