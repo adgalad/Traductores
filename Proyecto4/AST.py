@@ -383,7 +383,6 @@ class ForInst:
         if self.dir.direction == "min":
             for element in Set:
                 self.scope.update(iterator,element)
-                #self.instruction.execute(self.scope)            ## *?????
                 if not self.instruction.execute(self.scope):
                     return False
         else:
@@ -431,7 +430,9 @@ class WhileInst:
         if expressionType == "bool":
             if self.Do != "":
                 return self.instruction.checkType(scope)
-        checkError('condition','while','bool',expressionType,self.lineno,self.column)
+        else:
+            checkError('condition','while','bool',expressionType,self.lineno,self.column)
+        return True
         self.instruction.checkType(scope)
         return True
 
@@ -458,7 +459,12 @@ class RepeatInst:
         return (self.instruction.checkType(scope) and self.While.checkType(scope))
         
     def execute(self,scope):
-        return self.instruction.execute(scope)
+        self.instruction.execute(scope)
+        while self.While.expression.evaluate(scope):
+            if not self.instruction.execute(scope):
+                return False
+        return True
+#            return self.instruction.execute(scope)
 
 class ScanInst:
     def __init__(self,scan,expression,lineno,column):   # cambiar expression por var
