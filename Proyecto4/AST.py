@@ -488,7 +488,7 @@ class ScanInst:
         
     def execute(self,scope):
         vartype = scope.lookup(self.expression.value).type
-        value = raw_input('Introduzca un valor: ')
+        value = raw_input()
         valueType = ""
         while True:
             if re.match(r'[ ]*[\d+|\-\d+][ ]*',value):  # CARLOS
@@ -501,7 +501,7 @@ class ScanInst:
             if vartype == valueType:
                 break
             else:
-                value = raw_input('Introduzca un valor: ')
+                value = raw_input()
         
         if (valueType == "int") and (value > maxInt):
             return checkError('overflow','','','',self.lineno,self.column)
@@ -764,7 +764,7 @@ class Expression:
                     elif self.op == "<+>":
                         Set = []
                         for i in rightValue:
-                            if i + leftValue > 2147483648:
+                            if i + leftValue > maxInt:
                                 checkError('overflow','','','',self.lineno,self.column)
                             i += leftValue
                             Set.append(i)
@@ -780,7 +780,7 @@ class Expression:
                     elif self.op == "<*>":
                         Set = []
                         for i in rightValue:
-                            if i * leftValue > 2147483648:
+                            if i * leftValue > maxInt:
                                 checkError('overflow','','','',self.lineno,self.column)
                             i = leftValue * i
                             Set.append(i)
