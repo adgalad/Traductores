@@ -3,6 +3,11 @@ program {
         set s;
     in
     s = {2, 3, 1};
+    if (4@s)
+    {
+    	println "2 pertenece a s";
+    };
+
     for i min s do {
 
         s = 2 <*> s; # unión de conjuntos
