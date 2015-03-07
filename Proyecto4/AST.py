@@ -651,7 +651,7 @@ class Expression:
                     elif re.match(r'[++|><|\\]',self.op) and type1 == type2 == "set":
                         return "set"
                     elif ((self.op == "<+>") | (self.op == "<->") | (self.op == "<*>") | (self.op == "</>") | (self.op == "<%>")) \
-                     and (type1 == "int" or type1 == "set") and (type2 == "int" or type2 == "set") and type1 != type2:
+                            and type1 == "int" and type2 == "set":
                         return "set"
                     elif re.match(r'[@]',self.op) and type1 == "int" and type2 == "set":
                         return "bool"
@@ -764,27 +764,25 @@ class Expression:
                     elif self.op == "<+>":
                         Set = []
                         for i in rightValue:
-                            i += leftValue
                             if i + leftValue > 2147483648:
-                                return checkError('overflow','','','',self.lineno,self.column)
-                                break
+                                checkError('overflow','','','',self.lineno,self.column)
+                            i += leftValue
                             Set.append(i)
                         return set(Set)
 
                     elif self.op == "<->":
                         Set = []
                         for i in rightValue:
-                            i -= leftValue
+                            i = leftValue - i
                             Set.append(i)
                         return set(Set)
 
                     elif self.op == "<*>":
                         Set = []
                         for i in rightValue:
-                            i = i*leftValue
                             if i * leftValue > 2147483648:
-                                return checkError('overflow','','','',self.lineno,self.column)
-                                break
+                                checkError('overflow','','','',self.lineno,self.column)
+                            i = leftValue * i
                             Set.append(i)
                         return set(Set)
 
@@ -792,10 +790,9 @@ class Expression:
                         Set = []
                         for i in rightValue:
                             if leftValue != 0:
-                                i = i/leftValue
+                                i = leftValue / i
                             else:
-                                return checkError('zeroDivision','','','',self.lineno,self.column)
-                                break
+                                checkError('zeroDivision','','','',self.lineno,self.column)
                             Set.append(i)
                         return set(Set)
 
@@ -803,10 +800,9 @@ class Expression:
                         Set = []
                         for i in rightValue:
                             if leftValue != 0:
-                                i = i%leftValue
+                                i = leftValue % i
                             else:
-                                return checkError('zeroDivision','','','',self.lineno,self.column)
-                                break
+                                checkError('zeroDivision','','','',self.lineno,self.column)
                             Set.append(i)
                         return set(Set)
 
