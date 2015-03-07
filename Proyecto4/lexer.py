@@ -6,7 +6,7 @@
 ##           - Carlos Spaggiari 11-10987
 
 import ply.lex as lex
-
+maxInt = 2147483648
 reserved = {
     'program' : 'PROGRAM',
     'using'   : 'USING',
@@ -81,7 +81,7 @@ t_ignore_COMMENT = r'\#.*'
 
 def t_NUMBER(t):
     r'\d+'
-    if int(t.value) > 2147483648:
+    if int(t.value) > maxInt:
         error_NUMBER(t)
     t.value = int(t.value)    
     return t

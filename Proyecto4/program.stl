@@ -3,15 +3,15 @@ program
 	using
 		int Jamonsito,Quesito,CAFESHITO;
 	    int  a, b; # inicializan en 0
-	    set  c, d; # inicializan en false
-	    bool e, f; # inicializan en {}
+	    set  c, d; # inicializan en {}
+	    bool e, f; # inicializan en false
 
 		set y;
 
 		#bool y;
 	in 
 
-	while (true) do
+	while (false) do
 			{
 				using 
 					set x,g,j;
@@ -71,7 +71,7 @@ program
 		  in
 		  c = c + i * 2;
 		}
-	else if (b @ c) {
+	else if (not(b @ c)) {
 		println "improbable";
 	};
 

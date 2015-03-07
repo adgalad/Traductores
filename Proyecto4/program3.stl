@@ -2,16 +2,7 @@ program {
 	using
 		bool g;
 	in
-	for i max {3,4,5} do {
-		println i;
-	};
-	println "hola";
-	if (true)
-	{
-		println "if";
-	}
-	else
-	{
-		println "else";
+	for i min {5,4,3,2,1} do {
+		println i%(5-i)," ";
 	};
 }
