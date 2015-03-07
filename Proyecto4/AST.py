@@ -634,7 +634,7 @@ class Expression:
                     return "int"
                 elif re.match(r'[>?|<?|$?]',self.op) and type1 == "set":
                     return "int"
-                
+                checkError('unaryExpression',self.op,type1,"",self.lineno,self.column)
             # Operadores binarios
             else:
                 if self.left == "(" and self.right == ")":
@@ -646,7 +646,9 @@ class Expression:
                         return "int"
                     elif re.match(r'[and|or]',self.op) and type1 == type2 == "bool":
                         return "bool"
-                    elif re.match(r'[<|>|<=|>=|/=]',self.op) and type1 == type2 == "int":
+                    elif re.match(r'[<|>|<=|>=|/=|==]',self.op) and type1 == type2 == "int":
+                        return "bool"
+                    elif re.match(r'[==|/=]',self.op) and ((type1 == type2 == "set") or (type1 == type2 == "bool")):
                         return "bool"
                     elif re.match(r'[++|><|\\]',self.op) and type1 == type2 == "set":
                         return "set"
@@ -655,7 +657,7 @@ class Expression:
                         return "set"
                     elif re.match(r'[@]',self.op) and type1 == "int" and type2 == "set":
                         return "bool"
-                #checkError('expression',self.op,type1,type2)
+                checkError('binaryExpression',self.op,type1,type2,self.lineno,self.column)
         else:
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
@@ -893,50 +895,55 @@ class Number:
         return self.value
 
 def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=""):
-    if error == 'condition':
+    if error == 'condition':    # Para las instrucciones if y while
         if wrongType == "":
             wrongType = "*no especificado*"
-        typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera condicion de tipo "%s", no de tipo "%s".''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: La instrucción "%s" espera condición de tipo "%s", no de tipo "%s".''' \
         % (lineno, column, instOrVar, expectedType, wrongType))
     elif error == 'range':
         if wrongType == "":
             wrongType = "*no especificado*"
-        typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "%s" espera rango de tipo "%s", no de tipo "%s".''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: La instrucción "%s" espera rango de tipo "%s", no de tipo "%s".''' \
         % (lineno, column, instOrVar, expectedType, wrongType))
-    elif error == 'undeclared':
-        typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" no ha sido declarada en este alcance.''' \
-            % (lineno, column, instOrVar))
     elif error == 'badDeclaration':
-        typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" espera valores de tipo "%s".''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: La variable "%s" espera valores de tipo "%s".''' \
             % (lineno, column, instOrVar, expectedType))
+    elif error == 'undeclared':
+        typeError.append('''ERROR en la Línea %d, Columna %d: La variable "%s" no ha sido declarada en este alcance.''' \
+            % (lineno, column, instOrVar))
     elif error == 'duplicated':
-        typeError.append('''ERROR en la Linea %d, Columna %d: La variable "%s" ya fue declarada en este alcance.''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: La variable "%s" ya fue declarada en este alcance.''' \
             % (lineno, column, instOrVar))
     elif error == 'forIterator':
-        typeError.append('''ERROR en la Linea %d, Columna %d: La variable de iteracion "%s" no puede ser modificada.''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: La variable de iteración "%s" no puede ser modificada.''' \
             % (lineno, column, instOrVar))
     elif error == 'scanSet':
         if wrongType == "":
             wrongType = "*no declarada*"
-        typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "scan" no puede escanear variable de tipo "%s".''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: La instrucción "scan" no acepta variables de tipo "%s".''' \
             % (lineno, column,wrongType))
-    #elif error == 'expression':
-    #    if (expectedType == ""):
-    #        expectedType = "*no especificado*"
-    #    if (wrongType == ""):
-    #        wrongType = "*no especificado*"
-    #    typeError.append('''ERROR en la Linea %d, Columna %d: El operador "%s" no opera sobre tipos "%s" y "%s".''' \
-    #        % (0000, 0000, instOrVar, expectedType, wrongType)) 
+    elif error == 'binaryExpression':
+        if (expectedType == ""):
+            expectedType = "*no especificado*"
+        if (wrongType == ""):
+            wrongType = "*no especificado*"
+        typeError.append('''ERROR en la Línea %d, Columna %d: Uso incorrecto del operador "%s" sobre tipos "%s" y "%s".''' \
+            % (lineno, column, instOrVar, expectedType, wrongType)) 
+    elif error == 'unaryExpression':
+        if (expectedType == ""):
+            expectedType = "*no especificado*"
+        typeError.append('''ERROR en la Línea %d, Columna %d: Uso incorrecto del operador "%s" sobre tipo "%s".''' \
+            % (lineno, column, instOrVar, expectedType)) 
 
-    # Errores dinamicos
+    # Errores dinámicos
     if error == 'overflow':
-        typeError.append('''ERROR en la Linea %d, Columna %d: Se encontró un overflow.''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: Se encontró un overflow.''' \
             % (lineno, column))
     elif error == 'emptySetOperation':
-        typeError.append('''ERROR en la Linea %d, Columna %d: Operación sobre un conjunto vacío''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: Operación sobre un conjunto vacío''' \
             % (lineno, column))
     elif error == 'zeroDivision':
-        typeError.append('''ERROR en la Linea %d, Columna %d: División o módulo por cero.''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: División o módulo por cero.''' \
             % (lineno, column))
 
     return False
