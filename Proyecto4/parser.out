@@ -69,8 +69,8 @@ Rule 63    expression -> SETSIZE expression
 Rule 64    expression -> MINUS expression
 Rule 65    expression -> LPAREN expression RPAREN
 Rule 66    expression -> booleanValue
-Rule 67    expression -> set
-Rule 68    expression -> identifier
+Rule 67    expression -> identifier
+Rule 68    expression -> set
 Rule 69    expression -> number
 Rule 70    booleanValue -> TRUE
 Rule 71    booleanValue -> FALSE
@@ -149,7 +149,7 @@ direction            : 24
 expression           : 9 22 23 24 27 28 33 34 38 38 39 39 40 40 41 41 42 42 43 43 44 44 45 45 46 46 47 47 48 48 49 49 50 50 51 51 52 52 53 53 54 54 55 55 56 56 57 57 58 58 59 59 60 61 62 63 64 65 75 76
 forInst              : 4
 idList               : 13 14 18
-identifier           : 9 24 30 68
+identifier           : 9 24 30 67
 ifInst               : 3
 instruction          : 1 20 22 23 23 24 27 29
 instructionBlock     : 11 12 20
@@ -159,7 +159,7 @@ printInst            : 8
 program              : 0
 repeatInst           : 6
 scanInst             : 7
-set                  : 67
+set                  : 68
 setNumbers           : 73 75
 string               : 35 36
 type                 : 13 14
@@ -369,15 +369,15 @@ state 10
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (37) string -> . STRING
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -389,8 +389,8 @@ state 10
     STRING          shift and go to state 31
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -447,15 +447,15 @@ state 12
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (37) string -> . STRING
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -467,8 +467,8 @@ state 12
     STRING          shift and go to state 31
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -696,14 +696,14 @@ state 26
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -714,8 +714,8 @@ state 26
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -726,38 +726,38 @@ state 26
 
 state 27
 
-    (67) expression -> set .
+    (68) expression -> set .
 
-    PLUS            reduce using rule 67 (expression -> set .)
-    MINUS           reduce using rule 67 (expression -> set .)
-    TIMES           reduce using rule 67 (expression -> set .)
-    DIVIDE          reduce using rule 67 (expression -> set .)
-    MODULE          reduce using rule 67 (expression -> set .)
-    AND             reduce using rule 67 (expression -> set .)
-    OR              reduce using rule 67 (expression -> set .)
-    LESSTHAN        reduce using rule 67 (expression -> set .)
-    LESSEQUALTHAN   reduce using rule 67 (expression -> set .)
-    GREATERTHAN     reduce using rule 67 (expression -> set .)
-    GREATEREQUALTHAN reduce using rule 67 (expression -> set .)
-    EQUALS          reduce using rule 67 (expression -> set .)
-    NOTEQUALS       reduce using rule 67 (expression -> set .)
-    SETUNION        reduce using rule 67 (expression -> set .)
-    SETDIFF         reduce using rule 67 (expression -> set .)
-    SETINTERSECT    reduce using rule 67 (expression -> set .)
-    SETMAPPLUS      reduce using rule 67 (expression -> set .)
-    SETMAPMINUS     reduce using rule 67 (expression -> set .)
-    SETMAPTIMES     reduce using rule 67 (expression -> set .)
-    SETMAPDIVIDE    reduce using rule 67 (expression -> set .)
-    SETMAPMODULE    reduce using rule 67 (expression -> set .)
-    BELONGSTO       reduce using rule 67 (expression -> set .)
-    COMMA           reduce using rule 67 (expression -> set .)
-    $end            reduce using rule 67 (expression -> set .)
-    SEMICOLON       reduce using rule 67 (expression -> set .)
-    WHILE           reduce using rule 67 (expression -> set .)
-    ELSE            reduce using rule 67 (expression -> set .)
-    RPAREN          reduce using rule 67 (expression -> set .)
-    RCURLY          reduce using rule 67 (expression -> set .)
-    DO              reduce using rule 67 (expression -> set .)
+    PLUS            reduce using rule 68 (expression -> set .)
+    MINUS           reduce using rule 68 (expression -> set .)
+    TIMES           reduce using rule 68 (expression -> set .)
+    DIVIDE          reduce using rule 68 (expression -> set .)
+    MODULE          reduce using rule 68 (expression -> set .)
+    AND             reduce using rule 68 (expression -> set .)
+    OR              reduce using rule 68 (expression -> set .)
+    LESSTHAN        reduce using rule 68 (expression -> set .)
+    LESSEQUALTHAN   reduce using rule 68 (expression -> set .)
+    GREATERTHAN     reduce using rule 68 (expression -> set .)
+    GREATEREQUALTHAN reduce using rule 68 (expression -> set .)
+    EQUALS          reduce using rule 68 (expression -> set .)
+    NOTEQUALS       reduce using rule 68 (expression -> set .)
+    SETUNION        reduce using rule 68 (expression -> set .)
+    SETDIFF         reduce using rule 68 (expression -> set .)
+    SETINTERSECT    reduce using rule 68 (expression -> set .)
+    SETMAPPLUS      reduce using rule 68 (expression -> set .)
+    SETMAPMINUS     reduce using rule 68 (expression -> set .)
+    SETMAPTIMES     reduce using rule 68 (expression -> set .)
+    SETMAPDIVIDE    reduce using rule 68 (expression -> set .)
+    SETMAPMODULE    reduce using rule 68 (expression -> set .)
+    BELONGSTO       reduce using rule 68 (expression -> set .)
+    COMMA           reduce using rule 68 (expression -> set .)
+    $end            reduce using rule 68 (expression -> set .)
+    SEMICOLON       reduce using rule 68 (expression -> set .)
+    WHILE           reduce using rule 68 (expression -> set .)
+    ELSE            reduce using rule 68 (expression -> set .)
+    RPAREN          reduce using rule 68 (expression -> set .)
+    RCURLY          reduce using rule 68 (expression -> set .)
+    DO              reduce using rule 68 (expression -> set .)
 
 
 state 28
@@ -792,14 +792,14 @@ state 28
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -810,8 +810,8 @@ state 28
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -865,14 +865,14 @@ state 30
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     RCURLY          shift and go to state 60
@@ -884,8 +884,8 @@ state 30
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -1010,14 +1010,14 @@ state 34
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -1028,8 +1028,8 @@ state 34
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -1154,14 +1154,14 @@ state 38
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -1172,8 +1172,8 @@ state 38
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -1214,14 +1214,14 @@ state 39
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -1232,8 +1232,8 @@ state 39
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -1310,14 +1310,14 @@ state 41
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -1328,8 +1328,8 @@ state 41
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -1370,14 +1370,14 @@ state 42
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -1388,8 +1388,8 @@ state 42
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -1400,38 +1400,38 @@ state 42
 
 state 43
 
-    (68) expression -> identifier .
+    (67) expression -> identifier .
 
-    PLUS            reduce using rule 68 (expression -> identifier .)
-    MINUS           reduce using rule 68 (expression -> identifier .)
-    TIMES           reduce using rule 68 (expression -> identifier .)
-    DIVIDE          reduce using rule 68 (expression -> identifier .)
-    MODULE          reduce using rule 68 (expression -> identifier .)
-    AND             reduce using rule 68 (expression -> identifier .)
-    OR              reduce using rule 68 (expression -> identifier .)
-    LESSTHAN        reduce using rule 68 (expression -> identifier .)
-    LESSEQUALTHAN   reduce using rule 68 (expression -> identifier .)
-    GREATERTHAN     reduce using rule 68 (expression -> identifier .)
-    GREATEREQUALTHAN reduce using rule 68 (expression -> identifier .)
-    EQUALS          reduce using rule 68 (expression -> identifier .)
-    NOTEQUALS       reduce using rule 68 (expression -> identifier .)
-    SETUNION        reduce using rule 68 (expression -> identifier .)
-    SETDIFF         reduce using rule 68 (expression -> identifier .)
-    SETINTERSECT    reduce using rule 68 (expression -> identifier .)
-    SETMAPPLUS      reduce using rule 68 (expression -> identifier .)
-    SETMAPMINUS     reduce using rule 68 (expression -> identifier .)
-    SETMAPTIMES     reduce using rule 68 (expression -> identifier .)
-    SETMAPDIVIDE    reduce using rule 68 (expression -> identifier .)
-    SETMAPMODULE    reduce using rule 68 (expression -> identifier .)
-    BELONGSTO       reduce using rule 68 (expression -> identifier .)
-    COMMA           reduce using rule 68 (expression -> identifier .)
-    $end            reduce using rule 68 (expression -> identifier .)
-    SEMICOLON       reduce using rule 68 (expression -> identifier .)
-    WHILE           reduce using rule 68 (expression -> identifier .)
-    ELSE            reduce using rule 68 (expression -> identifier .)
-    RPAREN          reduce using rule 68 (expression -> identifier .)
-    RCURLY          reduce using rule 68 (expression -> identifier .)
-    DO              reduce using rule 68 (expression -> identifier .)
+    PLUS            reduce using rule 67 (expression -> identifier .)
+    MINUS           reduce using rule 67 (expression -> identifier .)
+    TIMES           reduce using rule 67 (expression -> identifier .)
+    DIVIDE          reduce using rule 67 (expression -> identifier .)
+    MODULE          reduce using rule 67 (expression -> identifier .)
+    AND             reduce using rule 67 (expression -> identifier .)
+    OR              reduce using rule 67 (expression -> identifier .)
+    LESSTHAN        reduce using rule 67 (expression -> identifier .)
+    LESSEQUALTHAN   reduce using rule 67 (expression -> identifier .)
+    GREATERTHAN     reduce using rule 67 (expression -> identifier .)
+    GREATEREQUALTHAN reduce using rule 67 (expression -> identifier .)
+    EQUALS          reduce using rule 67 (expression -> identifier .)
+    NOTEQUALS       reduce using rule 67 (expression -> identifier .)
+    SETUNION        reduce using rule 67 (expression -> identifier .)
+    SETDIFF         reduce using rule 67 (expression -> identifier .)
+    SETINTERSECT    reduce using rule 67 (expression -> identifier .)
+    SETMAPPLUS      reduce using rule 67 (expression -> identifier .)
+    SETMAPMINUS     reduce using rule 67 (expression -> identifier .)
+    SETMAPTIMES     reduce using rule 67 (expression -> identifier .)
+    SETMAPDIVIDE    reduce using rule 67 (expression -> identifier .)
+    SETMAPMODULE    reduce using rule 67 (expression -> identifier .)
+    BELONGSTO       reduce using rule 67 (expression -> identifier .)
+    COMMA           reduce using rule 67 (expression -> identifier .)
+    $end            reduce using rule 67 (expression -> identifier .)
+    SEMICOLON       reduce using rule 67 (expression -> identifier .)
+    WHILE           reduce using rule 67 (expression -> identifier .)
+    ELSE            reduce using rule 67 (expression -> identifier .)
+    RPAREN          reduce using rule 67 (expression -> identifier .)
+    RCURLY          reduce using rule 67 (expression -> identifier .)
+    DO              reduce using rule 67 (expression -> identifier .)
 
 
 state 44
@@ -1554,14 +1554,14 @@ state 48
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -1572,8 +1572,8 @@ state 48
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -1614,14 +1614,14 @@ state 49
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -1632,8 +1632,8 @@ state 49
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2095,15 +2095,15 @@ state 64
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (37) string -> . STRING
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2115,8 +2115,8 @@ state 64
     STRING          shift and go to state 31
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2453,14 +2453,14 @@ state 69
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2471,8 +2471,8 @@ state 69
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2513,14 +2513,14 @@ state 70
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2531,8 +2531,8 @@ state 70
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2573,14 +2573,14 @@ state 71
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2591,8 +2591,8 @@ state 71
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2633,14 +2633,14 @@ state 72
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2651,8 +2651,8 @@ state 72
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2693,14 +2693,14 @@ state 73
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2711,8 +2711,8 @@ state 73
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2753,14 +2753,14 @@ state 74
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2771,8 +2771,8 @@ state 74
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2813,14 +2813,14 @@ state 75
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2831,8 +2831,8 @@ state 75
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2877,15 +2877,15 @@ state 76
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (37) string -> . STRING
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2897,8 +2897,8 @@ state 76
     STRING          shift and go to state 31
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -2941,14 +2941,14 @@ state 77
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -2959,8 +2959,8 @@ state 77
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3001,14 +3001,14 @@ state 78
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3019,8 +3019,8 @@ state 78
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3061,14 +3061,14 @@ state 79
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3079,8 +3079,8 @@ state 79
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3121,14 +3121,14 @@ state 80
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3139,8 +3139,8 @@ state 80
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3181,14 +3181,14 @@ state 81
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3199,8 +3199,8 @@ state 81
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3241,14 +3241,14 @@ state 82
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3259,8 +3259,8 @@ state 82
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3301,14 +3301,14 @@ state 83
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3319,8 +3319,8 @@ state 83
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3361,14 +3361,14 @@ state 84
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3379,8 +3379,8 @@ state 84
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3421,14 +3421,14 @@ state 85
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3439,8 +3439,8 @@ state 85
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3481,14 +3481,14 @@ state 86
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3499,8 +3499,8 @@ state 86
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3541,14 +3541,14 @@ state 87
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3559,8 +3559,8 @@ state 87
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3601,14 +3601,14 @@ state 88
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3619,8 +3619,8 @@ state 88
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3661,14 +3661,14 @@ state 89
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3679,8 +3679,8 @@ state 89
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3721,14 +3721,14 @@ state 90
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3739,8 +3739,8 @@ state 90
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3781,14 +3781,14 @@ state 91
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3799,8 +3799,8 @@ state 91
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27
@@ -3851,14 +3851,14 @@ state 93
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -3869,8 +3869,8 @@ state 93
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     booleanValue                   shift and go to state 32
@@ -3891,8 +3891,8 @@ state 94
     LPAREN          reduce using rule 25 (direction -> MIN .)
     TRUE            reduce using rule 25 (direction -> MIN .)
     FALSE           reduce using rule 25 (direction -> MIN .)
-    LCURLY          reduce using rule 25 (direction -> MIN .)
     IDENTIFIER      reduce using rule 25 (direction -> MIN .)
+    LCURLY          reduce using rule 25 (direction -> MIN .)
     NUMBER          reduce using rule 25 (direction -> MIN .)
 
 
@@ -3908,8 +3908,8 @@ state 95
     LPAREN          reduce using rule 26 (direction -> MAX .)
     TRUE            reduce using rule 26 (direction -> MAX .)
     FALSE           reduce using rule 26 (direction -> MAX .)
-    LCURLY          reduce using rule 26 (direction -> MAX .)
     IDENTIFIER      reduce using rule 26 (direction -> MAX .)
+    LCURLY          reduce using rule 26 (direction -> MAX .)
     NUMBER          reduce using rule 26 (direction -> MAX .)
 
 
@@ -4173,14 +4173,14 @@ state 104
     (64) expression -> . MINUS expression
     (65) expression -> . LPAREN expression RPAREN
     (66) expression -> . booleanValue
-    (67) expression -> . set
-    (68) expression -> . identifier
+    (67) expression -> . identifier
+    (68) expression -> . set
     (69) expression -> . number
     (70) booleanValue -> . TRUE
     (71) booleanValue -> . FALSE
+    (72) identifier -> . IDENTIFIER
     (73) set -> . LCURLY setNumbers RCURLY
     (74) set -> . LCURLY RCURLY
-    (72) identifier -> . IDENTIFIER
     (77) number -> . NUMBER
 
     NOT             shift and go to state 42
@@ -4191,8 +4191,8 @@ state 104
     LPAREN          shift and go to state 39
     TRUE            shift and go to state 33
     FALSE           shift and go to state 35
-    LCURLY          shift and go to state 30
     IDENTIFIER      shift and go to state 13
+    LCURLY          shift and go to state 30
     NUMBER          shift and go to state 37
 
     set                            shift and go to state 27

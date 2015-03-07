@@ -1,18 +1,9 @@
 program {
     using
-        set s;
+        bool s;
+        int i;
     in
-    s = {2, 3, 1};
-    if (4@s)
-    {
-    	println "2 pertenece a s";
-    };
+    scan i;
 
-    for i min s do {
-
-        s = 2 <*> s; # unión de conjuntos
-
-    };
-
-    println s;
+    println i;
 }

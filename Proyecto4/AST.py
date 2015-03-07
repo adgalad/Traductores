@@ -489,24 +489,20 @@ class ScanInst:
     def execute(self,scope):
         vartype = scope.lookup(self.expression.value).type
         value = raw_input()
-        valueType = ""
         while True:
-            if re.match(r'[ ]*[\d+|\-\d+][ ]*',value):  # CARLOS
-                valueType = "int"
-                value  = int(value)
-            elif bool(re.search("true", value)) or bool(re.search("false", value)):
-                valueType = "bool"
+            if vartype == "int" and is_int(value): 
+                    value  = int(value)
+                    if (value > maxInt): 
+                        return checkError('overflow','','','',self.lineno,self.column)
+                    break;
+            elif vartype == "bool" and (bool(re.search("true", value)) or 
+                                        bool(re.search("false", value))):
                 value = bool(value)
+                break;
+            #checkError  No es el tipo esperado
+            value = raw_input()
 
-            if vartype == valueType:
-                break
-            else:
-                value = raw_input()
-        
-        if (valueType == "int") and (value > maxInt):
-            return checkError('overflow','','','',self.lineno,self.column)
-        else:
-            scope.update(self.expression.value,value)
+        scope.update(self.expression.value,value)
 
         return True
 
@@ -891,6 +887,21 @@ class Number:
         
     def evaluate(self,scope):
         return self.value
+
+def is_int(value):
+    minus = False
+    match = True
+    for i in value:
+        if i == '-' and minus == False:
+            minus = True
+        elif re.match('[0-9]',i):
+            minus = True
+        elif i == " ":
+            pass
+        else:
+            match = False
+            break;
+    return match
 
 def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=""):
     if error == 'condition':
