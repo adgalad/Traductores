@@ -1,13 +1,9 @@
 program {
     using
-        set s;
+        bool s;
+        int i;
     in
-    s = {2, 3, 1};
-    for i min s do {
+    scan i;
 
-        s = 2 <*> s; # unión de conjuntos
-
-    };
-
-    println s;
+    println i;
 }
