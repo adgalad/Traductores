@@ -158,9 +158,16 @@ class UsingInInst:
             return (self.declaration.checkType(scope) and self.instruction.checkType(scope))
 
     def evaluate(self,scope):
+
         if self.scope != None:
+            for i in self.scope.currentScope:
+                var = self.scope.currentScope[i]
+                self.scope.update(var.name,typeDefault[var.type]) 
             return self.instruction.evaluate(self.scope)
         else:
+            for i in scope.currentScope:
+                var = self.scope.currentScope[i]
+                scope.update(var.name,typeDefault[var.type])
             return self.instruction.evaluate(scope)
 
 
