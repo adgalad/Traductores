@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 ## Interpretador del lenguaje Setlan.
-## Árbol Sintáctico Abstracto (AST)
+## Árbol Sintáctico Abstracto (AST): Imprime gramática, chequea tipos, 
+##                                   evalúa expresiones y ejecuta instrucciones
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
 
 import  re
 from    symbols import indent, SymbolTable, Symbol
-import sys
+import  sys
 
 operator = {"+"   : "PLUS", 
             "-"   : "MINUS",
@@ -61,8 +62,7 @@ class Program:
         if not self.instruction.execute(self.scope):
             print "\n"
             if typeError != []:
-                for error in typeError:
-                    print error
+                print(typeError[0])
                 return False
         return True
 
@@ -102,7 +102,7 @@ class Instruction:                                                              
                 return True
         return True
 
-    def execute(self,scope):
+    def execute(self,scope):                                                ############################
         if not isinstance(self.instruction, str):
             return self.instruction.execute(scope)
         else:
@@ -383,6 +383,7 @@ class ForInst:
         if self.dir.direction == "min":
             for element in Set:
                 self.scope.update(iterator,element)
+                #self.instruction.execute(self.scope)            ## *?????
                 if not self.instruction.execute(self.scope):
                     return False
         else:
@@ -485,7 +486,7 @@ class ScanInst:
         value = raw_input('Introduzca un valor: ')
         valueType = ""
         while True:
-            if re.match(r'[ ]*\d+[ ]*',value):
+            if re.match(r'[ ]*[\d+|\-\d+][ ]*',value):  # CARLOS
                 valueType = "int"
                 value  = int(value)
             elif bool(re.search("true", value)) or bool(re.search("false", value)):
@@ -498,11 +499,11 @@ class ScanInst:
                 value = raw_input('Introduzca un valor: ')
         
         if (valueType == "int") and (value > 2147483648):
-            checkError('overflow','','','',self.lineno,self.column)
+            return checkError('overflow','','','',self.lineno,self.column)
         else:
             scope.update(self.expression.value,value)
 
-        return True         ################ Debe funcionar scanear una variable?
+        return True
 
 class PrintInst:
     def __init__(self,Print,output):
@@ -524,6 +525,8 @@ class PrintInst:
         if self.output.evaluate(scope):
             if self.Print == "println":
                 sys.stdout.write("\n")
+            if self.Print == "print":
+                sys.stdout.write("")
             return True
         return False
 
@@ -546,7 +549,6 @@ class OutputType:
         return True
 
     def evaluate(self,scope):
-
         output = self.expression.evaluate(scope)
         if output == None:
             return False
@@ -585,11 +587,13 @@ class String:
         return self.string[1:len(self.string)-1]        
 
 class Expression:
-    def __init__(self,left,op="",right=""):
+    def __init__(self,left,op="",right="",lineno="",column=""):
         self.type  = "expression"
         self.left  = left
         self.right = right
         self.op    = op
+        self.lineno = lineno
+        self.column = column
 
     def printTree(self,tabs):
         string = ""
@@ -646,7 +650,7 @@ class Expression:
                         return "set"
                     elif re.match(r'[@]',self.op) and type1 == "int" and type2 == "set":
                         return "bool"
-                checkError('expression',self.op,type1,type2)
+                #checkError('expression',self.op,type1,type2)
         else:
             if not isinstance(self.left, str):
                 self.left.checkType(scope)
@@ -676,12 +680,12 @@ class Expression:
                     if len(value):
                         return max(value)
                     else:
-                        return checkError("emptySetOperation")
+                        checkError("emptySetOperation",'','','',self.lineno,self.column)
                 elif self.op == "<?": 
                     if len(value):
                         return min(value)
                     else:
-                        return checkError("emptySetOperation")
+                        checkError("emptySetOperation",'','','',self.lineno,self.column)
                 elif self.op == "$?":
                     return len(value)
             else:
@@ -692,26 +696,26 @@ class Expression:
                     rightValue = self.right.evaluate(scope)
                     if self.op == "+":
                         if leftValue + rightValue > 2147483648:
-                            checkError('overflow','','','',0,0)
+                            checkError('overflow','','','',self.lineno,self.column)
                         else:
                             return leftValue + rightValue
                     elif self.op == "-":
                         return leftValue - rightValue
                     elif self.op == "*":
                         if leftValue * rightValue > 2147483648:
-                            checkError('overflow','','','',0,0)
+                            checkError('overflow','','','',self.lineno,self.column)
                         else:
                             return leftValue * rightValue
                     elif self.op == "/":
                         if rightValue != 0:
                             return leftValue / rightValue
                         else:
-                            checkError('zeroDivision','','','',0,0)
+                            checkError('zeroDivision','','','',self.lineno,self.column)
                     elif self.op == "%":
                         if rightValue != 0:
                             return leftValue % rightValue
                         else:
-                            checkError('zeroDivision','','','',0,0)
+                            checkError('zeroDivision','','','',self.lineno,self.column)
                     elif self.op == "and":
                         return leftValue and rightValue
 
@@ -757,7 +761,7 @@ class Expression:
                         for i in rightValue:
                             i += leftValue
                             if i + leftValue > 2147483648:
-                                checkError('overflow','','','',0,0)
+                                return checkError('overflow','','','',self.lineno,self.column)
                                 break
                             Set.append(i)
                         return set(Set)
@@ -774,7 +778,7 @@ class Expression:
                         for i in rightValue:
                             i = i*leftValue
                             if i * leftValue > 2147483648:
-                                checkError('overflow','','','',0,0)
+                                return checkError('overflow','','','',self.lineno,self.column)
                                 break
                             Set.append(i)
                         return set(Set)
@@ -785,7 +789,7 @@ class Expression:
                             if leftValue != 0:
                                 i = i/leftValue
                             else:
-                                checkError('zeroDivision','','','',0,0)
+                                return checkError('zeroDivision','','','',self.lineno,self.column)
                                 break
                             Set.append(i)
                         return set(Set)
@@ -796,7 +800,7 @@ class Expression:
                             if leftValue != 0:
                                 i = i%leftValue
                             else:
-                                checkError('zeroDivision','','','',0,0)
+                                return checkError('zeroDivision','','','',self.lineno,self.column)
                                 break
                             Set.append(i)
                         return set(Set)
@@ -915,13 +919,13 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
             wrongType = "*no declarada*"
         typeError.append('''ERROR en la Linea %d, Columna %d: La instruccion "scan" no puede escanear variable de tipo "%s".''' \
             % (lineno, column,wrongType))
-    elif error == 'expression':
-        if (expectedType == ""):
-            expectedType = "*no especificado*"
-        if (wrongType == ""):
-            wrongType = "*no especificado*"
-        typeError.append('''ERROR en la Linea %d, Columna %d: El operador "%s" no opera sobre tipos "%s" y "%s".''' \
-            % (0000, 0000, instOrVar, expectedType, wrongType)) 
+    #elif error == 'expression':
+    #    if (expectedType == ""):
+    #        expectedType = "*no especificado*"
+    #    if (wrongType == ""):
+    #        wrongType = "*no especificado*"
+    #    typeError.append('''ERROR en la Linea %d, Columna %d: El operador "%s" no opera sobre tipos "%s" y "%s".''' \
+    #        % (0000, 0000, instOrVar, expectedType, wrongType)) 
 
     # Errores dinamicos
     if error == 'overflow':
@@ -931,10 +935,9 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
         typeError.append('''ERROR en la Linea %d, Columna %d: Operación sobre un conjunto vacío''' \
             % (lineno, column))
     elif error == 'zeroDivision':
-        typeError.append('''ERROR en la Linea %d, Columna %d: División por cero.''' \
+        typeError.append('''ERROR en la Linea %d, Columna %d: División o módulo por cero.''' \
             % (lineno, column))
 
-    #print(typeError)
     return False
 
 typeError = []
