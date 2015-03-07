@@ -495,11 +495,11 @@ class ScanInst:
                     if (value > maxInt): 
                         return checkError('overflow','','','',self.lineno,self.column)
                     break;
-            elif vartype == "bool" and (bool(re.search("true", value)) or 
-                                        bool(re.search("false", value))):
+            elif vartype == "bool" and (re.match(r'[ ]*true$[ ]*', value) \
+                                    or re.match(r'[ ]*false$[ ]*', value)): 
                 value = bool(value)
                 break;
-            #checkError  No es el tipo esperado
+            print("Tipo incorrecto. Intente de nuevo.")
             value = raw_input()
 
         scope.update(self.expression.value,value)
