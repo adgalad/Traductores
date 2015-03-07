@@ -204,15 +204,15 @@ def p_expression(p):
                   | MINUS expression %prec NEGATE
                   | LPAREN expression RPAREN
                   | booleanValue
-                  | set
                   | identifier
+                  | set
                   | number'''
     if len(p) == 2:
       p[0] = Expression(p[1])
     elif len(p) == 3:
-        p[0] = Expression(p[2],p[1])
+        p[0] = Expression(p[2],p[1],'',p.lineno(1),findColumn(p.lexer.lexdata,p.lexpos(1)))
     else:
-        p[0] = Expression(p[1],p[2],p[3])
+        p[0] = Expression(p[1],p[2],p[3],p.lineno(2),findColumn(p.lexer.lexdata,p.lexpos(2)))
 
 # Regla booleanValue: Regla que contiene los tipos de expresiones booleanas
 def p_booleanValue(p):

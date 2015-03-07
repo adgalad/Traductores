@@ -4,9 +4,10 @@ program {
     in
     s = {2, 3, 1};
     for i min s do {
-        println i;
-        s = s ++ {i * 2}; # unión de conjuntos
+
+        s = 2 <*> s; # unión de conjuntos
+
     };
 
-    print s;
+    println s;
 }

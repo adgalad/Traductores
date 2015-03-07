@@ -9,7 +9,7 @@
 import  re
 from    symbols import indent, SymbolTable, Symbol
 import  sys
-
+maxInt = 2147483648
 operator = {"+"   : "PLUS", 
             "-"   : "MINUS",
             "*"   : "TIMES",
@@ -503,7 +503,7 @@ class ScanInst:
             else:
                 value = raw_input('Introduzca un valor: ')
         
-        if (valueType == "int") and (value > 2147483648):
+        if (valueType == "int") and (value > maxInt):
             return checkError('overflow','','','',self.lineno,self.column)
         else:
             scope.update(self.expression.value,value)
@@ -700,14 +700,14 @@ class Expression:
                     leftValue = self.left.evaluate(scope)
                     rightValue = self.right.evaluate(scope)
                     if self.op == "+":
-                        if leftValue + rightValue > 2147483648:
+                        if leftValue + rightValue > maxInt:
                             checkError('overflow','','','',self.lineno,self.column)
                         else:
                             return leftValue + rightValue
                     elif self.op == "-":
                         return leftValue - rightValue
                     elif self.op == "*":
-                        if leftValue * rightValue > 2147483648:
+                        if leftValue * rightValue > maxInt:
                             checkError('overflow','','','',self.lineno,self.column)
                         else:
                             return leftValue * rightValue
