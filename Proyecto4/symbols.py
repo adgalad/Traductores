@@ -46,7 +46,7 @@ class SymbolTable:
 				self.currentScope[name] = Symbol(name,self.currentScope[name].type,value)
 			return True
 		elif self.previousScope:
-			return self.previousScope.update(name,type,value)
+			return self.previousScope.update(name,value,type)
 		return False
 
 	def contains(self, symbolName):

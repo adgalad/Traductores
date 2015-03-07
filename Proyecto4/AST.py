@@ -464,7 +464,6 @@ class RepeatInst:
             if not self.instruction.execute(scope):
                 return False
         return True
-#            return self.instruction.execute(scope)
 
 class ScanInst:
     def __init__(self,scan,expression,lineno,column):   # cambiar expression por var
@@ -531,7 +530,7 @@ class PrintInst:
         if self.output.evaluate(scope):
             if self.Print == "println":
                 sys.stdout.write("\n")
-            if self.Print == "print":
+            elif self.Print == "print":
                 sys.stdout.write("")
             return True
         return False
