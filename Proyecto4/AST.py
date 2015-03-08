@@ -492,7 +492,7 @@ class ScanInst:
                     if vartype == "int" and is_int(value): 
                             value  = int(value)
                             if (value > maxInt): 
-                                checkError('overflow','','','',self.lineno,self.column)
+                                return checkError('overflow','','','',self.lineno,self.column)
                             break;
                     elif vartype == "bool" and (re.match(r'[ ]*true$[ ]*', value) \
                                             or re.match(r'[ ]*false$[ ]*', value)): 
