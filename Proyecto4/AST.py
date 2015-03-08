@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ## Interpretador del lenguaje Setlan.
-## Árbol Sintáctico Abstracto (AST): Imprime gramática, chequea tipos, 
+## Árbol Sintáctico Abstracto (AST): Imprime gramática del lenguaje, chequea tipos, 
 ##                                   evalúa expresiones y ejecuta instrucciones
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
@@ -21,10 +21,10 @@ operator = {"+"   : "PLUS",
             "<"   : "LESSTHAN",
             ">"   : "GREATERTHAN",
             "<="  : "LESSEQUALSTHAN",   
-            "/="  : "NOTEQUALS",
             ">="  : "GREATEREQUALTHAN", 
-            "@"   : "BELONGSTO",      
             "=="  : "EQUALS",
+            "/="  : "NOTEQUALS",
+            "@"   : "BELONGSTO",
             "++"  : "SETUNION",
             "><"  : "SETINTERSECT",   
             "\\"  : "SETDIFF", 
@@ -66,7 +66,7 @@ class Program:
                 return False
         return True
 
-class Instruction:                                                              #############################################################
+class Instruction: 
     def __init__(self,instruction = "",Id="",assign="",expression=""):
         self.instruction = instruction
         self.id          = Id
@@ -102,7 +102,7 @@ class Instruction:                                                              
                 return True
         return True
 
-    def execute(self,scope):                                                ############################
+    def execute(self,scope): 
         if not isinstance(self.instruction, str):
             return self.instruction.execute(scope)
         else:
@@ -158,7 +158,6 @@ class UsingInInst:
             return (self.declaration.checkType(scope) and self.instruction.checkType(scope))
 
     def evaluate(self,scope):
-
         if self.scope != None:
             for i in self.scope.currentScope:
                 var = self.scope.currentScope[i]
@@ -166,10 +165,9 @@ class UsingInInst:
             return self.instruction.evaluate(self.scope)
         else:
             for i in scope.currentScope:
-                var = self.scope.currentScope[i]
+                var = scope.currentScope[i]
                 scope.update(var.name,typeDefault[var.type])
             return self.instruction.evaluate(scope)
-
 
 class DeclarationBlock:
     def __init__(self,varType,Id,semicolon,declaration=""):
@@ -200,7 +198,6 @@ class DeclarationBlock:
         if self.declaration != "":
             return self.declaration.checkType(scope)
         return True
-
         
 class Type:
     def __init__(self,type):
@@ -212,7 +209,6 @@ class Type:
 
     def checkType(self, scope):
         return self.type
-
 
 class IDList:
     def __init__(self,value,comma="",IDrecursion="",lineno="",column=""):
@@ -240,7 +236,6 @@ class IDList:
             varList = [self] + self.IDrecursion.checkType(scope)
         return varList
 
-
 class ID:
     def __init__(self,value,lineno,column):
         self.type   = 'id'
@@ -263,11 +258,9 @@ class ID:
             return [self]
         checkError('undeclared',self.value,"","",self.lineno,self.column)
         return [self]
-        #return [self]       #devuelve el simbolo del id
 
     def evaluate(self,scope):
         return scope.lookup(self.value).value
-        #return scope.lookup(self.value)
 
 class InstructionBlock:
     def __init__(self,instruction="",semicolon="",instructionBlock=""):
@@ -303,7 +296,6 @@ class InstructionBlock:
             return False
         else:
             return True
-
 
 class IfInst:
     def __init__(self, If, lparen, expression, rparen, instruction, Else="", elseInstruction="",lineno="",column=""):
@@ -413,7 +405,6 @@ class Direction:
     def checkType(self,scope):
         return self
 
-
 class WhileInst:
     def __init__(self,While,lparen,expression,rparen,Do="",instruction="",lineno="",column=""):
         self.While       = While
@@ -449,7 +440,6 @@ class WhileInst:
                 return False
         return True
 
-
 class RepeatInst:
     def __init__(self,repeat,instruction,While):
         self.While       = While
@@ -473,9 +463,9 @@ class RepeatInst:
         return True
 
 class ScanInst:
-    def __init__(self,scan,expression,lineno,column):   # cambiar expression por var
+    def __init__(self,scan,expression,lineno,column):   
         self.scan       = scan
-        self.expression = expression
+        self.expression = expression    # variable a la que se le asigna el valor ingresado por el usuario
         self.lineno     = lineno
         self.column     = column
 
@@ -485,32 +475,33 @@ class ScanInst:
         return string
     
     def checkType(self,scope):
-        varType = scope.lookup(self.expression.value).type
-        if (varType != 'int') & (varType != 'bool'):
-            checkError('scanSet','','',varType,self.lineno,self.column)
-        #expressionType = self.expression.checkType(scope)
-        #if (expressionType != 'int') & (expressionType != 'bool'):
-        #    checkError('scanSet','','',expressionType,self.lineno,self.column)
+        if scope.lookup(self.expression.value):
+            varType = scope.lookup(self.expression.value).type
+            if (varType != 'int') & (varType != 'bool'):
+                checkError('scanSet','','',varType,self.lineno,self.column)
+        else:
+            checkError('scanSet','','','',self.lineno,self.column)
         return True
         
     def execute(self,scope):
-        vartype = scope.lookup(self.expression.value).type
-        value = raw_input()
-        while True:
-            if vartype == "int" and is_int(value): 
-                    value  = int(value)
-                    if (value > maxInt): 
-                        return checkError('overflow','','','',self.lineno,self.column)
-                    break;
-            elif vartype == "bool" and (re.match(r'[ ]*true$[ ]*', value) \
-                                    or re.match(r'[ ]*false$[ ]*', value)): 
-                value = bool(value)
-                break;
-            print("Tipo incorrecto. Intente de nuevo.")
+        if scope.lookup(self.expression.value):
+            vartype = scope.lookup(self.expression.value).type
             value = raw_input()
+            while True:
+                if value != "":
+                    if vartype == "int" and is_int(value): 
+                            value  = int(value)
+                            if (value > maxInt): 
+                                checkError('overflow','','','',self.lineno,self.column)
+                            break;
+                    elif vartype == "bool" and (re.match(r'[ ]*true$[ ]*', value) \
+                                            or re.match(r'[ ]*false$[ ]*', value)): 
+                        value = bool(value)
+                        break;
+                print("Tipo incorrecto. Intente de nuevo.")
+                value = raw_input()
 
-        scope.update(self.expression.value,value)
-
+            scope.update(self.expression.value,value)
         return True
 
 class PrintInst:
@@ -673,7 +664,6 @@ class Expression:
                                     return symbol.type 
                                 else: 
                                     return ''                                           # '' indica que se ingreso una variable no declarada
-                                                   # '' indica que se ingreso una variable no declarada
             
             return self.left.checkType(scope)
         return ''
@@ -817,7 +807,6 @@ class Expression:
         elif not isinstance(self.left,str):
             return self.left.evaluate(scope)
 
-
 class Set:
     def __init__(self,lcurly,setNumbers="",rcurly=""):
         self.lcurly = lcurly
@@ -881,7 +870,6 @@ class BooleanValue:
     def evaluate(self,scope):
         return self.value == "true"
 
-
 class Number:
     def __init__(self,value):
         self.value = value
@@ -913,14 +901,15 @@ def is_int(value):
     return match
 
 def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=""):
+    if wrongType == "":
+        wrongType = "*no especificado*"
+    if (expectedType == ""):
+        expectedType = "*no especificado*"
+        
     if error == 'condition':    # Para las instrucciones if y while
-        if wrongType == "":
-            wrongType = "*no especificado*"
         typeError.append('''ERROR en la Línea %d, Columna %d: La instrucción "%s" espera condición de tipo "%s", no de tipo "%s".''' \
         % (lineno, column, instOrVar, expectedType, wrongType))
     elif error == 'range':
-        if wrongType == "":
-            wrongType = "*no especificado*"
         typeError.append('''ERROR en la Línea %d, Columna %d: La instrucción "%s" espera rango de tipo "%s", no de tipo "%s".''' \
         % (lineno, column, instOrVar, expectedType, wrongType))
     elif error == 'badDeclaration':
@@ -936,20 +925,12 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
         typeError.append('''ERROR en la Línea %d, Columna %d: La variable de iteración "%s" no puede ser modificada.''' \
             % (lineno, column, instOrVar))
     elif error == 'scanSet':
-        if wrongType == "":
-            wrongType = "*no declarada*"
-        typeError.append('''ERROR en la Línea %d, Columna %d: La instrucción "scan" no acepta variables de tipo "%s".''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: La instrucción "scan" no reconoce variables de tipo "%s".''' \
             % (lineno, column,wrongType))
     elif error == 'binaryExpression':
-        if (expectedType == ""):
-            expectedType = "*no especificado*"
-        if (wrongType == ""):
-            wrongType = "*no especificado*"
         typeError.append('''ERROR en la Línea %d, Columna %d: Uso incorrecto del operador "%s" sobre tipos "%s" y "%s".''' \
             % (lineno, column, instOrVar, expectedType, wrongType)) 
     elif error == 'unaryExpression':
-        if (expectedType == ""):
-            expectedType = "*no especificado*"
         typeError.append('''ERROR en la Línea %d, Columna %d: Uso incorrecto del operador "%s" sobre tipo "%s".''' \
             % (lineno, column, instOrVar, expectedType)) 
 

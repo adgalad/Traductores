@@ -65,12 +65,12 @@ class SymbolTable:
 
 
 class Symbol(object):
-
 	def __init__(self, name, type, value, iterator = False):
 		self.name = name
 		self.type = type
 		self.value = value
 		self.iterator = iterator
+
 	def printSymbol(self):
 		if self.type == "set":
 			return "Variable: %s | Type: %s  | Value: {}\n"%(self.name,self.type)
@@ -81,9 +81,3 @@ class Symbol(object):
 			return "Variable: %s | Type: %s  | Value: %s\n"%(self.name,self.type,value)
 		else:
 			return "Variable: %s | Type: %s  | Value: %s\n"%(self.name,self.type,self.value)
-
-
-
-
-
-
