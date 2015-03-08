@@ -1,9 +1,5 @@
 program {
-    using
-        bool s;
-        int i;
-    in
-    scan i;
 
-    println i;
+println "hola como estas \n \"mi nombre es\" \\jaja\\ ";
+
 }

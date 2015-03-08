@@ -583,7 +583,24 @@ class String:
         return True
 
     def evaluate(self,scope):
-        return self.string[1:len(self.string)-1]        
+        string = ""
+        # \\n|\\"|\\\\|\\’|\\a|\\b|\\f|\\r|\\t|\\v)
+        specialCharacter = False
+        for i in self.string:
+            if i == "\\" and not specialCharacter:
+                specialCharacter = True
+            elif specialCharacter:
+                print i
+                if i == "n":
+                    string += "\n"
+                elif i == "\"":
+                    string += "\""
+                elif i == "\\":
+                    string += "\\"
+                specialCharacter = False
+            else:
+                string += i
+        return string[1:len(string)-1]
 
 class Expression:
     def __init__(self,left,op="",right="",lineno="",column=""):
