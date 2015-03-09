@@ -1,21 +1,24 @@
 ## Interpretador del lenguaje Setlan.
-## Etapa 3.
+## Etapa 4.
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
 
 ** 1. Estado actual del proyecto. **
 
-Con la etapa 3 del proyecto, se está realizando el análisis lexicográfico,
-sintáctico y el chequeo de tipos para el interpretador del lenguaje Setlan.
+Con la etapa 4 del proyecto, se interpreta cualquier programa del lenguaje Setlan.
 
-Dependiendo de la opción seleccionada, se muesta la lista de tokens del lenguaje,
-el análisis sintáctico realizado mediante el AST, o la tabla de símbolos si no hay
-errores. Si no, se muestran los errores de tokens, de sintaxis o de chequeo de tipos,
-respectivamente.
+Al ejecutar un programa en Setlan, lo primero que se realiza es la verificación
+estática del programa:
+* Que todos los tokens sean reconocidos por el lenguaje,
+* Que la sintaxis sea válida,
+* Que el uso de tipos dentro del lenguaje sea correcto. 
 
+Si el programa no presenta errores estáticos, éste se ejecuta verificando si existen
+de errores dinámicos y abortando la ejecución del programa si se encuentra el primero.
 
-** 2. Problemas presentes. **
-
-** 3. Comentarios. **
-
-
+Además, existen 3 flags (-t, -a, -s) que se pueden escribir en la línea de comandos
+luego del nombre del programa a ejecutar para dar más información del mismo. 
+Dependiendo de la opción seleccionada, si no hay errores se muestra:
+* -t: la lista de tokens del lenguaje,
+* -a: el análisis sintáctico realizado mediante el AST,
+* -s: la tabla de símbolos.

@@ -6,9 +6,9 @@
 ## Autores:  - Mónica Figuera   11-10328
 ##           - Carlos Spaggiari 11-10987
 
+import  sys
 import  re
 from    symbols import indent, SymbolTable, Symbol
-import  sys
 maxInt = 2147483648
 operator = {"+"   : "PLUS", 
             "-"   : "MINUS",
@@ -212,7 +212,6 @@ class Type:
 
 class IDList:
     def __init__(self,value,comma="",IDrecursion="",lineno="",column=""):
-        self.type        = 'id'
         self.value       = value
         self.IDrecursion = IDrecursion
         self.lineno      = lineno
@@ -238,8 +237,7 @@ class IDList:
 
 class ID:
     def __init__(self,value,lineno,column):
-        self.type   = 'id'
-        self.value  = value
+        self.value  = value     # variable
         self.lineno = lineno
         self.column = column
 
@@ -456,16 +454,22 @@ class RepeatInst:
         return (self.instruction.checkType(scope) and self.While.checkType(scope))
         
     def execute(self,scope):
-        self.instruction.execute(scope)
+        if self.While.Do != "":
+            self.instruction.execute(scope)
+            if self.While.expression.evaluate(scope):
+                self.While.instruction.execute(scope)
         while self.While.expression.evaluate(scope):
             if not self.instruction.execute(scope):
                 return False
+            if self.While.Do != "":
+                if self.While.expression.evaluate(scope):
+                    self.While.instruction.execute(scope)
         return True
 
 class ScanInst:
     def __init__(self,scan,expression,lineno,column):   
         self.scan       = scan
-        self.expression = expression    # variable a la que se le asigna el valor ingresado por el usuario
+        self.expression = expression    # variable a la que se le asigna el valor ingresado por pantalla
         self.lineno     = lineno
         self.column     = column
 
@@ -584,13 +588,11 @@ class String:
 
     def evaluate(self,scope):
         string = ""
-        # \\n|\\"|\\\\|\\’|\\a|\\b|\\f|\\r|\\t|\\v)
         specialCharacter = False
         for i in self.string:
             if i == "\\" and not specialCharacter:
                 specialCharacter = True
             elif specialCharacter:
-                print i
                 if i == "n":
                     string += "\n"
                 elif i == "\"":
@@ -604,10 +606,9 @@ class String:
 
 class Expression:
     def __init__(self,left,op="",right="",lineno="",column=""):
-        self.type  = "expression"
-        self.left  = left
-        self.right = right
-        self.op    = op
+        self.left   = left
+        self.right  = right
+        self.op     = op
         self.lineno = lineno
         self.column = column
 
@@ -680,7 +681,7 @@ class Expression:
                                 if symbol:
                                     return symbol.type 
                                 else: 
-                                    return ''                                           # '' indica que se ingreso una variable no declarada
+                                    return ''
             
             return self.left.checkType(scope)
         return ''
@@ -761,6 +762,11 @@ class Expression:
                     
                     elif self.op == "/=":
                         if leftValue != rightValue:
+                            return True
+                        return False
+
+                    elif self.op == "==":
+                        if leftValue == rightValue:
                             return True
                         return False
                     
@@ -902,21 +908,28 @@ class Number:
     def evaluate(self,scope):
         return self.value
 
+# Funcion auxiliar que utilizar la instrucción scan para verificar
+# si el valor ingresado por el usuario es un entero.
 def is_int(value):
     minus = False
-    match = True
+    number = False
+    if re.match(r'^[ ]+$',value):
+        return False
     for i in value:
         if i == '-' and minus == False:
             minus = True
         elif re.match('[0-9]',i):
+            number = True
             minus = True
         elif i == " ":
             pass
         else:
-            match = False
-            break;
-    return match
+            return False
+    if not number:
+        return False
+    return True
 
+# Almacena en una lista los errores generados en las verificaciones estáticas y dinámicas
 def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=""):
     if wrongType == "":
         wrongType = "*no especificado*"
@@ -956,7 +969,7 @@ def checkError(error,instOrVar="",expectedType="",wrongType="",lineno="",column=
         typeError.append('''ERROR en la Línea %d, Columna %d: Se encontró un overflow.''' \
             % (lineno, column))
     elif error == 'emptySetOperation':
-        typeError.append('''ERROR en la Línea %d, Columna %d: Operación sobre un conjunto vacío''' \
+        typeError.append('''ERROR en la Línea %d, Columna %d: Operación sobre un conjunto vacío.''' \
             % (lineno, column))
     elif error == 'zeroDivision':
         typeError.append('''ERROR en la Línea %d, Columna %d: División o módulo por cero.''' \

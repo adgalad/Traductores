@@ -1,8 +1,0 @@
-program {
-	using
-		bool g;
-	in
-	for i min {5,4,3,2,1} do {
-		println i%(5-i)," ";
-	};
-}

@@ -88,14 +88,11 @@ def t_NUMBER(t):
 
 def t_IDENTIFIER( t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    if (reserved.get(t.value, 'IDENTIFIER') != 'IDENTIFIER'):      # Es una palabra reservada
-        t.type = reserved.get(t.value, 'IDENTIFIER')
-    elif (reserved.get(t.value, 'IDENTIFIER') == 'IDENTIFIER'):    # Es un ID
-        t.type = reserved.get(t.value, 'IDENTIFIER')
+    t.type = reserved.get(t.value, 'IDENTIFIER')
     return t
 
 def t_STRING(t):
-    r'\"([^\n"\\]|\\n|\\"|\\\\|\\’|\\a|\\b|\\f|\\r|\\t|\\v)*?\"'
+    r'\"([^\n"\\]|\\n|\\"|\\\\)*?\"'
     return t
 
 def t_newline(t):
